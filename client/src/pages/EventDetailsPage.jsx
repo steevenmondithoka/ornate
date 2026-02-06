@@ -41,16 +41,16 @@ export default function EventDetailsPage() {
     const isRegistrationOpen = event?.registrationOpen;
 
     return (
-        <div className="absolute top-0 min-h-screen bg-[#000] text-white selection:bg-violet-500 overflow-x-hidden">
+        <div className="min-h-screen bg-[#000] text-white selection:bg-violet-500 overflow-x-hidden">
             {/* --- IMMERSIVE BACKGROUND --- */}
             <div className="fixed inset-0 z-0">
-                <div className="absolute  left-0 w-full h-full bg-gradient-to-b from-violet-600/10 via-transparent to-black"></div>
+                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-violet-600/10 via-transparent to-black"></div>
                 <div className="absolute top-[-20%] right-[-10%] w-[700px] h-[700px] bg-violet-600/20 blur-[150px] rounded-full"></div>
             </div>
 
             <div className="relative z-10">
                 {/* --- FLOATING HEADER --- */}
-                <header className="absolute w-full z-50 backdrop-blur-xl border-b border-white/5 bg-black/20">
+                <header className="fixed top-0 w-full z-50 backdrop-blur-xl border-b border-white/5 bg-black/20">
                     <div className="max-w-screen-2xl mx-auto px-6 py-4 flex justify-between items-center">
                         <Link to={event?.dept ? `/department/${event.dept}` : '/'} className="flex items-center gap-3 group">
                             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />

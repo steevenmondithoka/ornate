@@ -42,7 +42,7 @@ export default function Home() {
     useEffect(() => {
         const fetchAllEvents = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/api/events');
+                const res = await axios.get('https://ornate-evkf.onrender.com/api/events');
                 setDbEvents(res.data);
             } catch (err) {
                 console.error("Backend not connected or error fetching events", err);

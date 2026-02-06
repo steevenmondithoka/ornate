@@ -5,7 +5,7 @@ import {
     User, Mail, Phone, GraduationCap, Building2, Briefcase, Factory, CalendarCheck, Lightbulb, ArrowRight
 } from 'lucide-react';
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = "https://ornate-evkf.onrender.com/api";
 
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: 30 }, (_, i) => (currentYear - i).toString());

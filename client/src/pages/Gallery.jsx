@@ -23,7 +23,7 @@ export default function Gallery() {
 
     const fetchGallery = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/gallery');
+            const res = await axios.get('https://ornate-evkf.onrender.com/api/gallery');
             const organized = {};
 
             res.data.forEach(item => {
@@ -57,7 +57,7 @@ export default function Gallery() {
         if (!window.confirm("Permanently delete this memory?")) return;
         try {
             const token = localStorage.getItem('adminToken');
-            await axios.delete(`http://localhost:5000/api/gallery/${id}`, {
+            await axios.delete(`https://ornate-evkf.onrender.com/api/gallery/${id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             fetchGallery();

@@ -23,7 +23,7 @@ export default function StallRegister() {
         e.preventDefault();
         setLoading(true);
         try {
-            await axios.post('http://localhost:5000/api/stalls/register', formData);
+            await axios.post('https://ornate-evkf.onrender.com/api/stalls/register', formData);
             alert("Application Sent! We will contact you shortly.");
             setFormData({ applicantName: '', college: '', email: '', phone: '', stallType: 'Food', description: '' });
         } catch (err) {

@@ -20,7 +20,7 @@ export default function Events() {
 
     const fetchEvents = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/events');
+            const res = await axios.get('https://ornate-evkf.onrender.com/api/events');
             const enrichedEvents = res.data.map(ev => ({
                 ...ev,
                 likes: ev.likes || 0,
@@ -52,7 +52,7 @@ export default function Events() {
         }));
 
         try {
-            const res = await axios.patch(`http://localhost:5000/api/events/${eventId}/like`, {
+            const res = await axios.patch(`https://ornate-evkf.onrender.com/api/events/${eventId}/like`, {
                 isUnlike: wasAlreadyLiked
             });
 

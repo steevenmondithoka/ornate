@@ -15,7 +15,7 @@ import {
 import BackgroundDesign from '../components/BackgroundDesign';
 
 // --- CONFIG ---
-const API_URL = 'http://localhost:5000/api/tshirts';
+const API_URL = 'https://ornate-evkf.onrender.com/api/tshirts';
 const IMAGES = {
   front: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800",
   back: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&q=80&w=800"

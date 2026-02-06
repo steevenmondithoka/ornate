@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL = "http://localhost:5000/api/updates";
+const API_URL = "https://ornate-evkf.onrender.com/api/updates";
 
 export const UpdatesTicker = () => {
   const [updates, setUpdates] = useState([]);

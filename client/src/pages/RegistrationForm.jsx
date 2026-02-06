@@ -6,7 +6,7 @@ import {
     AlertCircle, CheckCircle, PlusCircle, XCircle 
 } from 'lucide-react';
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = "https://ornate-evkf.onrender.com/api";
 
 /**
  * Robust parsing for event.teamSize strings like:

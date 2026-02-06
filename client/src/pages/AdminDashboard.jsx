@@ -16,7 +16,7 @@ import {
 
 import * as XLSX from 'xlsx';
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = "https://ornate-evkf.onrender.com/api";
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
@@ -36,7 +36,7 @@ export default function AdminDashboard() {
         const token = localStorage.getItem('adminToken');
 
         try {
-            const res = await axios.post('http://localhost:5000/api/admins/add', formData, {
+            const res = await axios.post('https://ornate-evkf.onrender.com/api/admins/add', formData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setMessage(res.data.message);
@@ -49,7 +49,7 @@ export default function AdminDashboard() {
     const handleDelete = async (id) => {
         if (window.confirm("Are you sure you want to remove this admin?")) {
             try {
-                await axios.delete(`http://localhost:5000/api/admins/${id}`, {
+                await axios.delete(`https://ornate-evkf.onrender.com/api/admins/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 fetchAdmins(); // Refresh the list after deleting

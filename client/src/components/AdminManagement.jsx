@@ -11,7 +11,7 @@ const AdminManagement = () => {
 
   const fetchAdmins = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/admins/all', config);
+      const res = await axios.get('https://ornate-evkf.onrender.com/api/admins/all', config);
       setAdmins(res.data);
     } catch (err) { console.error(err); }
   };
@@ -22,7 +22,7 @@ const AdminManagement = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post('http://localhost:5000/api/admins/add', formData, config);
+      await axios.post('https://ornate-evkf.onrender.com/api/admins/add', formData, config);
       setFormData({ name: '', email: '', password: '', role: 'admin' });
       fetchAdmins();
       alert("Admin added!");
@@ -32,7 +32,7 @@ const AdminManagement = () => {
 
   const handleDelete = async (id) => {
     if (window.confirm("Delete this admin?")) {
-      await axios.delete(`http://localhost:5000/api/admins/${id}`, config);
+      await axios.delete(`https://ornate-evkf.onrender.com/api/admins/${id}`, config);
       fetchAdmins();
     }
   };

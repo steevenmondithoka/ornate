@@ -54,7 +54,7 @@ export default function DepartmentDetail() {
             setLoading(true);
             try {
                 // 1. Fetch all events
-                const res = await axios.get(`http://localhost:5000/api/events`);
+                const res = await axios.get(`https://ornate-evkf.onrender.com/api/events`);
 
                 // 2. Filter events that match the current ID OR match 'all'
                 const filtered = res.data.filter(ev => ev.dept === id || ev.dept === 'all');

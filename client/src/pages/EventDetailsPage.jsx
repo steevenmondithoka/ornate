@@ -10,7 +10,7 @@ import {
 import { formatDate } from '../utils/formatDate';
 import RegistrationForm from '../pages/RegistrationForm';
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = "https://ornate-evkf.onrender.com/api";
 
 export default function EventDetailsPage() {
     const { eventId } = useParams();

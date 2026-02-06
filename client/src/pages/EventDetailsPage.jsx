@@ -48,9 +48,9 @@ export default function EventDetailsPage() {
                 <div className="absolute top-[-20%] right-[-10%] w-[700px] h-[700px] bg-violet-600/20 blur-[150px] rounded-full"></div>
             </div>
 
-            <div className="relative z-10">
+            <div className="relative top-16 z-10">
                 {/* --- FLOATING HEADER --- */}
-                <header className="relative top-16 w-full z-60 backdrop-blur-xl border-b border-white/5 bg-black/20">
+                <header className="relative w-full z-60 backdrop-blur-xl border-b border-white/5 bg-black/20">
                     <div className="max-w-screen-2xl mx-auto px-6 py-4 flex justify-between items-center">
                         <Link to={event?.dept ? `/department/${event.dept}` : '/'} className="flex items-center gap-3 group">
                             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />

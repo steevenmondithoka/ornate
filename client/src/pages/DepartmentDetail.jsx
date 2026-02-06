@@ -70,7 +70,7 @@ export default function DepartmentDetail() {
     }, [id]);
 
     return (
-        <div className="pt-40 pb-20 px-6 max-w-7xl mx-auto min-h-screen">
+        <div className="absolute pt-40 pb-20 px-6 max-w-7xl mx-auto min-h-screen">
             {/* Back Button */}
             <Link to="/" className="flex items-center gap-2 text-violet-500 font-bold uppercase text-[10px] tracking-widest mb-12 hover:gap-4 transition-all w-fit">
                 <ArrowLeft size={16} /> Back to Arenas

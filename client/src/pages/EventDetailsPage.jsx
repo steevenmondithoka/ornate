@@ -41,7 +41,7 @@ export default function EventDetailsPage() {
     const isRegistrationOpen = event?.registrationOpen;
 
     return (
-        <div className=" relative min-h-screen bg-[#000] text-white selection:bg-violet-500 overflow-x-hidden">
+        <div className=" absolute min-h-screen bg-[#000] text-white selection:bg-violet-500 overflow-x-hidden">
             {/* --- IMMERSIVE BACKGROUND --- */}
             <div className="fixed inset-0 z-0">
                 <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-violet-600/10 via-transparent to-black"></div>

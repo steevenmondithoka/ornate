@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+:root {
+  --obsidian: #02000a;
+  --amethyst: #7c3aed;
+}
+
+body {
+  background-color: var(--obsidian);
+  color: #e2e8f0;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Sophisticated Grain Texture */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 99;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--obsidian); }
+::-webkit-scrollbar-thumb { background: #2e1065; border-radius: 10px; }
+
+.text-reveal {
+  background: linear-gradient(to bottom, #fff 30%, rgba(255,255,255,0.1));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+
+@theme {
+  --animate-marquee: marquee 30s linear infinite;
+  --animate-marquee-slow: marquee 50s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 40s linear infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes marquee-reverse {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
+  }
+}
+
+/* Elite Polish */
+.mask-horizontal {
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.33%); }
+}
+
+@keyframes marquee-reverse {
+  0% { transform: translateX(-33.33%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-marquee {
+  animation: marquee linear infinite;
+}
+
+.animate-marquee-reverse {
+  animation: marquee-reverse linear infinite;
+}
+
+.animate-marquee:hover, .animate-marquee-reverse:hover {
+  animation-play-state: paused;
+}
+
+.mask-horizontal {
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+.glass-morphism {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}

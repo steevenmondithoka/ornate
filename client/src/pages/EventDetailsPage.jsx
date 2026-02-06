@@ -44,7 +44,7 @@ export default function EventDetailsPage() {
         <div className=" absolute min-h-screen bg-[#000] text-white selection:bg-violet-500 overflow-x-hidden">
             {/* --- IMMERSIVE BACKGROUND --- */}
             <div className="fixed inset-0 z-0">
-                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-violet-600/10 via-transparent to-black"></div>
+                <div className="absolute  left-0 w-full h-full bg-gradient-to-b from-violet-600/10 via-transparent to-black"></div>
                 <div className="absolute top-[-20%] right-[-10%] w-[700px] h-[700px] bg-violet-600/20 blur-[150px] rounded-full"></div>
             </div>
 

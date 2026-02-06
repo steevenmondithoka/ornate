@@ -21,22 +21,13 @@ const app = express();
 connectDB();
 
 // Middleware
-const allowedOrigins = [
-  "http://localhost:5173", // For local testing
-  process.env.FRONTEND_URL  // For production
-];
-
+// Middleware
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      return callback(new Error("CORS policy violation"), false);
-    }
-    return callback(null, true);
-  },
-  credentials: true
+    origin: process.env.FRONTEND_URL || "*", // Uses your Render variable, or allows all if not set
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
 }));
+app.use(express.json());
 app.use(express.json());
 
 // Routes

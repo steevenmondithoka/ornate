@@ -23,12 +23,13 @@ connectDB();
 // Middleware
 // Middleware
 app.use(cors({
-    origin: process.env.FRONTEND_URL || "*", // Uses your Render variable, or allows all if not set
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: process.env.FRONTEND_URL, // Make sure this is "https://ornate-iota.vercel.app" in Render
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"], // <--- MUST ALLOW AUTHORIZATION
     credentials: true
 }));
 app.use(express.json());
-app.use(express.json());
+
 
 // Routes
 app.use("/api/auth", require("./routes/authRoutes"));

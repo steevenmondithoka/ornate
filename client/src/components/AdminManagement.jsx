@@ -5,15 +5,21 @@ const AdminManagement = () => {
   const [admins, setAdmins] = useState([]);
   const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'admin' });
   const [loading, setLoading] = useState(false);
-  const token = localStorage.getItem('adminToken');
 
-  const config = { headers: { Authorization: `Bearer ${token}` } };
+  // Function to get the latest token from storage
+  const getAuthHeader = () => {
+    const token = localStorage.getItem('adminToken');
+    return { headers: { Authorization: `Bearer ${token}` } };
+  };
 
   const fetchAdmins = async () => {
     try {
-      const res = await axios.get('https://ornate-evkf.onrender.com/api/admins/all', config);
+      const res = await axios.get('https://ornate-evkf.onrender.com/api/admins/all', getAuthHeader());
       setAdmins(res.data);
-    } catch (err) { console.error(err); }
+    } catch (err) { 
+        console.error("Fetch Admins Error:", err.response?.data);
+        if(err.response?.status === 403) alert("SuperAdmin Access Only!");
+    }
   };
 
   useEffect(() => { fetchAdmins(); }, []);
@@ -22,20 +28,46 @@ const AdminManagement = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post('https://ornate-evkf.onrender.com/api/admins/add', formData, config);
+      await axios.post('https://ornate-evkf.onrender.com/api/admins/add', formData, getAuthHeader());
       setFormData({ name: '', email: '', password: '', role: 'admin' });
       fetchAdmins();
       alert("Admin added!");
-    } catch (err) { alert(err.response?.data?.message || "Error"); }
+    } catch (err) { 
+        alert(err.response?.data?.message || "Error adding admin"); 
+    }
     setLoading(false);
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Delete this admin?")) {
-      await axios.delete(`https://ornate-evkf.onrender.com/api/admins/${id}`, config);
-      fetchAdmins();
+const handleDelete = async (id) => {
+  // 1. Prevent the Super Admin from deleting themselves!
+  const currentAdmin = JSON.parse(localStorage.getItem('adminInfo'));
+  if (id === currentAdmin.id) {
+    alert("Security Error: You cannot delete your own account.");
+    return;
+  }
+
+  if (window.confirm("Are you sure? This admin will lose all access immediately.")) {
+    try {
+      // 2. Get fresh token to avoid "Token expired/failed" errors
+      const token = localStorage.getItem('adminToken');
+      const freshConfig = { 
+        headers: { Authorization: `Bearer ${token}` } 
+      };
+
+      await axios.delete(`https://ornate-evkf.onrender.com/api/admins/${id}`, freshConfig);
+      
+      // 3. Update the UI list
+      fetchAdmins(); 
+      alert("Staff member removed successfully.");
+
+    } catch (err) {
+      console.error("Delete Error:", err);
+      // 4. Handle specific error messages from your backend
+      const errorMsg = err.response?.data?.message || "Server Error: Could not delete admin.";
+      alert(errorMsg);
     }
-  };
+  }
+};
 
   return (
     <div className="pt-32 px-10 min-h-screen bg-[#030014]">

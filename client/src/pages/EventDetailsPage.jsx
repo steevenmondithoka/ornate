@@ -167,11 +167,13 @@ export default function EventDetailsPage() {
                                         initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
                                         className="bg-[#0f0f0f] border border-white/10 rounded-[2.5rem] p-2"
                                     >
-                                        <RegistrationForm 
-                                            event={event} 
-                                            onClose={() => setShowRegistrationForm(false)} 
-                                            onRegistrationSuccess={handleRegistrationSuccess} 
-                                        />
+                                      {showRegistrationForm && (
+    <RegistrationForm 
+        event={event} 
+        onClose={() => setShowRegistrationForm(false)} 
+        onRegistrationSuccess={handleRegistrationSuccess} 
+    />
+)}
                                     </motion.div>
                                 )}
                             </AnimatePresence>

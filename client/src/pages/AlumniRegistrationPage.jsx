@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-    User, Mail, Phone, GraduationCap, Building2, Briefcase, Factory, CalendarCheck, Lightbulb, ArrowRight
+    User, Mail, Phone, GraduationCap, Building2, Briefcase, 
+    Factory, CalendarCheck, Lightbulb, ArrowRight, ChevronDown, Sparkles
 } from 'lucide-react';
 
 const API_BASE = "https://ornate-evkf.onrender.com/api";
@@ -13,26 +14,16 @@ const BRANCHES = ['CSE', 'ECE', 'EEE', 'Mechanical', 'Civil', 'Other'];
 
 export default function AlumniRegistrationPage() {
     const [form, setForm] = useState({
-        fullName: '',
-        email: '',
-        phoneNumber: '',
-        passingYear: YEARS[0],
-        branch: BRANCHES[0],
-        currentOccupation: '',
-        companyName: '',
-        attendFest: 'yes',
-        conductEvent: 'no',
-        eventIdea: ''
+        fullName: '', email: '', phoneNumber: '', passingYear: YEARS[0],
+        branch: BRANCHES[0], currentOccupation: '', companyName: '',
+        attendFest: 'yes', conductEvent: 'no', eventIdea: ''
     });
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setForm(prevForm => ({
-            ...prevForm,
-            [name]: value
-        }));
+        setForm(prevForm => ({ ...prevForm, [name]: value }));
     };
 
     const handleSubmit = async (e) => {
@@ -42,9 +33,7 @@ export default function AlumniRegistrationPage() {
 
         try {
             const dataToSend = { ...form };
-            if (form.conductEvent === 'no') {
-                dataToSend.eventIdea = '';
-            }
+            if (form.conductEvent === 'no') dataToSend.eventIdea = '';
             if (form.attendFest === 'no') {
                 dataToSend.currentOccupation = '';
                 dataToSend.companyName = '';
@@ -53,291 +42,192 @@ export default function AlumniRegistrationPage() {
             const res = await axios.post(`${API_BASE}/alumni-registrations`, dataToSend);
             setMessage({ type: 'success', text: res.data.msg });
             setForm({
-                fullName: '',
-                email: '',
-                phoneNumber: '',
-                passingYear: YEARS[0],
-                branch: BRANCHES[0],
-                currentOccupation: '',
-                companyName: '',
-                attendFest: 'yes',
-                conductEvent: 'no',
-                eventIdea: ''
+                fullName: '', email: '', phoneNumber: '', passingYear: YEARS[0],
+                branch: BRANCHES[0], currentOccupation: '', companyName: '',
+                attendFest: 'yes', conductEvent: 'no', eventIdea: ''
             });
         } catch (err) {
-            console.error("Alumni registration error:", err);
-            setMessage({ type: 'error', text: err.response?.data?.msg || 'Registration failed. Please try again.' });
+            setMessage({ type: 'error', text: err.response?.data?.msg || 'Registration failed.' });
         } finally {
             setLoading(false);
         }
     };
 
+    const inputClass = "w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3.5 pl-11 pr-4 text-sm focus:border-violet-500 focus:ring-1 focus:ring-violet-500 outline-none text-white transition-all placeholder:text-zinc-700";
+    const labelClass = "text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-2 block ml-1";
+    const iconClass = "absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-violet-500 transition-colors";
+
     return (
-        <div className=" relative top-12 min-h-screen bg-[#030014] text-white flex flex-col lg:flex-row font-sans overflow-y-auto">
-            {/* --- LEFT SIDE: THE VISUAL (Full width on mobile, half on large, 45% on xl) --- */}
-            <div className="relative w-full lg:w-1/2 xl:w-[45%] bg-zinc-900/50 flex-shrink-0
-                        min-h-[280px] md:min-h-[350px] lg:min-h-0 lg:h-auto pb-20"> {/* Added min-h and pb-20 for mobile */}
-                {/* Header overlay on image */}
-                <div className="absolute top-0 left-0 w-full p-6 z-30 bg-gradient-to-b from-black/80 to-transparent">
-                    <h1 className="text-3xl font-black italic tracking-tighter text-white">
-                        RGUKT ONGOLE'S ALUMNI <span className="text-violet-500">CONNECT</span>
-                    </h1>
-                    <p className="text-white/60 text-xs tracking-widest uppercase mt-1">Join the network</p>
-                </div>
-
-                {/* The Image */}
-                <div className="absolute inset-0 w-full h-full"> {/* Changed to absolute inset-0 */}
-                    <img
-                        src="https://spu.edu/-/media/administration/center-career-calling/page-features/alumni-grads-page-feature.ashx?iar=0&hash=6CFBD3AB47F790877406E9E1C8BF6927"
-                        alt="Alumni gathering"
-                        className="w-full h-full object-cover opacity-70"
-                    />
-                    {/* Gradient overlay at bottom */}
-                    <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
-                </div>
-
-                {/* Info Overlay */}
-                <div className="absolute bottom-4 left-6 right-6 z-20"> {/* Adjusted bottom */}
-                    <h2 className="text-white text-3xl font-bold italic mb-2">Reconnect with your roots.</h2>
-                    <p className="text-white/80 text-sm max-w-md">
-                        We're excited to invite our esteemed alumni back to campus for Ornate 2k26! Share your journey, inspire the next generation, and relive your college memories.
-                    </p>
-                </div>
+        <div className="min-h-screen bg-[#050505] text-white relative overflow-x-hidden pt-28 pb-12 lg:pt-36">
+            
+            {/* Ambient Glows */}
+            <div className="fixed inset-0 pointer-events-none z-0">
+                <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-violet-600/10 blur-[120px] rounded-full" />
             </div>
 
-            {/* --- RIGHT SIDE: THE FORM (Full width on mobile, half on large, 55% on xl) --- */}
-            <div className="w-full lg:w-1/2 xl:w-[55%] py-8 px-6 md:p-10 bg-[#0a0a0a] flex-grow"> {/* Adjusted padding and removed internal overflow */}
-                {/* Form content wrapper with max-width and centering */}
-                <div className="w-full max-w-lg mx-auto">
-                    <div className="flex items-center gap-2 mb-6 text-violet-500">
-                        <GraduationCap size={18} />
-                        <span className="text-xs font-bold uppercase tracking-widest">Alumni Registration</span>
+            <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+                <motion.div 
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-[#0a0a0a] border border-white/5 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col lg:flex-row"
+                >
+                    {/* --- LEFT SIDE: IMAGE & INFO --- */}
+                    <div className="lg:w-[40%] relative min-h-[350px] lg:min-h-full overflow-hidden">
+                        <img 
+                            src="https://images.unsplash.com/photo-1523580494863-6f30312248fd?auto=format&fit=crop&q=80&w=1200" 
+                            alt="Alumni" 
+                            className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-1000"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-transparent lg:bg-gradient-to-r" />
+                        
+                        <div className="relative h-full flex flex-col justify-end p-8 lg:p-12 space-y-4">
+                            <span className="px-3 py-1 rounded-full bg-violet-600/20 border border-violet-500/30 text-violet-400 text-[10px] font-black uppercase tracking-widest w-fit">
+                                <Sparkles size={12} /> Global Network
+                            </span>
+                            <h1 className="text-4xl lg:text-5xl font-black italic uppercase tracking-tighter leading-[0.9]">
+                                Reconnect <br /> <span className="text-violet-500">Alumni.</span>
+                            </h1>
+                            <p className="text-zinc-400 text-sm max-w-xs font-medium leading-relaxed">
+                                Join the Ornate 2k26 legacy. Share your journey and inspire the next generation of engineers.
+                            </p>
+                        </div>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-5">
-
-                        {/* Full Name */}
-                        <div className="group">
-                            <label className="text-xs text-zinc-500 font-medium ml-1 mb-1 block">FULL NAME</label>
-                            <div className="relative">
-                                <User className="absolute left-3 top-3.5 text-zinc-600 group-focus-within:text-violet-500 transition-colors" size={18} />
-                                <input
-                                    name="fullName"
-                                    value={form.fullName}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg py-3 pl-10 pr-4 text-sm focus:border-violet-500 focus:ring-1 focus:ring-violet-500 outline-none text-white transition-all placeholder:text-zinc-700"
-                                    placeholder="Enter your full name"
-                                />
-                            </div>
+                    {/* --- RIGHT SIDE: THE FORM --- */}
+                    <div className="lg:w-[60%] p-8 lg:p-14 bg-[#0a0a0a]">
+                        <div className="flex items-center gap-3 mb-10">
+                           <div className="p-2.5 rounded-xl bg-violet-500/10 text-violet-500">
+                              <GraduationCap size={20} />
+                           </div>
+                           <div>
+                              <h3 className="text-xl font-black italic uppercase tracking-tighter">Registration Portal</h3>
+                              <div className="h-1 w-8 bg-violet-600 rounded-full mt-1" />
+                           </div>
                         </div>
 
-                        {/* Email */}
-                        <div className="group">
-                            <label className="text-xs text-zinc-500 font-medium ml-1 mb-1 block">EMAIL</label>
-                            <div className="relative">
-                                <Mail className="absolute left-3 top-3.5 text-zinc-600 group-focus-within:text-violet-500 transition-colors" size={18} />
-                                <input
-                                    name="email"
-                                    type="email"
-                                    value={form.email}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg py-3 pl-10 pr-4 text-sm focus:border-violet-500 focus:ring-1 focus:ring-violet-500 outline-none text-white transition-all placeholder:text-zinc-700"
-                                    placeholder="you@example.com"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Phone Number */}
-                        <div className="group">
-                            <label className="text-xs text-zinc-500 font-medium ml-1 mb-1 block">PHONE NUMBER</label>
-                            <div className="relative">
-                                <Phone className="absolute left-3 top-3.5 text-zinc-600 group-focus-within:text-violet-500 transition-colors" size={18} />
-                                <input
-                                    name="phoneNumber"
-                                    value={form.phoneNumber}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg py-3 pl-10 pr-4 text-sm focus:border-violet-500 outline-none text-white transition-all placeholder:text-zinc-700"
-                                    placeholder="999-888-7777"
-                                />
-                            </div>
-                        </div>
-
-                        {/* 2 Cols: Passing Year & Branch */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            
                             <div className="group">
-                                <label className="text-xs text-zinc-500 font-medium ml-1 mb-1 block">PASSING YEAR</label>
+                                <label className={labelClass}>Full Name</label>
                                 <div className="relative">
-                                    <CalendarCheck className="absolute left-3 top-3.5 text-zinc-600 group-focus-within:text-violet-500 transition-colors" size={18} />
-                                    <select
-                                        name="passingYear"
-                                        value={form.passingYear}
-                                        onChange={handleChange}
-                                        className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg py-3 pl-10 pr-4 text-sm focus:border-violet-500 outline-none text-white appearance-none cursor-pointer"
-                                    >
-                                        {YEARS.map(year => <option key={year} value={year} className="bg-black">{year}</option>)}
-                                    </select>
-                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-zinc-600">
-                                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                    </div>
+                                    <User className={iconClass} size={16} />
+                                    <input name="fullName" value={form.fullName} onChange={handleChange} required className={inputClass} placeholder="Alumni Name" />
                                 </div>
                             </div>
-                            <div className="group">
-                                <label className="text-xs text-zinc-500 font-medium ml-1 mb-1 block">BRANCH</label>
-                                <div className="relative">
-                                    <Building2 className="absolute left-3 top-3.5 text-zinc-600 group-focus-within:text-violet-500 transition-colors" size={18} />
-                                    <select
-                                        name="branch"
-                                        value={form.branch}
-                                        onChange={handleChange}
-                                        className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg py-3 pl-10 pr-4 text-sm focus:border-violet-500 outline-none text-white appearance-none cursor-pointer"
-                                    >
-                                        {BRANCHES.map(branch => <option key={branch} value={branch} className="bg-black">{branch}</option>)}
-                                    </select>
-                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-zinc-600">
-                                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        {/* Attending Fest Question */}
-                        <div className="group">
-                            <label className="text-xs text-zinc-500 font-medium ml-1 mb-2 block">WILL YOU BE ATTENDING ORNATE 2K26?</label>
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <label className="flex items-center text-sm text-white cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        name="attendFest"
-                                        value="yes"
-                                        checked={form.attendFest === 'yes'}
-                                        onChange={handleChange}
-                                        className="form-radio h-4 w-4 text-violet-600 bg-zinc-800 border-zinc-600 focus:ring-violet-500"
-                                    />
-                                    <span className="ml-2">Yes, I'm coming!</span>
-                                </label>
-                                <label className="flex items-center text-sm text-white cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        name="attendFest"
-                                        value="no"
-                                        checked={form.attendFest === 'no'}
-                                        onChange={handleChange}
-                                        className="form-radio h-4 w-4 text-violet-600 bg-zinc-800 border-zinc-600 focus:ring-violet-500"
-                                    />
-                                    <span className="ml-2">No, maybe next time.</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        {form.attendFest === 'yes' && (
-                            <>
-                                {/* 2 Cols: Occupation & Company */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div className="group">
-                                        <label className="text-xs text-zinc-500 font-medium ml-1 mb-1 block">CURRENT OCCUPATION</label>
-                                        <div className="relative">
-                                            <Briefcase className="absolute left-3 top-3.5 text-zinc-600 group-focus-within:text-violet-500 transition-colors" size={18} />
-                                            <input
-                                                name="currentOccupation"
-                                                value={form.currentOccupation}
-                                                onChange={handleChange}
-                                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg py-3 pl-10 pr-4 text-sm focus:border-violet-500 outline-none text-white transition-all placeholder:text-zinc-700"
-                                                placeholder="Software Engineer, Entrepreneur, etc."
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="group">
-                                        <label className="text-xs text-zinc-500 font-medium ml-1 mb-1 block">COMPANY NAME</label>
-                                        <div className="relative">
-                                            <Factory className="absolute left-3 top-3.5 text-zinc-600 group-focus-within:text-violet-500 transition-colors" size={18} />
-                                            <input
-                                                name="companyName"
-                                                value={form.companyName}
-                                                onChange={handleChange}
-                                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg py-3 pl-10 pr-4 text-sm focus:border-violet-500 outline-none text-white transition-all placeholder:text-zinc-700"
-                                                placeholder="Google, Your Startup, etc."
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Conduct Event Question */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                 <div className="group">
-                                    <label className="text-xs text-zinc-500 font-medium ml-1 mb-2 block">INTERESTED IN CONDUCTING AN EVENT / WORKSHOP?</label>
-                                    <div className="flex flex-col sm:flex-row gap-4">
-                                        <label className="flex items-center text-sm text-white cursor-pointer">
-                                            <input
-                                                type="radio"
-                                                name="conductEvent"
-                                                value="yes"
-                                                checked={form.conductEvent === 'yes'}
-                                                onChange={handleChange}
-                                                className="form-radio h-4 w-4 text-violet-600 bg-zinc-800 border-zinc-600 focus:ring-violet-500"
-                                            />
-                                            <span className="ml-2">Yes! I have an idea.</span>
-                                        </label>
-                                        <label className="flex items-center text-sm text-white cursor-pointer">
-                                            <input
-                                                type="radio"
-                                                name="conductEvent"
-                                                value="no"
-                                                checked={form.conductEvent === 'no'}
-                                                onChange={handleChange}
-                                                className="form-radio h-4 w-4 text-violet-600 bg-zinc-800 border-zinc-600 focus:ring-violet-500"
-                                            />
-                                            <span className="ml-2">No, just attending.</span>
-                                        </label>
+                                    <label className={labelClass}>Email Address</label>
+                                    <div className="relative">
+                                        <Mail className={iconClass} size={16} />
+                                        <input name="email" type="email" value={form.email} onChange={handleChange} required className={inputClass} placeholder="you@example.com" />
                                     </div>
                                 </div>
-
-                                {form.conductEvent === 'yes' && (
-                                    <div className="group">
-                                        <label className="text-xs text-zinc-500 font-medium ml-1 mb-1 block">YOUR EVENT / WORKSHOP IDEA</label>
-                                        <div className="relative">
-                                            <Lightbulb className="absolute left-3 top-3.5 text-zinc-600 group-focus-within:text-violet-500 transition-colors" size={18} />
-                                            <textarea
-                                                name="eventIdea"
-                                                value={form.eventIdea}
-                                                onChange={handleChange}
-                                                rows="3"
-                                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg py-3 pl-10 pr-4 text-sm focus:border-violet-500 outline-none text-white transition-all placeholder:text-zinc-700"
-                                                placeholder="Briefly describe your event or workshop idea."
-                                                required={form.conductEvent === 'yes'}
-                                            />
-                                        </div>
+                                <div className="group">
+                                    <label className={labelClass}>WhatsApp Number</label>
+                                    <div className="relative">
+                                        <Phone className={iconClass} size={16} />
+                                        <input name="phoneNumber" value={form.phoneNumber} onChange={handleChange} required className={inputClass} placeholder="+91..." />
                                     </div>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div className="group">
+                                    <label className={labelClass}>Passing Year</label>
+                                    <div className="relative">
+                                        <CalendarCheck className={iconClass} size={16} />
+                                        <select name="passingYear" value={form.passingYear} onChange={handleChange} className={`${inputClass} appearance-none cursor-pointer`}>
+                                            {YEARS.map(year => <option key={year} value={year} className="bg-[#0a0a0a]">{year}</option>)}
+                                        </select>
+                                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" size={16} />
+                                    </div>
+                                </div>
+                                <div className="group">
+                                    <label className={labelClass}>Academic Branch</label>
+                                    <div className="relative">
+                                        <Building2 className={iconClass} size={16} />
+                                        <select name="branch" value={form.branch} onChange={handleChange} className={`${inputClass} appearance-none cursor-pointer`}>
+                                            {BRANCHES.map(branch => <option key={branch} value={branch} className="bg-[#0a0a0a]">{branch}</option>)}
+                                        </select>
+                                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" size={16} />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 space-y-4">
+                                <label className="text-[10px] font-black text-violet-500 uppercase tracking-widest block">Are you attending Ornate 2k26?</label>
+                                <div className="flex gap-6">
+                                    {['yes', 'no'].map((opt) => (
+                                        <label key={opt} className="flex items-center gap-2 cursor-pointer group">
+                                            <input type="radio" name="attendFest" value={opt} checked={form.attendFest === opt} onChange={handleChange} className="w-4 h-4 accent-violet-600" />
+                                            <span className="text-xs font-bold uppercase text-zinc-400 group-hover:text-white transition-colors">{opt === 'yes' ? "I'm coming!" : "Maybe next time"}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <AnimatePresence>
+                                {form.attendFest === 'yes' && (
+                                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="space-y-6 overflow-hidden">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                            <div className="group">
+                                                <label className={labelClass}>Current Occupation</label>
+                                                <div className="relative">
+                                                    <Briefcase className={iconClass} size={16} />
+                                                    <input name="currentOccupation" value={form.currentOccupation} onChange={handleChange} className={inputClass} placeholder="e.g. Lead Engineer" />
+                                                </div>
+                                            </div>
+                                            <div className="group">
+                                                <label className={labelClass}>Current Company</label>
+                                                <div className="relative">
+                                                    <Factory className={iconClass} size={16} />
+                                                    <input name="companyName" value={form.companyName} onChange={handleChange} className={inputClass} placeholder="Company Name" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 space-y-4">
+                                            <label className="text-[10px] font-black text-violet-500 uppercase tracking-widest block">Conduct a workshop / session?</label>
+                                            <div className="flex gap-6">
+                                                {['yes', 'no'].map((opt) => (
+                                                    <label key={opt} className="flex items-center gap-2 cursor-pointer group">
+                                                        <input type="radio" name="conductEvent" value={opt} checked={form.conductEvent === opt} onChange={handleChange} className="w-4 h-4 accent-violet-600" />
+                                                        <span className="text-xs font-bold uppercase text-zinc-400 group-hover:text-white transition-colors">{opt === 'yes' ? "Yes, I have an idea" : "Just attending"}</span>
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {form.conductEvent === 'yes' && (
+                                            <div className="group">
+                                                <label className={labelClass}>Your Session Idea</label>
+                                                <div className="relative">
+                                                    <Lightbulb className="absolute left-4 top-4 text-zinc-600 group-focus-within:text-violet-500" size={16} />
+                                                    <textarea name="eventIdea" value={form.eventIdea} onChange={handleChange} rows="3" className={`${inputClass} min-h-[100px] resize-none pt-3`} placeholder="Briefly describe your session proposal..." />
+                                                </div>
+                                            </div>
+                                        )}
+                                    </motion.div>
                                 )}
-                            </>
-                        )}
+                            </AnimatePresence>
 
-                        {/* Action Button */}
-                        <button
-                            disabled={loading}
-                            className="w-full mt-6 bg-violet-600 hover:bg-violet-500 text-white font-bold py-4 rounded-lg flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(124,58,237,0.3)] hover:shadow-[0_0_30px_rgba(124,58,237,0.5)] disabled:opacity-50 disabled:cursor-not-allowed group"
-                        >
-                            {loading ? "SUBMITTING..." : "REGISTER AS ALUMNI"}
-                            {!loading && <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />}
-                        </button>
-
-                        {message.text && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className={`mt-4 p-3 rounded-lg text-center text-sm ${message.type === 'success' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}
+                            <button 
+                                disabled={loading}
+                                className="w-full mt-4 bg-violet-600 hover:bg-violet-500 text-white font-black uppercase tracking-[0.2em] text-[11px] py-5 rounded-2xl transition-all shadow-xl shadow-violet-900/10 active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 group"
                             >
-                                {message.text}
-                            </motion.div>
-                        )}
+                                {loading ? "PROCESSING..." : "REGISTER AS ALUMNI"}
+                                {!loading && <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />}
+                            </button>
 
-                        <p className="text-center text-zinc-600 text-[10px] mt-4">
-                            Your data will be used to facilitate alumni connections and event planning.
-                        </p>
-
-                    </form>
-                </div>
+                            {message.text && (
+                                <p className={`text-center text-xs font-bold uppercase tracking-widest ${message.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
+                                    {message.text}
+                                </p>
+                            )}
+                        </form>
+                    </div>
+                </motion.div>
             </div>
         </div>
     );

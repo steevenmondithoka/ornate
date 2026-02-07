@@ -21,7 +21,7 @@ export default function About() {
         <div ref={containerRef} className="relative bg-[#050505] text-white overflow-x-hidden pt-24 lg:pt-32 pb-32">
             
             {/* 1. PARALLAX GHOST TEXT & TICKER */}
-            <div className="w-full relative py-3 lg:py-12 overflow-hidden select-none pointer-events-none border-y border-white/[0.03]">
+            <div className="w-full relative py-2 lg:py-12 overflow-hidden select-none pointer-events-none border-y border-white/[0.03]">
                 <UpdatesTicker />
                 <motion.div
                     style={{ x: xPos, y: yText }}

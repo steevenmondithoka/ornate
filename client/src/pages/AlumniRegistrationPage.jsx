@@ -72,7 +72,7 @@ export default function AlumniRegistrationPage() {
                     className="bg-[#0a0a0a] border border-white/5 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col lg:flex-row"
                 >
                     {/* --- LEFT SIDE: IMAGE & INFO --- */}
-                    <div className="lg:w-[40%] relative min-h-[350px] lg:min-h-full overflow-hidden">
+                    <div className="lg:w-[40%] relative z-0 min-h-[350px] lg:min-h-full overflow-hidden">
                         <img 
                             src="https://www.osu.edu/alumni/sites/default/files/styles/16_9/public/2024-02/recent-grads.jpeg.webp" 
                             alt="Alumni" 
@@ -80,7 +80,7 @@ export default function AlumniRegistrationPage() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-transparent lg:bg-gradient-to-r" />
                         
-                        <div className="relative h-full flex flex-col justify-end p-8 lg:p-12 space-y-4">
+                        <div className="relative h-full z-40 flex flex-col justify-end p-8 lg:p-12 space-y-4">
                             <span className="px-3 py-1 rounded-full bg-violet-600/20 border border-violet-500/30 text-violet-400 text-[10px] font-black uppercase tracking-widest w-fit">
                                 <Sparkles size={12} /> Global Network
                             </span>

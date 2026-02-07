@@ -6,33 +6,58 @@ import { ArrowLeft, MapPin, Clock, Calendar, AlertCircle, Train, Rocket, Cpu, Za
 import { formatDate } from '../utils/formatDate';
 
 // --- ADVANCED RESPONSIVE ANIMATIONS ---
+const javaSnippets = [
+    "public class Ornate {",
+    "System.out.println(\"RGUKT ONGOLE\");",
+    "int year = 2026;",
+    "String event = \"Fest\";",
+    "if (event.isLive()) {",
+    "  joinNow();",
+    "}",
+    "Scanner sc = new Scanner(System.in);",
+    "while (festActive) {",
+    "  celebrate();",
+    "}",
+    "try {",
+    "  startCoding();",
+    "} catch (Exception e) {",
+    "  debug();",
+    "}",
+    "return true;",
+    "void main(String[] args) {",
+    "import java.util.*;",
+    "event.setStatus(\"SUCCESS\");"
+];
 
 const CSEVibe = () => (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none flex justify-around opacity-30">
-        {[...Array(12)].map((_, i) => (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none flex justify-around opacity-40 bg-black/20">
+        {[...Array(window.innerWidth < 768 ? 6 : 12)].map((_, i) => (
             <motion.div
                 key={i}
                 initial={{ y: "-100%" }}
                 animate={{ y: "100%" }}
                 transition={{ 
-                    duration: Math.random() * 2 + 3, 
+                    duration: Math.random() * 8 + 5, // Slower, more readable speed
                     repeat: Infinity, 
                     ease: "linear",
-                    delay: Math.random() * 2 
+                    delay: Math.random() * 5 
                 }}
-                className="flex flex-col text-violet-500 font-mono text-[10px] md:text-sm"
-                style={{ opacity: Math.random() * 0.5 + 0.2 }}
+                className="flex flex-col text-violet-500 font-mono text-[9px] md:text-[12px] whitespace-nowrap leading-relaxed"
+                style={{ 
+                    opacity: Math.random() * 0.6 + 0.2,
+                    textShadow: '0 0 8px rgba(139, 92, 246, 0.5)'
+                }}
             >
-                {Array(25).fill(0).map((_, j) => (
-                    <span key={j}>{Math.random() > 0.5 ? '1' : '0'}</span>
+                {/* Generating a stream of Java code instead of numbers */}
+                {[...Array(15)].map((_, j) => (
+                    <span key={j} className="mb-2">
+                        {javaSnippets[Math.floor(Math.random() * javaSnippets.length)]}
+                    </span>
                 ))}
-                <span>System.out.println("RGUKT ONGOLE")</span>
-                <span>EXEC</span>
             </motion.div>
         ))}
     </div>
 );
-
 const MechVibe = () => (
     <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
         <motion.div 

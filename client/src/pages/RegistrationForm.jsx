@@ -1,33 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     User, Mail, Phone, Building, Users, 
-    AlertCircle, CheckCircle, PlusCircle, XCircle 
+    AlertCircle, CheckCircle, PlusCircle, XCircle,
+    Zap, ShieldCheck, ChevronRight
 } from 'lucide-react';
 
 const API_BASE = "https://ornate-evkf.onrender.com/api";
 
-/**
- * Robust parsing for event.teamSize strings like:
- * "Individual", "2 members", "2-4 members", "up to 5 members"
- */
 const parseTeamLimits = (str) => {
     const s = str ? str.toLowerCase() : 'individual';
     if (s.includes('individual')) return { min: 1, max: 1 };
-    
-    // Check for ranges like "2-4"
     const rangeMatch = s.match(/(\d+)-(\d+)/);
     if (rangeMatch) return { min: parseInt(rangeMatch[1]), max: parseInt(rangeMatch[2]) };
-    
-    // Check for "up to X"
     const upToMatch = s.match(/up to (\d+)/);
     if (upToMatch) return { min: 1, max: parseInt(upToMatch[1]) };
-
-    // Check for fixed numbers like "3 members"
     const fixedMatch = s.match(/(\d+)/);
     if (fixedMatch) return { min: parseInt(fixedMatch[1]), max: parseInt(fixedMatch[1]) };
-
     return { min: 1, max: 1 };
 };
 
@@ -35,28 +25,16 @@ const RegistrationForm = ({ event, onClose, onRegistrationSuccess }) => {
     const { min: minTotal, max: maxTotal } = parseTeamLimits(event.teamSize);
     const isTeamEvent = maxTotal > 1;
 
-    // Initial State
     const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        college: '',
-        department: '',
-        year: '',
-        teamName: '',
-        // We store additional members (Member 2, Member 3...) here
+        name: '', email: '', phone: '', college: '', department: '', year: '', teamName: '',
         teamMembers: Array(minTotal > 1 ? minTotal - 1 : 0).fill({ name: '', email: '' }),
     });
 
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState({ msg: '', type: '' });
 
-    // Handle standard inputs
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    // Handle dynamic member inputs
     const handleMemberChange = (index, e) => {
         const updated = [...formData.teamMembers];
         updated[index] = { ...updated[index], [e.target.name]: e.target.value };
@@ -65,10 +43,7 @@ const RegistrationForm = ({ event, onClose, onRegistrationSuccess }) => {
 
     const addMember = () => {
         if (formData.teamMembers.length + 1 < maxTotal) {
-            setFormData({
-                ...formData,
-                teamMembers: [...formData.teamMembers, { name: '', email: '' }]
-            });
+            setFormData({ ...formData, teamMembers: [...formData.teamMembers, { name: '', email: '' }] });
         }
     };
 
@@ -84,7 +59,6 @@ const RegistrationForm = ({ event, onClose, onRegistrationSuccess }) => {
         setLoading(true);
         setStatus({ msg: '', type: '' });
 
-        // Extra frontend validation for Team Name
         if (isTeamEvent && !formData.teamName.trim()) {
             setStatus({ msg: "Team Name is required!", type: "error" });
             setLoading(false);
@@ -94,229 +68,187 @@ const RegistrationForm = ({ event, onClose, onRegistrationSuccess }) => {
         try {
             const payload = {
                 eventId: event._id,
-                name: formData.name,
-                email: formData.email,
-                phone: formData.phone,
-                college: formData.college,
-                department: formData.department,
-                year: formData.year,
+                name: formData.name, email: formData.email, phone: formData.phone,
+                college: formData.college, department: formData.department, year: formData.year,
             };
-
             if (isTeamEvent) {
                 payload.teamName = formData.teamName;
                 payload.teamMembers = formData.teamMembers;
             }
-
             const res = await axios.post(`${API_BASE}/registrations`, payload);
             setStatus({ msg: res.data.message, type: 'success' });
-            
-            // Wait slightly before closing so user sees success message
-            setTimeout(() => {
-                onRegistrationSuccess();
-            }, 2000);
-
+            setTimeout(() => onRegistrationSuccess(), 2000);
         } catch (err) {
-            setStatus({ 
-                msg: err.response?.data?.message || "Registration failed. Try again.", 
-                type: 'error' 
-            });
+            setStatus({ msg: err.response?.data?.message || "Registration failed.", type: 'error' });
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md px-4">
+        <div className="fixed inset-0 z-[150] flex items-center justify-center bg-black/90 backdrop-blur-xl px-4 py-6 overflow-hidden">
             <motion.div 
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto glass-morphism rounded-[2.5rem] p-8 md:p-10 shadow-2xl border border-white/10"
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                className="relative w-full max-w-2xl flex flex-col bg-[#0a0a0a] rounded-[2.5rem] border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] max-h-full"
             >
-                {/* Header */}
-                <div className="flex justify-between items-start mb-8">
+                {/* --- STICKY HEADER --- */}
+                <div className="flex justify-between items-center p-6 md:p-8 border-b border-white/5 bg-[#0a0a0a] rounded-t-[2.5rem] sticky top-0 z-10">
                     <div>
-                        <p className="text-violet-500 font-mono text-[10px] tracking-[0.3em] uppercase mb-1">Entry Portal</p>
-                        <h2 className="text-3xl font-black italic text-white uppercase tracking-tighter leading-none">
+                        <div className="flex items-center gap-2 mb-1">
+                            <span className="w-2 h-2 rounded-full bg-violet-500 animate-pulse"></span>
+                            <p className="text-violet-500 font-black text-[9px] tracking-[0.3em] uppercase">Secure Registration</p>
+                        </div>
+                        <h2 className="text-2xl md:text-3xl font-black italic text-white uppercase tracking-tight">
                             {event.name}<span className="text-violet-600">.</span>
                         </h2>
                     </div>
-                    <button onClick={onClose} className="p-2 text-gray-500 hover:text-white transition-colors">
-                        <XCircle size={24} />
+                    <button onClick={onClose} className="p-3 bg-white/5 hover:bg-red-500/20 hover:text-red-500 rounded-full transition-all">
+                        <XCircle size={22} />
                     </button>
                 </div>
 
-                {/* Status Message */}
-                <AnimatePresence>
-                    {status.msg && (
-                        <motion.div 
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            className={`flex items-center gap-3 p-4 mb-6 rounded-2xl border ${
-                                status.type === 'success' 
-                                ? 'bg-green-500/10 border-green-500/20 text-green-400' 
-                                : 'bg-red-500/10 border-red-500/20 text-red-400'
-                            }`}
-                        >
-                            {status.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
-                            <p className="text-sm font-bold">{status.msg}</p>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-
-                <form onSubmit={handleSubmit} className="space-y-8">
+                {/* --- SCROLLABLE CONTENT --- */}
+                <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 custom-scrollbar">
                     
-                    {/* SECTION: MAIN PARTICIPANT */}
-                    <div className="space-y-4">
-                        <h4 className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gray-500">
-                            <User size={14} className="text-violet-500" /> 
-                            {isTeamEvent ? "Team Leader Info" : "Participant Info"}
-                        </h4>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <input className="admin-input" name="name" placeholder="Full Name" required onChange={handleChange} />
-                            <input className="admin-input" name="email" type="email" placeholder="Email" required onChange={handleChange} />
-                            <input className="admin-input" name="phone" placeholder="Phone Number" required onChange={handleChange} />
-                            <input className="admin-input" name="college" placeholder="College Name" required onChange={handleChange} />
-                            <input className="admin-input" name="department" placeholder="Branch / Dept" required onChange={handleChange} />
-                            <input className="admin-input" name="year" placeholder="Year (e.g. 3rd Year)" required onChange={handleChange} />
+                    {/* Status Message */}
+                    <AnimatePresence>
+                        {status.msg && (
+                            <motion.div 
+                                initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+                                className={`flex items-center gap-3 p-4 rounded-2xl border ${
+                                    status.type === 'success' 
+                                    ? 'bg-green-500/10 border-green-500/20 text-green-400' 
+                                    : 'bg-red-500/10 border-red-500/20 text-red-400'
+                                }`}
+                            >
+                                {status.type === 'success' ? <CheckCircle size={18} /> : <AlertCircle size={18} />}
+                                <p className="text-xs font-bold uppercase tracking-wider">{status.msg}</p>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    <form id="reg-form" onSubmit={handleSubmit} className="space-y-10">
+                        
+                        {/* SECTION: PRIMARY INFO */}
+                        <div className="space-y-5">
+                            <SectionTitle icon={<User size={14}/>} title={isTeamEvent ? "Lead Info" : "Participant Info"} />
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <InputField label="Full Name" name="name" onChange={handleChange} required />
+                                <InputField label="Email Address" name="email" type="email" onChange={handleChange} required />
+                                <InputField label="WhatsApp Number" name="phone" onChange={handleChange} required />
+                                <InputField label="College / Institution" name="college" onChange={handleChange} required />
+                                <InputField label="Branch" name="department" placeholder="e.g. CSE" onChange={handleChange} required />
+                                <InputField label="Current Year" name="year" placeholder="e.g. 3rd Year" onChange={handleChange} required />
+                            </div>
                         </div>
-                    </div>
 
-                    {/* SECTION: TEAM DETAILS */}
-                    {isTeamEvent && (
-                        <motion.div 
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="space-y-4 p-6 bg-violet-600/5 rounded-3xl border border-violet-500/20"
-                        >
-                            <h4 className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-violet-400">
-                                <Users size={14} /> Team Configuration ({minTotal}-{maxTotal} People)
-                            </h4>
-                            
-                            <input 
-                                className="admin-input border-violet-500/30 focus:border-violet-500 shadow-lg shadow-violet-500/5" 
-                                name="teamName" 
-                                placeholder="Team Name (Required)" 
-                                required 
-                                onChange={handleChange} 
-                            />
+                        {/* SECTION: TEAM CONFIG */}
+                        {isTeamEvent && (
+                            <div className="space-y-5">
+                                <SectionTitle icon={<Users size={14}/>} title={`Team Detail (${minTotal}-${maxTotal} Pax)`} />
+                                <div className="p-1px bg-gradient-to-br from-violet-500/20 to-transparent rounded-3xl">
+                                    <div className="bg-white/[0.02] p-6 rounded-3xl border border-white/5 space-y-6">
+                                        <InputField label="Assigned Team Name" name="teamName" placeholder="Enter a cool name" onChange={handleChange} required highlight />
+                                        
+                                        <div className="space-y-4">
+                                            {formData.teamMembers.map((member, idx) => (
+                                                <motion.div 
+                                                    initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
+                                                    key={idx} className="p-4 bg-white/5 rounded-2xl border border-white/5 relative group"
+                                                >
+                                                    <div className="flex justify-between items-center mb-3">
+                                                        <span className="text-[10px] font-black text-violet-500 uppercase tracking-[0.2em]">Member 0{idx + 2}</span>
+                                                        <button type="button" onClick={() => removeMember(idx)} className="text-gray-600 hover:text-red-500 transition-colors">
+                                                            <XCircle size={14} />
+                                                        </button>
+                                                    </div>
+                                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                        <input className="sub-input" name="name" placeholder="Full Name" required onChange={(e) => handleMemberChange(idx, e)} />
+                                                        <input className="sub-input" name="email" placeholder="Email Address" onChange={(e) => handleMemberChange(idx, e)} />
+                                                    </div>
+                                                </motion.div>
+                                            ))}
 
-                            <div className="space-y-3 mt-4">
-                                {formData.teamMembers.map((member, idx) => (
-                                    <div key={idx} className="relative group p-4 bg-white/5 rounded-2xl border border-white/5">
-                                        <div className="flex justify-between items-center mb-2">
-                                            <span className="text-[10px] font-black text-gray-600 uppercase">Member {idx + 2}</span>
-                                            {formData.teamMembers.length + 1 > minTotal && (
+                                            {formData.teamMembers.length + 1 < maxTotal && (
                                                 <button 
                                                     type="button" 
-                                                    onClick={() => removeMember(idx)}
-                                                    className="text-red-500/50 hover:text-red-500 transition-colors"
+                                                    onClick={addMember}
+                                                    className="w-full py-4 border-2 border-dashed border-white/10 rounded-2xl text-gray-500 text-[10px] font-black uppercase tracking-widest hover:border-violet-500/50 hover:text-violet-400 hover:bg-violet-500/5 transition-all flex items-center justify-center gap-2"
                                                 >
-                                                    <XCircle size={16} />
+                                                    <PlusCircle size={14} /> Add Additional Member
                                                 </button>
                                             )}
                                         </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                            <input 
-                                                className="admin-input py-3" 
-                                                name="name" 
-                                                placeholder="Name" 
-                                                required 
-                                                onChange={(e) => handleMemberChange(idx, e)} 
-                                            />
-                                            <input 
-                                                className="admin-input py-3" 
-                                                name="email" 
-                                                placeholder="Email (Optional)" 
-                                                onChange={(e) => handleMemberChange(idx, e)} 
-                                            />
-                                        </div>
                                     </div>
-                                ))}
+                                </div>
                             </div>
+                        )}
+                    </form>
+                </div>
 
-                            {formData.teamMembers.length + 1 < maxTotal && (
-                                <button 
-                                    type="button" 
-                                    onClick={addMember}
-                                    className="w-full py-4 border-2 border-dashed border-violet-500/20 rounded-2xl text-violet-400 text-[10px] font-black uppercase tracking-widest hover:bg-violet-500/10 hover:border-violet-500/40 transition-all flex items-center justify-center gap-2"
-                                >
-                                    <PlusCircle size={14} /> Add Team Member
-                                </button>
-                            )}
-                        </motion.div>
-                    )}
-
-                    {/* Footer Buttons */}
-                    <div className="pt-4 space-y-3">
+                {/* --- STICKY FOOTER --- */}
+                <div className="p-6 md:p-8 border-t border-white/5 bg-[#0a0a0a] rounded-b-[2.5rem]">
+                    <div className="flex flex-col sm:flex-row gap-4">
                         <button 
+                            form="reg-form"
                             disabled={loading} 
                             type="submit" 
-                            className="admin-btn-primary w-full py-5 text-sm shadow-[0_10px_40px_rgba(124,58,237,0.3)]"
+                            className="flex-[2] py-4 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white font-black uppercase tracking-[0.2em] text-[11px] rounded-2xl transition-all shadow-xl shadow-violet-900/20 active:scale-95 flex items-center justify-center gap-2"
                         >
-                            {loading ? "Establishing Link..." : `Confirm Registration ${event.fee > 0 ? `(₹${event.fee})` : ''}`}
+                            {loading ? <Zap size={14} className="animate-spin" /> : <ShieldCheck size={16} />}
+                            {loading ? "Authenticating..." : `Finalize Registration ${event.fee > 0 ? `(₹${event.fee})` : ''}`}
                         </button>
                         <button 
                             type="button" 
                             onClick={onClose} 
-                            className="w-full text-[10px] font-black text-gray-600 uppercase tracking-[0.2em] hover:text-white transition-colors"
+                            className="flex-1 py-4 bg-white/5 hover:bg-white/10 text-gray-400 font-bold uppercase tracking-widest text-[10px] rounded-2xl transition-all"
                         >
-                            Cancel and Return
+                            Dismiss
                         </button>
                     </div>
-                </form>
+                </div>
 
-                {/* CSS Block */}
                 <style jsx="true">{`
-                    .glass-morphism {
-                        background: rgba(3, 0, 20, 0.9);
-                        backdrop-filter: blur(20px);
-                        -webkit-backdrop-filter: blur(20px);
-                    }
-                    .admin-input {
+                    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+                    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(124, 58, 237, 0.3); border-radius: 10px; }
+                    .p-1px { padding: 1px; }
+                    .sub-input {
                         width: 100%;
-                        background: rgba(255, 255, 255, 0.03);
-                        border: 1px solid rgba(255, 255, 255, 0.08);
-                        border-radius: 1.25rem;
-                        padding: 1rem;
+                        background: rgba(0,0,0,0.2);
+                        border: 1px solid rgba(255,255,255,0.05);
+                        border-radius: 12px;
+                        padding: 0.75rem 1rem;
+                        font-size: 0.75rem;
+                        color: white;
                         outline: none;
-                        font-size: 0.875rem;
-                        color: white;
-                        transition: all 0.3s;
+                        transition: all 0.2s;
                     }
-                    .admin-input:focus {
-                        border-color: #7c3aed;
-                        background: rgba(255, 255, 255, 0.06);
-                        box-shadow: 0 0 20px rgba(124, 58, 237, 0.1);
-                    }
-                    .admin-btn-primary {
-                        background: #7c3aed;
-                        color: white;
-                        border-radius: 1.25rem;
-                        font-weight: 900;
-                        text-transform: uppercase;
-                        letter-spacing: 0.15em;
-                        transition: all 0.3s;
-                    }
-                    .admin-btn-primary:hover {
-                        background: #8b5cf6;
-                        transform: translateY(-2px);
-                    }
-                    .admin-btn-primary:disabled {
-                        opacity: 0.5;
-                        cursor: not-allowed;
-                    }
-                    .registration-form-container::-webkit-scrollbar {
-                        width: 4px;
-                    }
-                    .registration-form-container::-webkit-scrollbar-thumb {
-                        background: #7c3aed;
-                        border-radius: 10px;
-                    }
+                    .sub-input:focus { border-color: #7c3aed; background: rgba(0,0,0,0.4); }
                 `}</style>
             </motion.div>
         </div>
     );
 };
+
+// Internal Helper Components
+const SectionTitle = ({ icon, title }) => (
+    <h4 className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-gray-500">
+        <span className="p-1.5 rounded-lg bg-white/5 text-violet-500">{icon}</span>
+        {title}
+    </h4>
+);
+
+const InputField = ({ label, highlight, ...props }) => (
+    <div className="space-y-1.5">
+        <label className="text-[9px] font-black text-gray-600 uppercase tracking-widest ml-1">{label}</label>
+        <input 
+            {...props}
+            className={`w-full bg-white/[0.03] border ${highlight ? 'border-violet-500/30 bg-violet-500/5' : 'border-white/5'} rounded-2xl px-5 py-4 text-sm text-white placeholder:text-gray-700 outline-none focus:border-violet-500 focus:bg-white/[0.06] transition-all`}
+            placeholder={props.placeholder || `Enter ${label}`}
+        />
+    </div>
+);
 
 export default RegistrationForm;

@@ -14,7 +14,9 @@ import {
     ChevronRight,
     Zap,
     Clock,
-    MapPin
+    MapPin,
+    Upload,
+    LinkIcon
 } from 'lucide-react';
 
 

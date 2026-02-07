@@ -17,7 +17,7 @@ const CSEVibe = () => (
                 transition={{ duration: Math.random() * 5 + 5, repeat: Infinity, ease: "linear" }}
                 className="text-violet-500 font-mono text-xs whitespace-nowrap"
             >
-                {"{ data: '010101', status: 'moving' }"}
+                {"{ System.out.println('Hello RGUKT ONGOLE'); }"}
             </motion.div>
         ))}
     </div>

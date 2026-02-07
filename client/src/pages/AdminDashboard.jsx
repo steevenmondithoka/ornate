@@ -11,7 +11,8 @@ import {
     Mail,
     Phone,
     User,
-    ChevronRight
+    ChevronRight,
+    Zap
 } from 'lucide-react';
 
 

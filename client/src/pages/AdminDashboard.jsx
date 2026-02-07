@@ -548,47 +548,80 @@ export default function AdminDashboard() {
                 <h2 className="text-xl font-bold italic mb-6 text-violet-500 flex items-center gap-2">
                     <Zap size={20} /> Create Event
                 </h2>
-                
                 <form onSubmit={handleEventSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 gap-4">
                         
-                        {/* 1. IMAGE SELECTION */}
-                        <div className="relative group overflow-hidden rounded-2xl border-2 border-dashed border-white/10 bg-white/5 hover:border-violet-500/50 transition-all">
+                        {/* --- IMAGE SELECTION (FILE OR URL) --- */}
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between px-1">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Event Banner</label>
+                                <div className="flex bg-white/5 p-1 rounded-lg border border-white/5">
+                                    <button 
+                                        type="button"
+                                        onClick={() => setImageMode('upload')}
+                                        className={`px-2 py-1 rounded-md text-[9px] font-bold transition-all ${imageMode === 'upload' ? 'bg-violet-600 text-white' : 'text-gray-500'}`}
+                                    >
+                                        UPLOAD
+                                    </button>
+                                    <button 
+                                        type="button"
+                                        onClick={() => setImageMode('url')}
+                                        className={`px-2 py-1 rounded-md text-[9px] font-bold transition-all ${imageMode === 'url' ? 'bg-violet-600 text-white' : 'text-gray-500'}`}
+                                    >
+                                        URL
+                                    </button>
+                                </div>
+                            </div>
+
                             {eventForm.imageUrl ? (
-                                <div className="relative h-32 w-full">
+                                <div className="relative h-32 w-full rounded-2xl overflow-hidden border border-white/10 group">
                                     <img src={eventForm.imageUrl} alt="Preview" className="w-full h-full object-cover" />
                                     <button 
                                         type="button"
-                                        onClick={() => setEventForm({...eventForm, imageUrl: ''})}
-                                        className="absolute top-2 right-2 p-1 bg-red-500 rounded-full text-white"
+                                        onClick={() => setEventForm({ ...eventForm, imageUrl: '' })}
+                                        className="absolute top-2 right-2 p-1.5 bg-red-500 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity"
                                     >
                                         <X size={14} />
                                     </button>
                                 </div>
                             ) : (
-                                <label className="flex flex-col items-center justify-center h-32 w-full cursor-pointer">
-                                    <ImageIcon className="text-gray-500 mb-1" size={24} />
-                                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Select Cover Image</span>
-                                    <input 
-                                        type="file" 
-                                        className="hidden" 
-                                        accept="image/*" 
-                                        onChange={(e) => {
-                                            const file = e.target.files[0];
-                                            if (file) {
-                                                const reader = new FileReader();
-                                                reader.onloadend = () => setEventForm({ ...eventForm, imageUrl: reader.result });
-                                                reader.readAsDataURL(file);
-                                            }
-                                        }} 
-                                    />
-                                </label>
+                                <div className="h-32 w-full">
+                                    {imageMode === 'upload' ? (
+                                        <label className="flex flex-col items-center justify-center h-full w-full rounded-2xl border-2 border-dashed border-white/10 bg-white/5 hover:border-violet-500/40 transition-all cursor-pointer">
+                                            <Upload className="text-gray-500 mb-2" size={20} />
+                                            <p className="text-[9px] font-bold text-gray-500 uppercase tracking-tighter">Choose Image File</p>
+                                            <input 
+                                                type="file" 
+                                                className="hidden" 
+                                                accept="image/*" 
+                                                onChange={(e) => {
+                                                    const file = e.target.files[0];
+                                                    if (file) {
+                                                        const reader = new FileReader();
+                                                        reader.onloadend = () => setEventForm({ ...eventForm, imageUrl: reader.result });
+                                                        reader.readAsDataURL(file);
+                                                    }
+                                                }} 
+                                            />
+                                        </label>
+                                    ) : (
+                                        <div className="flex flex-col items-center justify-center h-full w-full rounded-2xl border border-white/10 bg-white/5 p-4">
+                                            <LinkIcon className="text-gray-500 mb-2" size={20} />
+                                            <input 
+                                                className="admin-input !bg-black/20 text-center" 
+                                                placeholder="Paste Image URL here..." 
+                                                value={eventForm.imageUrl}
+                                                onChange={(e) => setEventForm({ ...eventForm, imageUrl: e.target.value })}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
                             )}
                         </div>
 
-                        {/* 2. BASIC INFO */}
+                        {/* --- BASIC INFO --- */}
                         <input className="admin-input" placeholder="Event Name" value={eventForm.name} onChange={e => setEventForm({ ...eventForm, name: e.target.value })} required />
-                        <input className="admin-input text-xs" placeholder="Short Tagline (e.g. The Ultimate Code Battle)" value={eventForm.tagline} onChange={e => setEventForm({ ...eventForm, tagline: e.target.value })} />
+                        <input className="admin-input text-xs" placeholder="Short Tagline" value={eventForm.tagline} onChange={e => setEventForm({ ...eventForm, tagline: e.target.value })} />
                         
                         <div className="grid grid-cols-2 gap-2">
                             <select className="admin-input text-xs" value={eventForm.date} onChange={e => setEventForm({ ...eventForm, date: e.target.value })}>
@@ -611,12 +644,12 @@ export default function AdminDashboard() {
                             <input className="admin-input" placeholder="Venue" value={eventForm.venue} onChange={e => setEventForm({ ...eventForm, venue: e.target.value })} required />
                         </div>
 
-                        {/* 3. CONTENT & CRITERIA */}
+                        {/* --- CONTENT & CRITERIA --- */}
                         <textarea className="admin-input h-20 text-sm" placeholder="Full Description" value={eventForm.description} onChange={e => setEventForm({ ...eventForm, description: e.target.value })} />
                         <textarea className="admin-input h-20 text-sm" placeholder="Judging Criteria" value={eventForm.judgingCriteria} onChange={e => setEventForm({ ...eventForm, judgingCriteria: e.target.value })} />
                         <textarea className="admin-input h-20 text-sm" placeholder="Rules (comma-separated)" value={eventForm.rules.join(', ')} onChange={e => setEventForm({ ...eventForm, rules: e.target.value.split(',').map(s => s.trim()) })} />
 
-                        {/* 4. PRICING & TEAM */}
+                        {/* --- PRICING & TEAM --- */}
                         <div className="grid grid-cols-2 gap-2">
                             <div className="relative">
                                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs">₹</span>
@@ -625,20 +658,20 @@ export default function AdminDashboard() {
                             <input className="admin-input" placeholder="Team Size" value={eventForm.teamSize} onChange={e => setEventForm({ ...eventForm, teamSize: e.target.value })} />
                         </div>
 
-                        {/* 5. CONTACT INFO */}
+                        {/* --- CONTACT INFO --- */}
                         <div className="grid grid-cols-2 gap-2">
                             <input className="admin-input" placeholder="Contact Person" value={eventForm.contactPerson} onChange={e => setEventForm({ ...eventForm, contactPerson: e.target.value })} />
                             <input className="admin-input" placeholder="Phone Number" value={eventForm.contactNumber} onChange={e => setEventForm({ ...eventForm, contactNumber: e.target.value })} />
                         </div>
                         
-                        {/* 6. STATUS & DEADLINE */}
+                        {/* --- REGISTRATION SETTINGS --- */}
                         <div className="space-y-3 p-3 bg-white/5 rounded-xl border border-white/5">
                             <label className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest cursor-pointer">
                                 <input type="checkbox" className="w-4 h-4 accent-violet-600" checked={eventForm.registrationOpen} onChange={e => setEventForm({ ...eventForm, registrationOpen: e.target.checked })} />
                                 Registration Open
                             </label>
-                            <div className="flex flex-col gap-1">
-                                <span className="text-[9px] text-gray-500 uppercase ml-1">Deadline</span>
+                            <div className="space-y-1">
+                                <span className="text-[9px] text-gray-500 uppercase ml-1">Registration Deadline</span>
                                 <input className="admin-input !bg-black/40" type="date" value={eventForm.registrationDeadline ? eventForm.registrationDeadline.substring(0, 10) : ''} onChange={e => setEventForm({ ...eventForm, registrationDeadline: e.target.value })} />
                             </div>
                         </div>
@@ -657,9 +690,9 @@ export default function AdminDashboard() {
                 <h3 className="text-xs font-black uppercase tracking-[0.3em] text-gray-500">Manage Events ({events.length})</h3>
             </div>
             {events.map(ev => (
-                <div key={ev._id} className={`p-5 glass-morphism rounded-2xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group transition-all ${ev.registrationOpen ? 'border-white/5' : 'border-red-500/20 opacity-80'}`}>
+                <div key={ev._id} className={`p-4 md:p-5 glass-morphism rounded-2xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group transition-all ${ev.registrationOpen ? 'border-white/5' : 'border-red-500/20 opacity-80'}`}>
                     
-                    {/* Thumbnail Preview in List */}
+                    {/* Thumbnail */}
                     <div className="hidden md:block w-24 h-20 rounded-xl overflow-hidden bg-white/5 border border-white/5 flex-shrink-0">
                         {ev.imageUrl ? (
                             <img src={ev.imageUrl} alt="" className="w-full h-full object-cover" />
@@ -682,7 +715,7 @@ export default function AdminDashboard() {
                         
                         <div className="flex flex-wrap gap-x-4 gap-y-1">
                             <p className="text-[10px] text-gray-500 flex items-center gap-1"><Calendar size={12}/> {ev.date}</p>
-                            <p className="text-[10px] text-gray-500 flex items-center gap-1"><Phone size={12}/> {ev.contactNumber || 'No contact'}</p>
+                            <p className="text-[10px] text-gray-500 flex items-center gap-1"><Phone size={12}/> {ev.contactNumber}</p>
                         </div>
                     </div>
 

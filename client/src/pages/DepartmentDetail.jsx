@@ -24,7 +24,7 @@ const CSEVibe = () => (
         <motion.div 
             animate={{ opacity: [0.2, 0.4, 0.2] }}
             transition={{ duration: 4, repeat: Infinity }}
-            className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" 
+            className="absolute inset-0 bg-[url('https://assets.skyfilabs.com/images/blog/best-winter-training-programs-for-computer-science.jpg')]" 
         />
     </div>
 );
@@ -48,7 +48,7 @@ const MechVibe = () => (
         >
             <div className="relative group">
                 <img 
-                    src="https://raw.githubusercontent.com/Arun6305/Ornate-Assets/main/vande_bharat_cutout.png" 
+                    src="https://m.economictimes.com/thumb/msid-125177690,width-1600,height-900,resizemode-4,imgsize-637057/pm-modi-flags-off-four-new-vande-bharat-express-trains-to-boost-regional-connectivity.jpg" 
                     alt="Vande Bharat" 
                     className="h-24 md:h-44 w-auto drop-shadow-[0_20px_50px_rgba(124,58,237,0.5)] blur-[0.5px]"
                     onError={(e) => { e.target.src = 'https://i.imgur.com/G5T833Q.png' }} // Fallback

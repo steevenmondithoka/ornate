@@ -41,7 +41,7 @@ const MechVibe = () => (
         >
             <div className="relative">
                 <img 
-                    src="https://www.financialexpress.com/wp-content/uploads/2022/09/Vande-Bharat-2.png" 
+                    src="https://images.indianexpress.com/2025/08/Vande-Bharat-7.jpg" 
                     alt="Vande Bharat" 
                     className="h-20 md:h-32 w-auto drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
                 />
@@ -59,7 +59,7 @@ const ECEVibe = () => (
         <motion.div 
             animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.4, 0.3] }}
             transition={{ duration: 20, repeat: Infinity }}
-            className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1532667059194-83a128db0a2b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-30 grayscale"
+            className="absolute inset-0 bg-[url('https://lbrce.ac.in/images/ece/banner1.jpg')] bg-cover bg-center opacity-30 grayscale"
         />
         {/* Chandrayaan / Satellite */}
         <motion.div

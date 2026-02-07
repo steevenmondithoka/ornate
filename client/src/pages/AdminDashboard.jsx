@@ -10,7 +10,8 @@ import {
     Building,
     Mail,
     Phone,
-    User
+    User,
+    ChevronRight
 } from 'lucide-react';
 
 

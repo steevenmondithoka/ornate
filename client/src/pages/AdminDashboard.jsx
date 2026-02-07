@@ -30,6 +30,7 @@ export default function AdminDashboard() {
     const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'admin' });
     const [message, setMessage] = useState('');
     const [showEventForm, setShowEventForm] = useState(false);
+    const [showGalleryForm, setShowGalleryForm] = useState(false);
 
     useEffect(() => {
         const info = JSON.parse(localStorage.getItem('adminInfo'));
@@ -774,39 +775,127 @@ export default function AdminDashboard() {
                         </motion.div>
                     )}
                     {/* --- GALLERY TAB --- */}
-                    {activeTab === 'gallery' && (
-                        <motion.div key="gallery" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                            <div className="lg:col-span-1 glass-morphism p-8 rounded-[2.5rem] border border-white/5 h-fit sticky top-40">
-                                <h2 className="text-xl font-bold italic mb-6 text-violet-500">Add Media</h2>
-                                <div className="flex gap-4 mb-6 p-1 bg-white/5 rounded-xl border border-white/5">
-                                    <button onClick={() => setGalleryForm({ ...galleryForm, type: 'photo' })} className={`flex-1 py-2 text-[9px] font-black rounded-lg transition-all ${galleryForm.type === 'photo' ? 'bg-violet-600 text-white' : 'text-gray-500'}`}>PHOTO</button>
-                                    <button onClick={() => setGalleryForm({ ...galleryForm, type: 'video' })} className={`flex-1 py-2 text-[9px] font-black rounded-lg transition-all ${galleryForm.type === 'video' ? 'bg-violet-600 text-white' : 'text-gray-500'}`}>VIDEO</button>
-                                </div>
-                                <form onSubmit={handleGallerySubmit} className="space-y-4">
-                                    <input type="number" className="admin-input" placeholder="Year" value={galleryForm.year} onChange={e => setGalleryForm({ ...galleryForm, year: e.target.value })} required />
-                                    {galleryForm.type === 'photo' ? (
-                                        <input type="file" className="admin-input pt-3" onChange={e => setSelectedFile(e.target.files[0])} required />
-                                    ) : (
-                                        <input className="admin-input" placeholder="YouTube URL" value={galleryForm.youtubeUrl} onChange={e => setGalleryForm({ ...galleryForm, youtubeUrl: e.target.value })} required />
-                                    )}
-                                    <input className="admin-input" placeholder="Caption" value={galleryForm.caption} onChange={e => setGalleryForm({ ...galleryForm, caption: e.target.value })} />
-                                    <button disabled={loading} className="admin-btn-primary w-full">{loading ? "Processing..." : "Commit to Archives"}</button>
-                                </form>
-                            </div>
-                            <div className="lg:col-span-2 grid grid-cols-2 md:grid-cols-3 gap-4 h-fit">
-                                {galleryItems.map((item) => (
-                                    <div key={item._id} className="relative aspect-square glass-morphism rounded-2xl overflow-hidden group border border-white/5">
-                                        {item.type === 'photo' ? <img src={item.url} className="w-full h-full object-cover opacity-60" alt="" /> : <div className="w-full h-full flex items-center justify-center bg-violet-900/20"><Video className="text-violet-500" /></div>}
-                                        <div className="absolute top-2 left-2 px-2 py-1 bg-black/50 backdrop-blur-md rounded text-[8px] font-bold text-violet-400">{item.year}</div>
-                                        <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <button onClick={() => deleteGalleryItem(item._id)} className="p-3 bg-red-600/20 text-red-500 rounded-full hover:bg-red-600 hover:text-white transition-all"><Trash2 size={16} /></button>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </motion.div>
-                    )}
+                   {activeTab === 'gallery' && (
+    <motion.div 
+        key="gallery" 
+        initial={{ opacity: 0, y: 10 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        exit={{ opacity: 0 }} 
+        className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12"
+    >
+        {/* MEDIA FORM CONTAINER */}
+        <div className="lg:col-span-1">
+            {/* Mobile Toggle Button */}
+            <button 
+                onClick={() => setShowGalleryForm(!showGalleryForm)}
+                className="lg:hidden w-full mb-4 p-4 bg-violet-600 rounded-2xl font-bold flex items-center justify-between shadow-lg shadow-violet-900/20"
+            >
+                <span className="flex items-center gap-2 italic uppercase tracking-wider text-sm">
+                    <Plus size={18} /> {showGalleryForm ? "Hide Form" : "Add New Media"}
+                </span>
+                <ChevronRight className={`transition-transform ${showGalleryForm ? 'rotate-90' : ''}`} size={20} />
+            </button>
 
+            <div className={`
+                ${showGalleryForm ? 'block' : 'hidden'} lg:block 
+                glass-morphism p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] 
+                border border-white/5 
+                lg:sticky lg:top-32 h-auto lg:h-fit z-20
+            `}>
+                <h2 className="text-xl font-bold italic mb-6 text-violet-500 flex items-center gap-2">
+                    <Image size={20} /> Add Media
+                </h2>
+                
+                {/* Type Selector Tabs */}
+                <div className="flex gap-2 mb-6 p-1.5 bg-black/40 rounded-2xl border border-white/5">
+                    <button 
+                        onClick={() => setGalleryForm({ ...galleryForm, type: 'photo' })} 
+                        className={`flex-1 py-3 text-[10px] font-black rounded-xl transition-all flex items-center justify-center gap-2 ${galleryForm.type === 'photo' ? 'bg-violet-600 text-white shadow-lg shadow-violet-600/20' : 'text-gray-500 hover:text-gray-300'}`}
+                    >
+                        <Image size={14} /> PHOTO
+                    </button>
+                    <button 
+                        onClick={() => setGalleryForm({ ...galleryForm, type: 'video' })} 
+                        className={`flex-1 py-3 text-[10px] font-black rounded-xl transition-all flex items-center justify-center gap-2 ${galleryForm.type === 'video' ? 'bg-violet-600 text-white shadow-lg shadow-violet-600/20' : 'text-gray-500 hover:text-gray-300'}`}
+                    >
+                        <Video size={14} /> VIDEO
+                    </button>
+                </div>
+
+                <form onSubmit={handleGallerySubmit} className="space-y-4">
+                    <div className="space-y-1">
+                        <label className="text-[10px] font-bold text-gray-500 uppercase ml-2 tracking-widest">Year of Media</label>
+                        <input type="number" className="admin-input" placeholder="e.g. 2024" value={galleryForm.year} onChange={e => setGalleryForm({ ...galleryForm, year: e.target.value })} required />
+                    </div>
+
+                    <div className="space-y-1">
+                        <label className="text-[10px] font-bold text-gray-500 uppercase ml-2 tracking-widest">
+                            {galleryForm.type === 'photo' ? 'Select File' : 'Source Link'}
+                        </label>
+                        {galleryForm.type === 'photo' ? (
+                            <div className="relative group">
+                                <input type="file" className="admin-input pt-3 cursor-pointer opacity-0 absolute inset-0 z-10" onChange={e => setSelectedFile(e.target.files[0])} required />
+                                <div className="admin-input flex items-center justify-center gap-2 border-dashed border-white/20 text-gray-400 group-hover:border-violet-500 transition-colors">
+                                    <Plus size={16} /> {selectedFile ? selectedFile.name.substring(0, 15) + '...' : 'Choose Photo'}
+                                </div>
+                            </div>
+                        ) : (
+                            <input className="admin-input" placeholder="Paste YouTube URL" value={galleryForm.youtubeUrl} onChange={e => setGalleryForm({ ...galleryForm, youtubeUrl: e.target.value })} required />
+                        )}
+                    </div>
+
+                    <div className="space-y-1">
+                        <label className="text-[10px] font-bold text-gray-500 uppercase ml-2 tracking-widest">Caption</label>
+                        <input className="admin-input" placeholder="What is this about?" value={galleryForm.caption} onChange={e => setGalleryForm({ ...galleryForm, caption: e.target.value })} />
+                    </div>
+
+                    <button disabled={loading} className="admin-btn-primary w-full py-4 mt-4 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-xl">
+                        {loading ? "Syncing Archives..." : "Commit to Archives"}
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {/* MEDIA DISPLAY GRID */}
+        <div className="lg:col-span-2 space-y-4">
+            <div className="flex items-center justify-between mb-4 px-2">
+                <h3 className="text-xs font-black uppercase tracking-[0.3em] text-gray-500">Archive Items ({galleryItems.length})</h3>
+            </div>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {galleryItems.map((item) => (
+                    <div key={item._id} className="relative aspect-square glass-morphism rounded-2xl md:rounded-[2rem] overflow-hidden group border border-white/5">
+                        {item.type === 'photo' ? (
+                            <img src={item.url} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" alt="" />
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center bg-violet-600/10 group-hover:bg-violet-600/20 transition-colors">
+                                <div className="p-4 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-violet-500 group-hover:scale-110 transition-transform">
+                                    <Video size={24} fill="currentColor" />
+                                </div>
+                            </div>
+                        )}
+                        
+                        {/* Year Badge */}
+                        <div className="absolute top-3 left-3 px-3 py-1 bg-black/60 backdrop-blur-xl border border-white/10 rounded-full text-[9px] font-black text-violet-400">
+                            {item.year}
+                        </div>
+
+                        {/* Delete Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-4">
+                            <p className="text-[10px] text-white font-medium mb-4 line-clamp-2">{item.caption || "No caption provided"}</p>
+                            <button 
+                                onClick={() => deleteGalleryItem(item._id)} 
+                                className="w-full py-2.5 bg-red-500/10 text-red-500 border border-red-500/20 rounded-xl hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-tighter"
+                            >
+                                <Trash2 size={14} /> Remove Item
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </motion.div>
+)}
                     {/* --- UPDATES TICKER TAB --- */}
                     {activeTab === 'updates' && (
                         <motion.div key="updates" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="grid grid-cols-1 lg:grid-cols-3 gap-12">

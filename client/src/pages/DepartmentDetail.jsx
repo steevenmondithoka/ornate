@@ -5,141 +5,159 @@ import axios from 'axios';
 import { ArrowLeft, MapPin, Clock, Calendar, AlertCircle, Train, Rocket, Cpu, Zap, HardHat, Code, ChevronRight } from 'lucide-react';
 import { formatDate } from '../utils/formatDate';
 
-// --- HIGH IMPACT VIBE COMPONENTS ---
+// --- ADVANCED IMMERSIVE SCENERY ---
 
 const CSEVibe = () => (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
-        {[...Array(15)].map((_, i) => (
-            <motion.div
-                key={i}
-                initial={{ y: -500, x: `${Math.random() * 100}%` }}
-                animate={{ y: 1000 }}
-                transition={{ duration: Math.random() * 3 + 2, repeat: Infinity, ease: "linear", delay: Math.random() * 2 }}
-                className="text-violet-500/60 font-mono text-[10px] md:text-sm whitespace-nowrap"
-                style={{ writingMode: 'vertical-rl' }}
-            >
-                {Array(20).fill(0).map(() => Math.floor(Math.random() * 2)).join('')}
-                SYSTEM.EXECUTE(ORANTE_2026);
-                DEPLOY_BLOCKCHAIN_V3;
-            </motion.div>
-        ))}
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-violet-500/10 via-transparent to-transparent" />
+        <div className="grid grid-cols-12 gap-2 opacity-20 h-full w-full">
+            {[...Array(48)].map((_, i) => (
+                <motion.div
+                    key={i}
+                    initial={{ opacity: 0.1 }}
+                    animate={{ opacity: [0.1, 0.5, 0.1], y: [0, -20, 0] }}
+                    transition={{ duration: Math.random() * 3 + 2, repeat: Infinity }}
+                    className="h-full w-px bg-gradient-to-b from-transparent via-violet-500 to-transparent"
+                />
+            ))}
+        </div>
+        <motion.div 
+            animate={{ opacity: [0.2, 0.4, 0.2] }}
+            transition={{ duration: 4, repeat: Infinity }}
+            className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" 
+        />
     </div>
 );
 
 const MechVibe = () => (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Realistic Rail Track */}
-        <div className="absolute bottom-[15%] w-full h-[2px] bg-gradient-to-r from-transparent via-gray-600 to-transparent shadow-[0_0_15px_rgba(255,255,255,0.2)]" />
-        <div className="absolute bottom-[14%] w-full h-[1px] bg-white/10" />
+        {/* 3D Perspective Track */}
+        <div className="absolute bottom-0 w-full h-[40vh] bg-[#050508]" style={{ perspective: '1000px' }}>
+            <motion.div 
+                initial={{ rotateX: 60, y: 0 }}
+                className="w-full h-full border-t-2 border-white/5 bg-[linear-gradient(90deg,transparent_49%,rgba(255,255,255,0.05)_50%,transparent_51%)] bg-[length:100px_100px]"
+            />
+        </div>
         
-        {/* Vande Bharat Train */}
+        {/* Vande Bharat - High Fidelity Cutout */}
         <motion.div
-            initial={{ x: "-120%" }}
-            animate={{ x: "120%" }}
-            transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-            className="absolute bottom-[14.5%] flex items-end"
+            initial={{ x: "-150%", scale: 0.8 }}
+            animate={{ x: "150%", scale: 1 }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeIn" }}
+            className="absolute bottom-[10%] z-20"
         >
-            <div className="relative">
+            <div className="relative group">
                 <img 
-                    src="https://images.indianexpress.com/2025/08/Vande-Bharat-7.jpg" 
+                    src="https://raw.githubusercontent.com/Arun6305/Ornate-Assets/main/vande_bharat_cutout.png" 
                     alt="Vande Bharat" 
-                    className="h-20 md:h-32 w-auto drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+                    className="h-24 md:h-44 w-auto drop-shadow-[0_20px_50px_rgba(124,58,237,0.5)] blur-[0.5px]"
+                    onError={(e) => { e.target.src = 'https://i.imgur.com/G5T833Q.png' }} // Fallback
                 />
-                {/* Speed Lines */}
-                <div className="absolute -left-20 top-1/2 w-40 h-[2px] bg-gradient-to-r from-transparent to-white/40" />
+                <div className="absolute -bottom-2 left-0 w-full h-4 bg-violet-600/20 blur-xl animate-pulse" />
             </div>
         </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#030014] via-transparent to-transparent" />
+
+        {/* Speed Blur Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#030014] via-transparent to-[#030014] z-10" />
     </div>
 );
 
 const ECEVibe = () => (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Moon Surface Background */}
-        <motion.div 
-            animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.4, 0.3] }}
-            transition={{ duration: 20, repeat: Infinity }}
-            className="absolute inset-0 bg-[url('https://lnmiit.ac.in/wp-content/uploads/2023/07/image-8.png')] bg-cover bg-center opacity-30 grayscale"
-        />
-        {/* Chandrayaan / Satellite */}
+        {/* Earth Horizon */}
+        <div className="absolute -bottom-[50vh] left-1/2 -translate-x-1/2 w-[200vw] h-[100vh] bg-blue-900/20 rounded-[100%] blur-[100px]" />
+        
+        {/* Orbiting Satellite */}
         <motion.div
-            initial={{ x: -200, y: 400, rotate: 0 }}
             animate={{ 
-                x: ["0vw", "100vw"], 
-                y: [400, 100, 400],
-                rotate: [0, 20, 0]
+                rotate: 360,
             }}
-            transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute z-0"
+            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+            className="absolute top-1/2 left-1/2 w-[80vw] h-[80vw] -translate-x-1/2 -translate-y-1/2"
         >
-            <div className="relative">
-                <Rocket size={60} className="text-white/60 -rotate-45" />
-                <motion.div 
-                    animate={{ opacity: [0, 1, 0] }}
-                    transition={{ duration: 1, repeat: Infinity }}
-                    className="absolute -bottom-4 -left-4 w-12 h-12 bg-orange-500/40 rounded-full blur-xl"
-                />
-            </div>
-            <p className="text-[9px] text-white/40 tracking-[0.5em] mt-4 uppercase font-black">Chandrayaan-3 Mission</p>
+            <motion.div 
+                animate={{ rotate: -360 }}
+                transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+                className="absolute top-0 left-1/2 -translate-x-1/2"
+            >
+                <div className="relative">
+                    <Rocket className="text-white/60 rotate-45" size={40} />
+                    <div className="absolute inset-0 bg-blue-500/50 blur-2xl rounded-full scale-150" />
+                </div>
+            </motion.div>
         </motion.div>
-    </div>
-);
 
-const EEEVibe = () => (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
-        <svg className="w-full h-full">
-            <motion.path
-                d="M 0 100 Q 250 50 500 100 T 1000 100 T 1500 100"
-                fill="none"
-                stroke="url(#sparkGradient)"
-                strokeWidth="2"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: [0, 1, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        {/* Star Field */}
+        {[...Array(50)].map((_, i) => (
+            <motion.div
+                key={i}
+                initial={{ opacity: Math.random() }}
+                animate={{ opacity: [0.2, 0.8, 0.2] }}
+                transition={{ duration: Math.random() * 3 + 2, repeat: Infinity }}
+                className="absolute w-px h-px bg-white rounded-full"
+                style={{ top: `${Math.random() * 100}%`, left: `${Math.random() * 100}%` }}
             />
-            <defs>
-                <linearGradient id="sparkGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0" />
-                    <stop offset="50%" stopColor="#06b6d4" stopOpacity="1" />
-                    <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
-                </linearGradient>
-            </defs>
-        </svg>
-        {/* Pulsing Energy Coils */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-500/5 rounded-full blur-[120px] animate-pulse" />
+        ))}
     </div>
 );
 
 const CivilVibe = () => (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop')] bg-cover opacity-10 grayscale" />
-        {/* Animated Blueprints */}
-        <svg className="absolute inset-0 w-full h-full opacity-30">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop')] bg-cover opacity-[0.03] grayscale" />
+        
+        {/* Modern wireframe lines */}
+        <svg className="absolute inset-0 w-full h-full">
+            <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+            
             <motion.path
-                d="M 100 100 L 400 100 L 400 400 L 100 400 Z M 100 250 L 400 250 M 250 100 L 250 400"
+                d="M 0 800 L 400 400 L 800 600 L 1200 200 L 1600 500"
                 fill="none"
-                stroke="white"
-                strokeWidth="1"
+                stroke="url(#civilGradient)"
+                strokeWidth="2"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
-                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
             />
-            <motion.circle 
-                cx="250" cy="250" r="100" 
-                fill="none" stroke="white" strokeWidth="0.5" 
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 5, repeat: Infinity }}
-            />
+            <defs>
+                <linearGradient id="civilGradient" x1="0" y1="0" x2="100%" y2="0">
+                    <stop offset="0%" stopColor="transparent" />
+                    <stop offset="50%" stopColor="rgba(139, 92, 246, 0.3)" />
+                    <stop offset="100%" stopColor="transparent" />
+                </linearGradient>
+            </defs>
         </svg>
+    </div>
+);
+
+const EEEVibe = () => (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_#0e1b35_0%,_#030014_100%)]" />
+        {[...Array(3)].map((_, i) => (
+            <motion.div
+                key={i}
+                animate={{ 
+                    rotate: [0, 360],
+                    scale: [1, 1.2, 1],
+                }}
+                transition={{ duration: 20 + i * 5, repeat: Infinity, ease: "linear" }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-cyan-500/10 rounded-full"
+            />
+        ))}
+        <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-[1px] h-full bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent blur-sm" />
+            <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent blur-sm" />
+        </div>
     </div>
 );
 
 const hodMetadata = {
     cse: { fullName: "Computer Science", vibe: <CSEVibe />, icon: <Code /> },
-    mech: { fullName: "Mechanical Engineering", vibe: <MechVibe />, icon: <Train /> },
-    ece: { fullName: "Electronics & Communication", vibe: <ECEVibe />, icon: <Rocket /> },
-    eee: { fullName: "Electrical & Electronics", vibe: <EEEVibe />, icon: <Zap /> },
+    mech: { fullName: "Mechanical Engg", vibe: <MechVibe />, icon: <Train /> },
+    ece: { fullName: "Electronics & Comm", vibe: <ECEVibe />, icon: <Rocket /> },
+    eee: { fullName: "Electrical Engg", vibe: <EEEVibe />, icon: <Zap /> },
     civil: { fullName: "Civil Engineering", vibe: <CivilVibe />, icon: <HardHat /> },
     all: { fullName: "General Arena", vibe: <CSEVibe />, icon: <Zap /> }
 };
@@ -158,16 +176,12 @@ export default function DepartmentDetail() {
                 const res = await axios.get(`https://ornate-evkf.onrender.com/api/events`);
                 const filtered = res.data.filter(ev => ev.dept === id || ev.dept === 'all');
                 setEvents(filtered);
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
+            } catch (err) { console.error(err); } 
+            finally { setLoading(false); }
         };
         fetchDeptEvents();
     }, [id]);
 
-    // Spotify-style chunking
     const eventRows = useMemo(() => {
         const chunks = [];
         for (let i = 0; i < events.length; i += 10) {
@@ -177,7 +191,7 @@ export default function DepartmentDetail() {
     }, [events]);
 
     return (
-        <div className="relative pt-32 pb-20 bg-[#030014] min-h-screen overflow-hidden">
+        <div className="relative pt-24 md:pt-32 pb-20 bg-[#030014] min-h-screen overflow-hidden">
             <style>{`
                 .no-scrollbar::-webkit-scrollbar { display: none; }
                 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -185,94 +199,103 @@ export default function DepartmentDetail() {
             
             {/* Background Layer */}
             <AnimatePresence mode="wait">
-                <motion.div 
-                    key={id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                >
+                <motion.div key={id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                     {info.vibe}
                 </motion.div>
             </AnimatePresence>
 
             <div className="relative z-10 px-4 md:px-10 max-w-full mx-auto">
                 <Link to="/" className="flex items-center gap-2 text-violet-500 font-bold uppercase text-[10px] tracking-[0.4em] mb-12 hover:gap-4 transition-all w-fit group">
-                    <ArrowLeft size={16} /> Back to Arena
+                    <ArrowLeft size={16} /> Back to Hub
                 </Link>
 
-                {/* Header */}
-                <motion.div 
-                    initial={{ opacity: 0, y: 30 }} 
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mb-24 px-2"
-                >
-                    <div className="flex items-center gap-4 mb-6">
-                        <div className="p-4 bg-violet-600/20 rounded-3xl text-violet-500 border border-violet-500/20 backdrop-blur-xl">
+                {/* Main Header */}
+                <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="mb-16 md:mb-32">
+                    <div className="flex items-center gap-3 md:gap-6 mb-6">
+                        <div className="p-4 md:p-6 bg-violet-600/10 rounded-[2rem] text-violet-500 border border-violet-500/20 backdrop-blur-3xl shadow-2xl">
                             {info.icon}
                         </div>
-                        <div className="h-px w-20 bg-violet-500/30" />
-                        <p className="text-violet-500 font-mono tracking-[0.5em] text-[10px] uppercase">Department Arena</p>
+                        <div className="space-y-1">
+                            <p className="text-violet-500 font-mono tracking-[0.5em] text-[9px] md:text-[11px] uppercase">Official Arena</p>
+                            <h2 className="text-white/40 font-black text-[10px] md:text-xs uppercase tracking-[0.3em]">RGUKT Ongole</h2>
+                        </div>
                     </div>
-                    <h1 className="text-5xl md:text-9xl font-medium tracking-tighter italic text-white uppercase leading-[0.85]">
+                    <h1 className="text-5xl md:text-9xl font-medium tracking-tighter italic text-white uppercase leading-[0.85] drop-shadow-2xl">
                         {info.fullName}<span className="text-violet-600">.</span>
                     </h1>
                 </motion.div>
 
-                {/* Spotify Rows */}
+                {/* Spotify-Style Horizontal Rows */}
                 {loading ? (
                     <div className="flex justify-center py-40">
                         <div className="w-12 h-12 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
                     </div>
                 ) : (
-                    <div className="space-y-32">
+                    <div className="space-y-24 md:space-y-40">
                         {eventRows.length > 0 ? (
                             eventRows.map((row, rowIndex) => (
                                 <div key={rowIndex} className="relative group/row">
-                                    <div className="flex items-center justify-between mb-8 px-2">
-                                        <h3 className="text-white/30 font-black text-[10px] uppercase tracking-[0.5em]">
-                                            {info.fullName} Collection — 0{rowIndex + 1}
-                                        </h3>
-                                        <div className="flex items-center gap-2 text-gray-600 text-[9px] font-bold uppercase tracking-widest">
+                                    <div className="flex items-center justify-between mb-8 md:mb-12 px-2">
+                                        <div className="flex items-center gap-4">
+                                            <span className="text-violet-500 font-mono font-bold">0{rowIndex + 1}</span>
+                                            <h3 className="text-white font-bold text-xs md:text-sm uppercase tracking-[0.3em]">
+                                                {info.fullName} Collection
+                                            </h3>
+                                        </div>
+                                        <div className="flex items-center gap-2 text-gray-600 text-[9px] font-bold uppercase tracking-widest bg-white/5 px-4 py-2 rounded-full border border-white/5">
                                             Swipe <ChevronRight size={14} className="text-violet-500" />
                                         </div>
                                     </div>
 
-                                    <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 md:gap-10 pb-12 no-scrollbar px-2">
+                                    {/* Horizontal Scrolling Area */}
+                                    <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 md:gap-12 pb-12 no-scrollbar px-2">
                                         {row.map((event) => (
-                                            <div key={event._id} className="min-w-[85vw] md:min-w-[500px] snap-start">
+                                            <div key={event._id} className="min-w-[85vw] md:min-w-[550px] snap-start">
                                                 <Link to={`/event/${event._id}`}>
                                                     <motion.div
-                                                        whileHover={{ y: -10 }}
-                                                        className="group relative h-full p-px rounded-[3rem] md:rounded-[5rem] overflow-hidden bg-white/10 hover:bg-violet-600/30 transition-all duration-700 shadow-2xl"
+                                                        whileHover={{ y: -15, scale: 1.02 }}
+                                                        transition={{ type: "spring", stiffness: 300 }}
+                                                        className="group relative h-full p-px rounded-[3rem] md:rounded-[5rem] overflow-hidden bg-white/5 hover:bg-violet-600/30 transition-all duration-700 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]"
                                                     >
-                                                        <div className="relative h-full w-full bg-[#050508]/90 backdrop-blur-3xl rounded-[3rem] md:rounded-[5rem] p-10 md:p-14 z-10 flex flex-col">
+                                                        {/* High-End Glassmorphism Card */}
+                                                        <div className="relative h-full w-full bg-[#08080c]/80 backdrop-blur-[80px] rounded-[3rem] md:rounded-[5rem] p-10 md:p-16 z-10 flex flex-col border border-white/5">
+                                                            
                                                             <div className="flex justify-between items-center mb-12">
-                                                                <div className="flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-full">
-                                                                    <Calendar size={12} className="text-violet-500" />
+                                                                <div className="flex items-center gap-3 px-5 py-2.5 bg-white/5 border border-white/10 rounded-full">
+                                                                    <Calendar size={14} className="text-violet-500" />
                                                                     <span className="text-[10px] text-white font-black uppercase tracking-widest">{formatDate(event.date)}</span>
                                                                 </div>
-                                                                <div className="h-2 w-2 rounded-full bg-violet-500 animate-pulse" />
+                                                                <div className="flex flex-col items-end">
+                                                                    <span className="text-[10px] font-black text-violet-500 uppercase">Live</span>
+                                                                    <div className="h-1.5 w-1.5 rounded-full bg-violet-500 animate-ping" />
+                                                                </div>
                                                             </div>
 
-                                                            <div className="mb-8">
-                                                                <p className="text-violet-500 font-bold text-[11px] tracking-[0.4em] uppercase mb-4 opacity-60">Featured Event</p>
-                                                                <h3 className="text-3xl md:text-5xl font-medium italic text-white leading-[1.1] group-hover:text-violet-400 transition-colors">
+                                                            <div className="mb-10">
+                                                                <p className="text-violet-400 font-bold text-[11px] tracking-[0.4em] uppercase mb-4">Department Featured</p>
+                                                                <h3 className="text-4xl md:text-6xl font-medium italic text-white leading-[1] group-hover:text-violet-400 transition-colors">
                                                                     {event.name}
                                                                 </h3>
                                                             </div>
 
-                                                            <p className="text-gray-500 text-sm md:text-base italic leading-relaxed mb-12 line-clamp-3">
-                                                                {event.description || "The convergence of innovation and culture..."}
+                                                            <p className="text-gray-400 text-sm md:text-lg font-light italic leading-relaxed mb-14 line-clamp-3">
+                                                                {event.description || "An immersive experience of engineering excellence and cultural heritage..."}
                                                             </p>
 
-                                                            <div className="mt-auto flex flex-wrap gap-4">
-                                                                <div className="flex items-center gap-3 px-5 py-3 bg-white/5 rounded-2xl border border-white/5">
+                                                            {/* Card Footer */}
+                                                            <div className="mt-auto flex flex-wrap items-center gap-4">
+                                                                <div className="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/5 backdrop-blur-md">
                                                                     <Clock size={16} className="text-violet-400" />
-                                                                    <span className="text-[12px] text-gray-300 font-bold uppercase">{event.time}</span>
+                                                                    <span className="text-[13px] text-gray-300 font-bold uppercase">{event.time}</span>
                                                                 </div>
-                                                                <div className="flex items-center gap-3 px-5 py-3 bg-white/5 rounded-2xl border border-white/5 max-w-[200px]">
+                                                                <div className="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/5 backdrop-blur-md">
                                                                     <MapPin size={16} className="text-violet-400" />
-                                                                    <span className="text-[11px] text-gray-300 font-bold uppercase truncate">{event.venue}</span>
+                                                                    <span className="text-[11px] text-gray-300 font-bold uppercase truncate max-w-[150px]">{event.venue}</span>
+                                                                </div>
+                                                                <div className="ml-auto group-hover:translate-x-2 transition-transform hidden md:block">
+                                                                    <div className="w-12 h-12 rounded-full border border-violet-500/50 flex items-center justify-center text-violet-500">
+                                                                        <ChevronRight />
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -284,9 +307,9 @@ export default function DepartmentDetail() {
                                 </div>
                             ))
                         ) : (
-                            <div className="text-center py-40 border-2 border-dashed border-white/5 rounded-[4rem]">
-                                <AlertCircle className="text-gray-800 mx-auto mb-6" size={60} />
-                                <p className="text-gray-600 font-mono text-xs uppercase tracking-[0.5em]">Zero Events Published</p>
+                            <div className="text-center py-40 border border-white/5 bg-white/[0.01] rounded-[4rem] backdrop-blur-md">
+                                <AlertCircle className="text-gray-800 mx-auto mb-6" size={64} />
+                                <p className="text-gray-500 font-mono text-sm uppercase tracking-[0.5em]">Arena Currently Empty</p>
                             </div>
                         )}
                     </div>

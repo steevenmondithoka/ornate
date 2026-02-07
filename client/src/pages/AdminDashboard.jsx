@@ -31,6 +31,7 @@ export default function AdminDashboard() {
     const [message, setMessage] = useState('');
     const [showEventForm, setShowEventForm] = useState(false);
     const [showGalleryForm, setShowGalleryForm] = useState(false);
+    const [imageMode, setImageMode] = useState('upload');
 
     useEffect(() => {
         const info = JSON.parse(localStorage.getItem('adminInfo'));

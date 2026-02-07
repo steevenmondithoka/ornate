@@ -68,10 +68,10 @@ export default function StallRegister() {
                                 <Sparkles size={12} /> Live Registration
                             </div>
                             <h2 className="text-4xl lg:text-5xl font-black italic uppercase tracking-tighter leading-[0.9]">
-                                Secure Your <br /> <span className="text-violet-500">Workspace.</span>
+                                Register For <br /> <span className="text-violet-500">Stall Auction.</span>
                             </h2>
                             <p className="text-zinc-400 text-sm max-w-xs font-medium leading-relaxed">
-                                Join the Ornate ecosystem. Showcase your brand to 10k+ creative minds.
+                                Join the Ornate ecosystem for Auction 2026.
                             </p>
 
                             <div className="hidden lg:grid gap-3 pt-6">

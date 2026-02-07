@@ -25,6 +25,7 @@ export default function AdminDashboard() {
     const [adminInfo, setAdminInfo] = useState(null);
     const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'admin' });
     const [message, setMessage] = useState('');
+    const [showEventForm, setShowEventForm] = useState(false);
 
     useEffect(() => {
         const info = JSON.parse(localStorage.getItem('adminInfo'));
@@ -514,83 +515,127 @@ export default function AdminDashboard() {
                 <AnimatePresence mode="wait">
 
                     {/* --- EVENTS TAB --- */}
-                    {activeTab === 'events' && (
-                        <motion.div key="events" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                            {/* Form */}
-                            <div className="lg:col-span-1 glass-morphism p-8 rounded-[2.5rem] border border-white/5 h-fit sticky top-40">
-                                <h2 className="text-xl font-bold italic mb-6 text-violet-500">Create Event</h2>
-                                <form onSubmit={handleEventSubmit} className="space-y-4">
-                                    <input className="admin-input" placeholder="Event Name" value={eventForm.name} onChange={e => setEventForm({ ...eventForm, name: e.target.value })} required />
-                                    <select className="admin-input" value={eventForm.date} onChange={e => setEventForm({ ...eventForm, date: e.target.value })}>
-                                        <option value="2026-03-28">March 28 (Day 1)</option>
-                                        <option value="2026-03-29">March 29 (Day 2)</option>
-                                        <option value="2026-03-30">March 30 (Day 3)</option>
-                                    </select>
-                                    <select className="admin-input" value={eventForm.dept} onChange={e => setEventForm({ ...eventForm, dept: e.target.value })}>
-                                        <option value="all">General / All Departments</option>
-                                        <option value="cse">CSE</option>
-                                        <option value="mech">Mechanical</option>
-                                        <option value="ece">ECE</option>
-                                        <option value="eee">EEE</option>
-                                        <option value="civil">Civil</option>
-                                    </select>
-                                    <input className="admin-input" placeholder="Time (e.g. 10:30 AM)" value={eventForm.time} onChange={e => setEventForm({ ...eventForm, time: e.target.value })} required />
-                                    <input className="admin-input" placeholder="Venue" value={eventForm.venue} onChange={e => setEventForm({ ...eventForm, venue: e.target.value })} required />
-                                    <textarea className="admin-input h-24" placeholder="Description" value={eventForm.description} onChange={e => setEventForm({ ...eventForm, description: e.target.value })} />
-                                    <input className="admin-input" placeholder="Tagline (Optional)" value={eventForm.tagline} onChange={e => setEventForm({ ...eventForm, tagline: e.target.value })} />
-                                    <input className="admin-input" placeholder="Image URL (Optional)" value={eventForm.imageUrl} onChange={e => setEventForm({ ...eventForm, imageUrl: e.target.value })} />
-                                    <textarea className="admin-input h-20" placeholder="Rules (comma-separated)" value={eventForm.rules.join(', ')} onChange={e => setEventForm({ ...eventForm, rules: e.target.value.split(',').map(s => s.trim()) })} />
-                                    <textarea className="admin-input h-20" placeholder="Judging Criteria (Optional)" value={eventForm.judgingCriteria} onChange={e => setEventForm({ ...eventForm, judgingCriteria: e.target.value })} />
-                                    <input className="admin-input" type="number" placeholder="Fee (e.g., 100)" value={eventForm.fee} onChange={e => setEventForm({ ...eventForm, fee: parseFloat(e.target.value) || 0 })} />
-                                    <input className="admin-input" placeholder="Team Size (e.g., Individual, 2-4 members)" value={eventForm.teamSize} onChange={e => setEventForm({ ...eventForm, teamSize: e.target.value })} />
-                                    <input className="admin-input" placeholder="Contact Person" value={eventForm.contactPerson} onChange={e => setEventForm({ ...eventForm, contactPerson: e.target.value })} />
-                                    <input className="admin-input" placeholder="Contact Number" value={eventForm.contactNumber} onChange={e => setEventForm({ ...eventForm, contactNumber: e.target.value })} />
-                                    <label className="flex items-center gap-2 text-sm text-gray-300">
-                                        <input type="checkbox" className="w-4 h-4" checked={eventForm.registrationOpen} onChange={e => setEventForm({ ...eventForm, registrationOpen: e.target.checked })} />
-                                        Registration Open
-                                    </label>
-                                    <label className="block text-sm text-gray-300">Registration Deadline (Optional):</label>
-                                    <input className="admin-input" type="date" value={eventForm.registrationDeadline ? eventForm.registrationDeadline.substring(0, 10) : ''} onChange={e => setEventForm({ ...eventForm, registrationDeadline: e.target.value })} />
+                  {activeTab === 'events' && (
+    <motion.div 
+        key="events" 
+        initial={{ opacity: 0, y: 10 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        exit={{ opacity: 0 }} 
+        className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12"
+    >
+        {/* Form Container */}
+        <div className="lg:col-span-1">
+            {/* Mobile Toggle Button - Only shows on small screens */}
+            <button 
+                onClick={() => setShowEventForm(!showEventForm)}
+                className="lg:hidden w-full mb-4 p-4 bg-violet-600 rounded-2xl font-bold flex items-center justify-between"
+            >
+                {showEventForm ? "Close Form" : "Create New Event"}
+                <ChevronRight className={`transition-transform ${showEventForm ? 'rotate-90' : ''}`} size={20} />
+            </button>
 
-                                    <button disabled={loading} className="admin-btn-primary w-full">{loading ? "Publishing..." : "Publish Event"}</button>
-                                </form>
-                            </div>
-                            {/* List */}
-                            {/* List */}
-                            <div className="lg:col-span-2 space-y-4">
-                                {events.map(ev => (
-                                    <div key={ev._id} className={`p-6 glass-morphism rounded-2xl border flex justify-between items-center group transition-all ${ev.registrationOpen ? 'border-white/5' : 'border-red-500/20 opacity-80'}`}>
-                                        <div>
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <span className="text-violet-500 text-[9px] font-bold uppercase tracking-widest">{ev.date} • {ev.dept}</span>
-                                                <span className={`px-2 py-0.5 rounded-[4px] text-[8px] font-black uppercase ${ev.registrationOpen ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500'}`}>
-                                                    {ev.registrationOpen ? 'Live' : 'Closed'}
-                                                </span>
-                                            </div>
-                                            <h4 className="text-lg font-bold">{ev.name}</h4>
-                                            <p className="text-xs text-gray-500">{ev.time} — {ev.venue}</p>
-                                        </div>
+            <div className={`
+                ${showEventForm ? 'block' : 'hidden'} lg:block 
+                glass-morphism p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] 
+                border border-white/5 
+                lg:sticky lg:top-32 h-auto lg:h-fit z-20
+            `}>
+                <h2 className="text-xl font-bold italic mb-6 text-violet-500 flex items-center gap-2">
+                    <Zap size={20} /> Create Event
+                </h2>
+                <form onSubmit={handleEventSubmit} className="space-y-4">
+                    <div className="grid grid-cols-1 gap-4">
+                        <input className="admin-input" placeholder="Event Name" value={eventForm.name} onChange={e => setEventForm({ ...eventForm, name: e.target.value })} required />
+                        
+                        <div className="grid grid-cols-2 gap-2">
+                            <select className="admin-input text-xs" value={eventForm.date} onChange={e => setEventForm({ ...eventForm, date: e.target.value })}>
+                                <option value="2026-03-28">March 28</option>
+                                <option value="2026-03-29">March 29</option>
+                                <option value="2026-03-30">March 30</option>
+                            </select>
+                            <select className="admin-input text-xs" value={eventForm.dept} onChange={e => setEventForm({ ...eventForm, dept: e.target.value })}>
+                                <option value="all">General</option>
+                                <option value="cse">CSE</option>
+                                <option value="mech">Mech</option>
+                                <option value="ece">ECE</option>
+                                <option value="eee">EEE</option>
+                                <option value="civil">Civil</option>
+                            </select>
+                        </div>
 
-                                        <div className="flex items-center gap-2">
-                                            {/* Toggle Button */}
-                                            <button
-                                                onClick={() => toggleRegistrationStatus(ev._id, ev.registrationOpen)}
-                                                className={`p-3 rounded-xl transition-all ${ev.registrationOpen ? 'text-gray-400 hover:text-red-500 hover:bg-red-500/10' : 'text-red-500 hover:text-green-500 hover:bg-green-500/10'}`}
-                                                title={ev.registrationOpen ? "Close Registration" : "Open Registration"}
-                                            >
-                                                {ev.registrationOpen ? <Check size={18} /> : <X size={18} />}
-                                            </button>
+                        <div className="grid grid-cols-2 gap-2">
+                            <input className="admin-input" placeholder="Time" value={eventForm.time} onChange={e => setEventForm({ ...eventForm, time: e.target.value })} required />
+                            <input className="admin-input" placeholder="Venue" value={eventForm.venue} onChange={e => setEventForm({ ...eventForm, venue: e.target.value })} required />
+                        </div>
 
-                                            {/* Delete Button */}
-                                            <button onClick={() => deleteEvent(ev._id)} className="p-3 text-gray-600 hover:text-red-500 transition-colors">
-                                                <Trash2 size={18} />
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </motion.div>
-                    )}
+                        <textarea className="admin-input h-20 text-sm" placeholder="Description" value={eventForm.description} onChange={e => setEventForm({ ...eventForm, description: e.target.value })} />
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input className="admin-input" placeholder="Fee (₹)" type="number" value={eventForm.fee} onChange={e => setEventForm({ ...eventForm, fee: parseFloat(e.target.value) || 0 })} />
+                            <input className="admin-input" placeholder="Team Size" value={eventForm.teamSize} onChange={e => setEventForm({ ...eventForm, teamSize: e.target.value })} />
+                        </div>
+
+                        <textarea className="admin-input h-20 text-sm" placeholder="Rules (comma-separated)" value={eventForm.rules.join(', ')} onChange={e => setEventForm({ ...eventForm, rules: e.target.value.split(',').map(s => s.trim()) })} />
+                        
+                        <div className="space-y-3 p-3 bg-white/5 rounded-xl border border-white/5">
+                            <label className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest cursor-pointer">
+                                <input type="checkbox" className="w-4 h-4 accent-violet-600" checked={eventForm.registrationOpen} onChange={e => setEventForm({ ...eventForm, registrationOpen: e.target.checked })} />
+                                Registration Open
+                            </label>
+                            <input className="admin-input !bg-black/40" type="date" value={eventForm.registrationDeadline ? eventForm.registrationDeadline.substring(0, 10) : ''} onChange={e => setEventForm({ ...eventForm, registrationDeadline: e.target.value })} />
+                        </div>
+                    </div>
+
+                    <button disabled={loading} className="admin-btn-primary w-full py-4 rounded-xl font-black uppercase tracking-widest text-[10px]">
+                        {loading ? "Publishing..." : "Publish Event"}
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {/* List Container */}
+        <div className="lg:col-span-2 space-y-4">
+            <div className="flex items-center justify-between mb-2 px-2">
+                <h3 className="text-xs font-black uppercase tracking-[0.3em] text-gray-500">Manage Events ({events.length})</h3>
+            </div>
+            {events.map(ev => (
+                <div key={ev._id} className={`p-5 md:p-6 glass-morphism rounded-2xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group transition-all ${ev.registrationOpen ? 'border-white/5' : 'border-red-500/20 opacity-80'}`}>
+                    <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                            <span className="text-violet-500 text-[9px] font-bold uppercase tracking-widest bg-violet-500/10 px-2 py-0.5 rounded-full">{ev.dept}</span>
+                            <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase ${ev.registrationOpen ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500'}`}>
+                                {ev.registrationOpen ? 'Live' : 'Closed'}
+                            </span>
+                        </div>
+                        <h4 className="text-base md:text-lg font-bold text-white group-hover:text-violet-400 transition-colors">{ev.name}</h4>
+                        <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1">
+                            <p className="text-[10px] text-gray-500 flex items-center gap-1"><Calendar size={12}/> {ev.date}</p>
+                            <p className="text-[10px] text-gray-500 flex items-center gap-1"><Clock size={12}/> {ev.time}</p>
+                            <p className="text-[10px] text-gray-500 flex items-center gap-1"><MapPin size={12}/> {ev.venue}</p>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 w-full sm:w-auto border-t sm:border-t-0 border-white/5 pt-3 sm:pt-0">
+                        <button
+                            onClick={() => toggleRegistrationStatus(ev._id, ev.registrationOpen)}
+                            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-[10px] font-bold uppercase transition-all ${ev.registrationOpen ? 'bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white' : 'bg-green-500/10 text-green-500 hover:bg-green-500 hover:text-white'}`}
+                        >
+                            {ev.registrationOpen ? <X size={14} /> : <Check size={14} />}
+                            {ev.registrationOpen ? 'Close' : 'Open'}
+                        </button>
+
+                        <button 
+                            onClick={() => deleteEvent(ev._id)} 
+                            className="p-3 bg-white/5 text-gray-400 hover:bg-red-500/20 hover:text-red-500 rounded-xl transition-all"
+                        >
+                            <Trash2 size={16} />
+                        </button>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </motion.div>
+)}
 
                     {/* --- REGISTRATIONS TAB --- */}
                     {/* --- REGISTRATIONS TAB (WITH SUB-TABS) --- */}

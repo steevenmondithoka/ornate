@@ -59,7 +59,7 @@ const ECEVibe = () => (
         <motion.div 
             animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.4, 0.3] }}
             transition={{ duration: 20, repeat: Infinity }}
-            className="absolute inset-0 bg-[url('https://lbrce.ac.in/images/ece/banner1.jpg')] bg-cover bg-center opacity-30 grayscale"
+            className="absolute inset-0 bg-[url('https://lnmiit.ac.in/wp-content/uploads/2023/07/image-8.png')] bg-cover bg-center opacity-30 grayscale"
         />
         {/* Chandrayaan / Satellite */}
         <motion.div

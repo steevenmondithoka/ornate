@@ -84,7 +84,7 @@ export default function Navbar() {
                         />
                         <div className="hidden sm:block">
                             <p className="text-[12px] font-black text-white leading-none tracking-tighter italic">ORNATE</p>
-                            <p className="text-[8px] font-bold text-violet-500 tracking-[0.4em] uppercase">2k26 Arena</p>
+                            <p className="text-[8px] font-bold text-violet-500 tracking-[0.4em] uppercase">2k26 </p>
                         </div>
                     </Link>
 

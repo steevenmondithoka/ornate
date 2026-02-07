@@ -2,129 +2,52 @@ import { useState, useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
-import { ArrowLeft, MapPin, Clock, Calendar, AlertCircle, Train, Rocket, Cpu, Zap, HardHat, Code, ChevronRight, Settings } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, Calendar, AlertCircle, Train, Rocket, Cpu, Zap, HardHat, Code, ChevronRight, Settings, Globe } from 'lucide-react';
 import { formatDate } from '../utils/formatDate';
 
-// --- ADVANCED PURE ANIMATION SCENERY ---
+// --- ADVANCED RESPONSIVE ANIMATIONS ---
 
 const CSEVibe = () => (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,_rgba(139,92,246,0.1)_0%,_transparent_50%)]" />
-        {[...Array(20)].map((_, i) => (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none flex justify-around opacity-30">
+        {[...Array(12)].map((_, i) => (
             <motion.div
                 key={i}
-                initial={{ x: Math.random() * 100 + "%", y: Math.random() * 100 + "%" }}
-                animate={{ 
-                    x: [Math.random() * 100 + "%", Math.random() * 100 + "%"],
-                    y: [Math.random() * 100 + "%", Math.random() * 100 + "%"],
-                    opacity: [0.2, 0.5, 0.2]
+                initial={{ y: "-100%" }}
+                animate={{ y: "100%" }}
+                transition={{ 
+                    duration: Math.random() * 5 + 3, 
+                    repeat: Infinity, 
+                    ease: "linear",
+                    delay: Math.random() * 2 
                 }}
-                transition={{ duration: Math.random() * 10 + 10, repeat: Infinity, ease: "linear" }}
-                className="absolute w-1 h-1 bg-violet-500 rounded-full shadow-[0_0_10px_#8b5cf6]"
-            />
+                className="flex flex-col text-violet-500 font-mono text-[10px] md:text-sm"
+                style={{ opacity: Math.random() * 0.5 + 0.2 }}
+            >
+                {Array(25).fill(0).map((_, j) => (
+                    <span key={j}>{Math.random() > 0.5 ? '1' : '0'}</span>
+                ))}
+                <span>CODE</span>
+                <span>EXEC</span>
+            </motion.div>
         ))}
-        <svg className="absolute inset-0 w-full h-full opacity-20">
-            <motion.path
-                d="M0 100 L200 300 L400 100 L600 500 L800 200 L1200 600"
-                fill="none"
-                stroke="#8b5cf6"
-                strokeWidth="0.5"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 5, repeat: Infinity }}
-            />
-        </svg>
     </div>
 );
 
 const MechVibe = () => (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none flex items-center justify-center opacity-30">
-        <div className="relative w-full h-full">
-            {/* Rotating Large Gear */}
-            <motion.div 
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute -right-20 -bottom-20 text-white/10"
-            >
-                <Settings size={600} strokeWidth={0.5} />
-            </motion.div>
-            
-            {/* Interlocking Small Gear */}
-            <motion.div 
-                animate={{ rotate: -360 }}
-                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                className="absolute right-[400px] -bottom-10 text-violet-500/20"
-            >
-                <Settings size={300} strokeWidth={1} />
-            </motion.div>
-
-            {/* Piston Animation */}
-            <div className="absolute left-20 bottom-0 flex gap-4">
-                {[...Array(4)].map((_, i) => (
-                    <motion.div
-                        key={i}
-                        animate={{ height: [100, 300, 100] }}
-                        transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
-                        className="w-8 bg-gradient-to-t from-violet-600/40 to-transparent rounded-t-full"
-                    />
-                ))}
-            </div>
-        </div>
-    </div>
-);
-
-const ECEVibe = () => (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] border border-blue-500/5 rounded-full" />
-        <motion.div
+    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+        <motion.div 
             animate={{ rotate: 360 }}
-            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-            className="absolute top-1/2 left-1/2 w-[70vw] h-[70vw] -translate-x-1/2 -translate-y-1/2"
+            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+            className="absolute -right-20 -bottom-20 text-white"
         >
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
-                <Rocket className="text-blue-400/40 rotate-45" size={40} />
-                <div className="w-1 h-20 bg-gradient-to-t from-blue-500/20 to-transparent" />
-            </div>
+            <Settings size={window.innerWidth < 768 ? 300 : 600} strokeWidth={0.5} />
         </motion.div>
-        {/* Pulsing signal waves */}
-        {[...Array(3)].map((_, i) => (
-            <motion.div
-                key={i}
-                initial={{ scale: 0, opacity: 0.5 }}
-                animate={{ scale: 2, opacity: 0 }}
-                transition={{ duration: 4, repeat: Infinity, delay: i * 1.3 }}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 border border-blue-400/30 rounded-full"
-            />
-        ))}
-    </div>
-);
-
-const EEEVibe = () => (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none flex items-center justify-center opacity-40">
-        <motion.div
-            animate={{ 
-                scale: [1, 1.1, 1],
-                rotate: [0, 5, 0]
-            }}
-            transition={{ duration: 5, repeat: Infinity }}
-            className="relative"
+        <motion.div 
+            animate={{ rotate: -360 }}
+            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            className="absolute right-20 top-20 text-violet-500"
         >
-            <div className="w-80 h-80 rounded-full border-4 border-cyan-500/10 shadow-[0_0_100px_rgba(6,182,212,0.1)] flex items-center justify-center">
-                <div className="w-60 h-60 rounded-full border-2 border-cyan-400/20 animate-spin" style={{ animationDuration: '10s' }} />
-            </div>
-            {/* Plasma Spark Particles */}
-            {[...Array(8)].map((_, i) => (
-                <motion.div
-                    key={i}
-                    animate={{ 
-                        x: [0, (Math.random() - 0.5) * 400], 
-                        y: [0, (Math.random() - 0.5) * 400],
-                        opacity: [0, 1, 0] 
-                    }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
-                    className="absolute top-1/2 left-1/2 w-1 h-1 bg-cyan-400 shadow-[0_0_8px_cyan]"
-                />
-            ))}
+            <Settings size={window.innerWidth < 768 ? 150 : 300} strokeWidth={1} />
         </motion.div>
     </div>
 );
@@ -132,36 +55,99 @@ const EEEVibe = () => (
 const CivilVibe = () => (
     <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
         <svg className="w-full h-full">
-            {/* Grid Floor */}
-            <pattern id="civilGrid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5" opacity="0.1"/>
-            </pattern>
-            <rect width="100%" height="100%" fill="url(#civilGrid)" />
+            <defs>
+                <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+                    <path d="M 50 0 L 0 0 0 50" fill="none" stroke="white" strokeWidth="0.5" />
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+            <motion.path
+                d="M 100 500 L 300 300 L 500 500 L 700 300 L 900 500"
+                stroke="white"
+                strokeWidth="2"
+                fill="none"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 5, repeat: Infinity, repeatType: 'reverse' }}
+            />
+        </svg>
+    </div>
+);
 
-            {/* Skyscrapers Growing */}
-            {[100, 300, 500, 700, 900].map((x, i) => (
-                <motion.path
+const ECEVibe = () => (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none flex items-center justify-center">
+        <div className="relative w-full h-full">
+            <motion.div 
+                animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.3, 0.1] }}
+                transition={{ duration: 4, repeat: Infinity }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-blue-500 rounded-full blur-[100px]"
+            />
+            <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="absolute top-1/2 left-1/2 w-[60vw] h-[60vw] md:w-[30vw] md:h-[30vw] -translate-x-1/2 -translate-y-1/2 border border-blue-500/20 rounded-full"
+            >
+                <Rocket className="text-blue-400 absolute -top-5 left-1/2 -translate-x-1/2 rotate-45" size={32} />
+            </motion.div>
+        </div>
+    </div>
+);
+
+const EEEVibe = () => (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+        {[...Array(5)].map((_, i) => (
+            <motion.div
+                key={i}
+                animate={{ 
+                    x: ["-10vw", "110vw"],
+                    y: [`${20 * i}%`, `${20 * i + 10}%`, `${20 * i}%`] 
+                }}
+                transition={{ duration: 3 + i, repeat: Infinity, ease: "easeInOut" }}
+                className="h-[2px] w-20 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_10px_cyan]"
+            />
+        ))}
+    </div>
+);
+
+const AllVibe = () => (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Prismatic Convergence */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            {[...Array(6)].map((_, i) => (
+                <motion.div
                     key={i}
-                    d={`M ${x} 1000 L ${x} ${400 + Math.random() * 300} L ${x + 60} ${400 + Math.random() * 300} L ${x + 60} 1000`}
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="1"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 4, delay: i * 0.5, repeat: Infinity, repeatType: 'reverse' }}
+                    animate={{ 
+                        rotate: [0, 360],
+                        scale: [1, 1.5, 1],
+                        opacity: [0.1, 0.4, 0.1]
+                    }}
+                    transition={{ duration: 10 + i * 2, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-0 border border-dashed rounded-full"
+                    style={{ 
+                        width: `${(i + 1) * 15}vw`, 
+                        height: `${(i + 1) * 15}vw`,
+                        left: `-${((i + 1) * 15) / 2}vw`,
+                        top: `-${((i + 1) * 15) / 2}vw`,
+                        borderColor: i % 2 === 0 ? '#8b5cf6' : '#ec4899'
+                    }}
                 />
             ))}
-        </svg>
+        </div>
+        <motion.div 
+            animate={{ opacity: [0.2, 0.5, 0.2] }}
+            transition={{ duration: 5, repeat: Infinity }}
+            className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#030014_80%)]"
+        />
     </div>
 );
 
 const hodMetadata = {
     cse: { fullName: "Computer Science", vibe: <CSEVibe />, icon: <Code /> },
-    mech: { fullName: "Mechanical Engg", vibe: <MechVibe />, icon: <Settings /> },
-    ece: { fullName: "Electronics & Comm", vibe: <ECEVibe />, icon: <Rocket /> },
-    eee: { fullName: "Electrical Engg", vibe: <EEEVibe />, icon: <Zap /> },
+    mech: { fullName: "Mechanical Engineering", vibe: <MechVibe />, icon: <Settings /> },
+    ece: { fullName: "Electronics & Communication", vibe: <ECEVibe />, icon: <Rocket /> },
+    eee: { fullName: "Electrical & Electronics", vibe: <EEEVibe />, icon: <Zap /> },
     civil: { fullName: "Civil Engineering", vibe: <CivilVibe />, icon: <HardHat /> },
-    all: { fullName: "General Arena", vibe: <CSEVibe />, icon: <Zap /> }
+    all: { fullName: "The General Arena", vibe: <AllVibe />, icon: <Globe /> }
 };
 
 export default function DepartmentDetail() {
@@ -199,7 +185,7 @@ export default function DepartmentDetail() {
                 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
             `}</style>
             
-            {/* Background Animation Layer */}
+            {/* Immersive Vibe Layer */}
             <AnimatePresence mode="wait">
                 <motion.div key={id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-0">
                     {info.vibe}
@@ -208,23 +194,21 @@ export default function DepartmentDetail() {
 
             <div className="relative z-10 px-4 md:px-10 max-w-full mx-auto">
                 <Link to="/" className="flex items-center gap-2 text-violet-500 font-bold uppercase text-[10px] tracking-[0.4em] mb-12 hover:gap-4 transition-all w-fit group">
-                    <ArrowLeft size={16} /> Back to Hub
+                    <ArrowLeft size={16} /> Back to Arenas
                 </Link>
 
-                {/* Header */}
                 <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="mb-16 md:mb-32">
                     <div className="flex items-center gap-4 mb-6">
-                        <div className="p-4 bg-violet-600/10 rounded-[2rem] text-violet-500 border border-violet-500/20 backdrop-blur-xl">
+                        <div className="p-4 bg-violet-600/10 rounded-3xl text-violet-500 border border-violet-500/20 backdrop-blur-3xl shadow-2xl">
                             {info.icon}
                         </div>
-                        <p className="text-violet-500 font-mono tracking-[0.5em] text-[9px] md:text-[11px] uppercase">Department Arena</p>
+                        <p className="text-violet-500 font-mono tracking-[0.5em] text-[9px] md:text-[11px] uppercase">Official Venue</p>
                     </div>
-                    <h1 className="text-5xl md:text-9xl font-medium tracking-tighter italic text-white uppercase leading-[0.85]">
+                    <h1 className="text-5xl md:text-9xl font-medium tracking-tighter italic text-white uppercase leading-[0.85] drop-shadow-2xl">
                         {info.fullName}<span className="text-violet-600">.</span>
                     </h1>
                 </motion.div>
 
-                {/* Spotify Rows */}
                 {loading ? (
                     <div className="flex justify-center py-40">
                         <div className="w-12 h-12 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
@@ -235,51 +219,54 @@ export default function DepartmentDetail() {
                             eventRows.map((row, rowIndex) => (
                                 <div key={rowIndex} className="relative group/row">
                                     <div className="flex items-center justify-between mb-8 px-2">
-                                        <h3 className="text-white/30 font-black text-[10px] uppercase tracking-[0.5em]">
-                                            {info.fullName} Collection — 0{rowIndex + 1}
-                                        </h3>
-                                        <div className="flex items-center gap-2 text-gray-600 text-[9px] font-bold uppercase tracking-widest bg-white/5 px-4 py-2 rounded-full">
+                                        <div className="flex items-center gap-4">
+                                            <span className="text-violet-500 font-mono font-bold">0{rowIndex + 1}</span>
+                                            <h3 className="text-white/40 font-black text-[10px] uppercase tracking-[0.5em]">
+                                                {info.fullName} Collection
+                                            </h3>
+                                        </div>
+                                        <div className="flex items-center gap-2 text-gray-600 text-[9px] font-bold uppercase tracking-widest bg-white/5 px-4 py-2 rounded-full border border-white/5">
                                             Swipe <ChevronRight size={14} className="text-violet-500" />
                                         </div>
                                     </div>
 
-                                    {/* Horizontal Scrolling Area */}
-                                    <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 md:gap-10 pb-12 no-scrollbar px-2">
+                                    {/* Spotify Style Swiper */}
+                                    <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 md:gap-12 pb-12 no-scrollbar px-2">
                                         {row.map((event) => (
                                             <div key={event._id} className="min-w-[85vw] md:min-w-[500px] snap-start">
                                                 <Link to={`/event/${event._id}`}>
                                                     <motion.div
-                                                        whileHover={{ y: -10, scale: 1.02 }}
-                                                        className="group relative h-full p-px rounded-[3rem] md:rounded-[5rem] overflow-hidden bg-white/10 hover:bg-violet-600/30 transition-all duration-700 shadow-2xl"
+                                                        whileHover={{ y: -15, scale: 1.02 }}
+                                                        className="group relative h-full p-px rounded-[3rem] md:rounded-[5rem] overflow-hidden bg-white/5 hover:bg-violet-600/30 transition-all duration-700 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]"
                                                     >
-                                                        <div className="relative h-full w-full bg-[#050508]/80 backdrop-blur-3xl rounded-[3rem] md:rounded-[5rem] p-10 md:p-14 z-10 flex flex-col border border-white/5">
+                                                        <div className="relative h-full w-full bg-[#050508]/90 backdrop-blur-3xl rounded-[3rem] md:rounded-[5rem] p-10 md:p-16 z-10 flex flex-col border border-white/5">
                                                             <div className="flex justify-between items-center mb-10">
-                                                                <div className="flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-full">
-                                                                    <Calendar size={12} className="text-violet-500" />
+                                                                <div className="flex items-center gap-3 px-5 py-2.5 bg-white/5 border border-white/10 rounded-full">
+                                                                    <Calendar size={14} className="text-violet-500" />
                                                                     <span className="text-[10px] text-white font-black uppercase tracking-widest">{formatDate(event.date)}</span>
                                                                 </div>
                                                                 <div className="h-2 w-2 rounded-full bg-violet-500 animate-pulse" />
                                                             </div>
 
-                                                            <div className="mb-8">
-                                                                <p className="text-violet-500 font-bold text-[11px] tracking-[0.4em] uppercase mb-4 opacity-60">Featured Event</p>
-                                                                <h3 className="text-3xl md:text-5xl font-medium italic text-white leading-[1.1] group-hover:text-violet-400 transition-colors">
+                                                            <div className="mb-10">
+                                                                <p className="text-violet-400 font-bold text-[11px] tracking-[0.4em] uppercase mb-4 opacity-60">Featured Event</p>
+                                                                <h3 className="text-4xl md:text-6xl font-medium italic text-white leading-[1] group-hover:text-violet-400 transition-colors">
                                                                     {event.name}
                                                                 </h3>
                                                             </div>
 
-                                                            <p className="text-gray-500 text-sm md:text-base italic leading-relaxed mb-12 line-clamp-3">
+                                                            <p className="text-gray-500 text-sm md:text-lg italic leading-relaxed mb-14 line-clamp-3">
                                                                 {event.description || "The convergence of innovation and excellence..."}
                                                             </p>
 
                                                             <div className="mt-auto flex flex-wrap gap-4">
-                                                                <div className="flex items-center gap-3 px-5 py-3 bg-white/5 rounded-2xl border border-white/5">
+                                                                <div className="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/5">
                                                                     <Clock size={16} className="text-violet-400" />
-                                                                    <span className="text-[12px] text-gray-300 font-bold uppercase">{event.time}</span>
+                                                                    <span className="text-[13px] text-gray-300 font-bold uppercase">{event.time}</span>
                                                                 </div>
-                                                                <div className="flex items-center gap-3 px-5 py-3 bg-white/5 rounded-2xl border border-white/5 max-w-[200px]">
+                                                                <div className="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/5">
                                                                     <MapPin size={16} className="text-violet-400" />
-                                                                    <span className="text-[11px] text-gray-300 font-bold uppercase truncate">{event.venue}</span>
+                                                                    <span className="text-[11px] text-gray-300 font-bold uppercase truncate max-w-[150px]">{event.venue}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -293,7 +280,7 @@ export default function DepartmentDetail() {
                         ) : (
                             <div className="text-center py-40 border border-white/5 rounded-[4rem]">
                                 <AlertCircle className="text-gray-800 mx-auto mb-6" size={60} />
-                                <p className="text-gray-600 font-mono text-sm uppercase tracking-[0.5em]">No Events Found</p>
+                                <p className="text-gray-600 font-mono text-sm uppercase tracking-[0.5em]">No Events Published</p>
                             </div>
                         )}
                     </div>

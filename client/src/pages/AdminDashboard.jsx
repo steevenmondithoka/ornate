@@ -12,7 +12,9 @@ import {
     Phone,
     User,
     ChevronRight,
-    Zap
+    Zap,
+    Clock,
+    MapPin
 } from 'lucide-react';
 
 

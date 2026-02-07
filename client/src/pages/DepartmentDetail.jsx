@@ -15,7 +15,7 @@ const CSEVibe = () => (
                 initial={{ y: "-100%" }}
                 animate={{ y: "100%" }}
                 transition={{ 
-                    duration: Math.random() * 5 + 3, 
+                    duration: Math.random() * 2 + 3, 
                     repeat: Infinity, 
                     ease: "linear",
                     delay: Math.random() * 2 
@@ -26,7 +26,7 @@ const CSEVibe = () => (
                 {Array(25).fill(0).map((_, j) => (
                     <span key={j}>{Math.random() > 0.5 ? '1' : '0'}</span>
                 ))}
-                <span>CODE</span>
+                <span>System.out.println("RGUKT ONGOLE")</span>
                 <span>EXEC</span>
             </motion.div>
         ))}

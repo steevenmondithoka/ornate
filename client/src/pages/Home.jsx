@@ -13,27 +13,61 @@ import leaveLetter from '../assets/Steeven_Leave_letter.pdf';
 import { UpdatesTicker } from '../components/UpdatesTicker';
 import { formatDate } from '../utils/formatDate';
 
-// --- CLEAN TECH ANIMATION: JAVA CODE STREAM ---
-const TechRain = () => {
-    const codeLines = [
-        "System.out.println('RGUKT');", "public class Ornate {", 
-        "while(festLive) {..}", "import java.util.*;", 
-        "event.start();", "int prize = 100K;", "@Override", "Scanner sc = new Scanner();"
-    ];
+// --- NEW BEAUTIFUL ANIMATION: CYBER-MESH & AURAS ---
+const CyberScenery = () => {
     return (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.12] flex justify-around select-none">
-            {[...Array(8)].map((_, i) => (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
+            {/* Animated Grid Mesh */}
+            <div 
+                className="absolute inset-0 opacity-[0.15]"
+                style={{
+                    backgroundImage: `linear-gradient(to right, #1e1b4b 1px, transparent 1px), 
+                                      linear-gradient(to bottom, #1e1b4b 1px, transparent 1px)`,
+                    backgroundSize: '80px 80px',
+                    maskImage: 'radial-gradient(circle at center, black, transparent 80%)'
+                }}
+            />
+
+            {/* Floating Orbs */}
+            {[...Array(6)].map((_, i) => (
                 <motion.div
                     key={i}
-                    initial={{ y: "-100%" }}
-                    animate={{ y: "100%" }}
-                    transition={{ duration: Math.random() * 12 + 8, repeat: Infinity, ease: "linear", delay: Math.random() * 5 }}
-                    className="flex flex-col text-violet-500 font-mono text-[9px] md:text-xs whitespace-nowrap"
-                >
-                    {Array(30).fill(0).map((_, j) => (
-                        <span key={j} className="mb-6">{codeLines[Math.floor(Math.random() * codeLines.length)]}</span>
-                    ))}
-                </motion.div>
+                    animate={{
+                        x: [0, Math.random() * 100 - 50, 0],
+                        y: [0, Math.random() * 100 - 50, 0],
+                        scale: [1, 1.2, 1],
+                        opacity: [0.2, 0.4, 0.2]
+                    }}
+                    transition={{
+                        duration: 10 + i * 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                    }}
+                    className="absolute rounded-full blur-[100px]"
+                    style={{
+                        width: `${200 + i * 100}px`,
+                        height: `${200 + i * 100}px`,
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                        background: i % 2 === 0 ? 'rgba(139, 92, 246, 0.3)' : 'rgba(30, 58, 138, 0.3)',
+                    }}
+                />
+            ))}
+
+            {/* Moving Light Streaks */}
+            {[...Array(3)].map((_, i) => (
+                <motion.div
+                    key={`streak-${i}`}
+                    initial={{ x: "-100%", y: `${20 + i * 30}%` }}
+                    animate={{ x: "200%" }}
+                    transition={{
+                        duration: 15,
+                        repeat: Infinity,
+                        ease: "linear",
+                        delay: i * 5
+                    }}
+                    className="absolute h-px w-[40%] bg-gradient-to-r from-transparent via-violet-500/50 to-transparent"
+                />
             ))}
         </div>
     );
@@ -77,16 +111,16 @@ export default function Home() {
                 <UpdatesTicker />
             </div>
 
-            {/* --- 1. HERO SECTION (RE-ENGINEERED) --- */}
+            {/* --- 1. HERO SECTION --- */}
             <section className="relative min-h-screen flex flex-col justify-center pt-24 pb-12 px-6 md:px-12 lg:px-24 overflow-hidden">
-                <TechRain />
+                <CyberScenery />
                 
                 {/* Background Aesthetics */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] h-[90vw] bg-violet-900/5 blur-[150px] rounded-full pointer-events-none" />
 
                 <div className="relative z-10 w-full max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-4 items-center">
                     
-                    {/* COLUMN 1: BRANDING (Top on Mobile) */}
+                    {/* COLUMN 1: BRANDING */}
                     <motion.div 
                         initial={{ opacity: 0, x: -30 }} 
                         animate={{ opacity: 1, x: 0 }} 
@@ -99,7 +133,6 @@ export default function Home() {
                             <span className="text-violet-600">2K26</span>
                         </h1>
                         
-                        {/* Mobile Description (Hidden on desktop to keep timer high) */}
                         <div className="mt-8 lg:block hidden border-l-4 border-violet-600 pl-6">
                             <p className="text-gray-400 text-base md:text-xl font-light italic leading-relaxed max-w-md">
                                 "A premium intersection of high-end technical innovation and avant-garde cultural expressions."
@@ -110,7 +143,7 @@ export default function Home() {
                         </div>
                     </motion.div>
 
-                    {/* COLUMN 2: COUNTDOWN (Middle on Mobile - First Page Visible) */}
+                    {/* COLUMN 2: COUNTDOWN (First Page Fold Visible) */}
                     <motion.div 
                         initial={{ opacity: 0, scale: 0.95 }} 
                         animate={{ opacity: 1, scale: 1 }} 
@@ -119,16 +152,16 @@ export default function Home() {
                     >
                         <div className="glass-panel p-8 md:p-12 lg:p-16 rounded-[3rem] md:rounded-[4rem] relative group w-full max-w-md lg:max-w-xl">
                             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-violet-600 px-6 py-2 rounded-full border border-violet-400/50 shadow-lg">
-                                <p className="text-[10px] font-black uppercase tracking-[0.4em] whitespace-nowrap">Event Pulse</p>
+                                <p className="text-[10px] font-black uppercase tracking-[0.4em] whitespace-nowrap">Launch Sequence</p>
                             </div>
                             <Countdown />
                         </div>
                     </motion.div>
 
-                    {/* COLUMN 3: CTA (Bottom of Fold on Mobile) */}
+                    {/* COLUMN 3: CTA */}
                     <div className="order-3 lg:col-span-2 flex flex-col lg:flex-row items-center justify-between gap-8 mt-4 lg:-mt-10">
                         <div className="lg:hidden block text-center px-4">
-                             <p className="text-gray-500 text-sm italic font-light">"Technical Innovation & Avant-garde Culture"</p>
+                             <p className="text-gray-500 text-sm italic font-light">"Innovation Meets Tradition"</p>
                         </div>
                         <motion.a 
                             href={leaveLetter} download 
@@ -142,8 +175,8 @@ export default function Home() {
                         </motion.a>
                         
                         <div className="hidden lg:flex items-center gap-10 opacity-30">
-                            <div className="flex flex-col items-center"><Terminal size={20}/><span className="text-[8px] font-bold mt-2 tracking-widest uppercase">Console</span></div>
-                            <div className="flex flex-col items-center"><Code2 size={20}/><span className="text-[8px] font-bold mt-2 tracking-widest uppercase">Source</span></div>
+                            <div className="flex flex-col items-center"><Terminal size={20}/><span className="text-[8px] font-bold mt-2 tracking-widest uppercase">Elite</span></div>
+                            <div className="flex flex-col items-center"><Award size={20}/><span className="text-[8px] font-bold mt-2 tracking-widest uppercase">Prizes</span></div>
                             <div className="flex flex-col items-center"><Globe size={20}/><span className="text-[8px] font-bold mt-2 tracking-widest uppercase">Global</span></div>
                         </div>
                     </div>
@@ -155,8 +188,8 @@ export default function Home() {
                 <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
                     {[
                         { label: "Elite Events", val: "50+", icon: <Award /> },
-                        { label: "Participants", val: "8K+", icon: <Users /> },
-                        { label: "Departments", val: "06", icon: <Building2 /> },
+                        { label: "Participants", val: "10K+", icon: <Users /> },
+                        { label: "Arenas", val: "06", icon: <Building2 /> },
                         { label: "Prize Pool", val: "₹1.5L", icon: <Zap /> }
                     ].map((stat, i) => (
                         <div key={i} className="text-center space-y-2">
@@ -173,7 +206,7 @@ export default function Home() {
                 <div className="max-w-7xl mx-auto">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-6">
                         <h2 className="text-5xl md:text-8xl font-medium tracking-tighter uppercase italic leading-none">Arenas<span className="text-violet-500">.</span></h2>
-                        <p className="text-gray-600 font-mono text-[10px] uppercase tracking-[0.5em] border-l border-white/10 pl-4">Choose your discipline</p>
+                        <p className="text-gray-600 font-mono text-[10px] uppercase tracking-[0.5em] border-l border-white/10 pl-4">Engineering excellence</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -194,7 +227,7 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* --- 4. THE SPOTIFY COLLECTIONS --- */}
+            {/* --- 4. SPOTIFY STYLE COLLECTIONS --- */}
             <section className="py-32 bg-white/[0.01]">
                 <div className="max-w-full mx-auto">
                     <h2 className="text-[12px] font-black tracking-[1.5em] uppercase text-center text-gray-700 mb-24">Collections</h2>
@@ -243,13 +276,13 @@ export default function Home() {
 
             {/* --- 5. DIRECTOR'S VISION --- */}
             <section className="py-60 px-6 relative overflow-hidden text-center">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-violet-600/5 blur-[200px] rounded-full" />
-                <Quote size={80} className="text-violet-600/10 mx-auto mb-16" />
-                <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-3xl md:text-6xl font-medium italic leading-[1.3] text-white mb-24 max-w-5xl mx-auto text-glow">
+                <CyberScenery />
+                <Quote size={80} className="text-violet-600/10 mx-auto mb-16 relative z-10" />
+                <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-3xl md:text-6xl font-medium italic leading-[1.3] text-white mb-24 max-w-5xl mx-auto text-glow relative z-10">
                     "Ornate 2k26 is the <span className="text-violet-500">zenith of ingenuity</span> and our collective stride towards excellence."
                 </motion.h2>
-                <div className="flex flex-col items-center">
-                    <div className="w-32 h-32 rounded-full border-2 border-violet-500/50 p-2 mb-8 shadow-[0_0_50px_rgba(139,92,246,0.2)]">
+                <div className="flex flex-col items-center relative z-10">
+                    <div className="w-32 h-32 rounded-full border-2 border-violet-500/50 p-2 mb-8 shadow-[0_0_50px_rgba(139, 92, 246, 0.2)]">
                         <img src="https://rguktong.ac.in/images/gupta%20sir.jpeg" className="w-full h-full object-cover rounded-full" alt="Director" />
                     </div>
                     <h3 className="text-white font-black tracking-[0.4em] uppercase text-base mb-2">Dr. A V S S Kumara Swami Gupta</h3>

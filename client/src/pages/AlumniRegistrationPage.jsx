@@ -74,7 +74,7 @@ export default function AlumniRegistrationPage() {
                     {/* --- LEFT SIDE: IMAGE & INFO --- */}
                     <div className="lg:w-[40%] relative min-h-[350px] lg:min-h-full overflow-hidden">
                         <img 
-                            src="https://images.unsplash.com/photo-1523580494863-6f30312248fd?auto=format&fit=crop&q=80&w=1200" 
+                            src="https://www.osu.edu/alumni/sites/default/files/styles/16_9/public/2024-02/recent-grads.jpeg.webp" 
                             alt="Alumni" 
                             className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-1000"
                         />

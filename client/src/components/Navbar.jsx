@@ -68,110 +68,96 @@ export default function Navbar() {
     };
 
     return (
-        <nav className="fixed top-0 left-0 right-0 z-[1000] w-full px-4 pt-4">
-            <div className="max-w-7xl mx-auto relative">
-                {/* --- MAIN NAV BAR --- */}
-                <div className="bg-[#0a0a0a] rounded-full px-4 py-2.5 md:px-6 flex items-center justify-between border border-white/10 shadow-[0_15px_35px_rgba(0,0,0,0.8)] relative z-50">
+        <nav className="fixed top-0 left-0 right-0 z-[1000] w-full">
+            {/* --- TOP ACCENT LINE --- */}
+            <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-violet-600 to-transparent opacity-50"></div>
+
+            <div className="bg-[#080808] border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+                <div className="max-w-7xl mx-auto px-4 md:px-8 py-3 flex items-center justify-between">
                     
-                    {/* Left: Logo */}
-                    <Link to="/" className="group shrink-0 flex items-center gap-3" onClick={closeAllMenus}>
-                        <motion.img 
+                    {/* Left: Logo Section */}
+                    <Link to="/" className="flex items-center gap-4 group" onClick={closeAllMenus}>
+                        <img 
                             src={logo} 
                             alt="Ornate Logo" 
-                            className="h-8 md:h-10 w-auto object-contain transition-all duration-500 group-hover:scale-105" 
+                            className="h-10 md:h-12 w-auto object-contain transition-transform duration-500 group-hover:scale-105" 
                         />
-                        <div className="h-6 w-[1px] bg-white/10 hidden sm:block mx-1"></div>
-                        <span className="hidden sm:block text-[10px] font-black tracking-[0.3em] text-white uppercase italic">2k26</span>
+                        <div className="hidden sm:block">
+                            <p className="text-[12px] font-black text-white leading-none tracking-tighter italic">ORNATE</p>
+                            <p className="text-[8px] font-bold text-violet-500 tracking-[0.4em] uppercase">2k26 Arena</p>
+                        </div>
                     </Link>
 
-                    {/* Desktop Links */}
-                    <div className="hidden lg:flex gap-8 items-center whitespace-nowrap">
+                    {/* Desktop Navigation Links */}
+                    <div className="hidden lg:flex items-center gap-1">
                         {navLinks.map((link) => (
                             <Link 
                                 key={link.name} 
                                 to={link.path} 
-                                className={`relative text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 group
+                                className={`px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all relative group
                                     ${location.pathname === link.path ? 'text-violet-500' : 'text-gray-400 hover:text-white'}`}
                             >
                                 {link.name}
                                 {location.pathname === link.path && (
-                                    <motion.span layoutId="activeNav" className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-violet-500 rounded-full shadow-[0_0_10px_#7c3aed]" />
+                                    <motion.div layoutId="navIndicator" className="absolute bottom-0 left-4 right-4 h-[2px] bg-violet-500 shadow-[0_0_8px_#7c3aed]" />
                                 )}
                             </Link>
                         ))}
 
-                        {/* Registrations Dropdown */}
-                        <div className="relative" ref={registrationsRef}>
+                        {/* Dropdown for Registrations */}
+                        <div className="relative ml-2" ref={registrationsRef}>
                             <button 
-                                onClick={() => setIsRegistrationsOpen(!isRegistrationsOpen)} 
-                                className={`text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-1 transition-colors
+                                onClick={() => setIsRegistrationsOpen(!isRegistrationsOpen)}
+                                className={`flex items-center gap-2 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-colors
                                     ${isRegistrationsOpen ? 'text-violet-500' : 'text-gray-400 hover:text-white'}`}
                             >
-                                Register <ChevronDown size={14} className={`transition-transform duration-300 ${isRegistrationsOpen ? 'rotate-180' : ''}`} />
+                                Portal <ChevronDown size={14} className={`transition-transform duration-300 ${isRegistrationsOpen ? 'rotate-180' : ''}`} />
                             </button>
                             <AnimatePresence>
                                 {isRegistrationsOpen && (
                                     <motion.div 
-                                        initial={{ opacity: 0, y: 15, scale: 0.95 }} 
-                                        animate={{ opacity: 1, y: 0, scale: 1 }} 
-                                        exit={{ opacity: 0, y: 15, scale: 0.95 }} 
-                                        className="absolute top-full mt-4 -left-4 bg-[#0f0f0f] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] py-3 w-56 border border-white/10 overflow-hidden"
+                                        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
+                                        className="absolute top-full right-0 mt-2 w-52 bg-[#0f0f0f] border border-white/10 rounded-xl shadow-2xl py-2 overflow-hidden"
                                     >
-                                        <div className="px-4 py-2 mb-1 border-b border-white/5">
-                                            <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">Portal Access</p>
-                                        </div>
-                                        <DropdownLink to="/stall-registration" icon={<Sparkles size={12}/>} label="Auction Entry" onClick={closeAllMenus} />
-                                        <DropdownLink to="/tshirt-registration" icon={<Sparkles size={12}/>} label="Merch Drop" onClick={closeAllMenus} />
+                                        <PortalLink to="/stall-registration" label="Stall Auction" icon={<Sparkles size={12}/>} onClick={closeAllMenus} />
+                                        <PortalLink to="/tshirt-registration" label="Merch Drop" icon={<Sparkles size={12}/>} onClick={closeAllMenus} />
                                     </motion.div>
                                 )}
                             </AnimatePresence>
                         </div>
 
-                        <Link to="/alumni-registration" className="px-5 py-2.5 bg-violet-600 rounded-full text-[10px] font-black uppercase tracking-widest text-white hover:bg-violet-500 transition-all shadow-lg shadow-violet-900/20 flex items-center gap-2 group">
-                            <GraduationCap size={14} className="group-hover:rotate-12 transition-transform" /> Alumni
+                        {/* Alumni Button */}
+                        <Link to="/alumni-registration" className="ml-6 px-6 py-2.5 bg-violet-600 hover:bg-violet-500 rounded-lg text-[10px] font-black uppercase tracking-widest text-white transition-all shadow-lg shadow-violet-900/20 flex items-center gap-2">
+                            <GraduationCap size={14} /> Alumni
                         </Link>
 
-                        {/* Profile Section */}
+                        {/* Admin Profile Section */}
                         {isLoggedIn && (
-                            <div className="relative border-l border-white/10 pl-6" ref={profileRef}>
+                            <div className="relative ml-6 pl-6 border-l border-white/10" ref={profileRef}>
                                 <button 
                                     onClick={() => setIsProfileOpen(!isProfileOpen)}
-                                    className="flex items-center gap-3 bg-white/5 hover:bg-white/10 p-1.5 pr-4 rounded-full transition-all border border-white/10 group"
+                                    className="flex items-center gap-3 p-1 pr-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all group"
                                 >
-                                    <div className="w-7 h-7 bg-gradient-to-tr from-violet-600 to-indigo-600 rounded-full flex items-center justify-center text-[10px] font-black text-white shadow-lg shadow-violet-900/40">
+                                    <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-full flex items-center justify-center text-[10px] font-black text-white">
                                         {adminData?.name?.charAt(0).toUpperCase()}
                                     </div>
-                                    <span className="text-[9px] font-black uppercase tracking-widest text-gray-300 group-hover:text-white">Admin Console</span>
-                                    <ChevronDown size={12} className={`transition-transform text-gray-400 ${isProfileOpen ? 'rotate-180' : ''}`} />
+                                    <span className="text-[9px] font-black uppercase tracking-widest text-gray-300">Console</span>
                                 </button>
-
                                 <AnimatePresence>
                                     {isProfileOpen && (
                                         <motion.div 
-                                            initial={{ opacity: 0, y: 15, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 15, scale: 0.95 }}
-                                            className="absolute top-full mt-4 right-0 bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl p-5 w-72 z-[1001]"
+                                            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
+                                            className="absolute top-full right-0 mt-2 w-64 bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl p-4"
                                         >
-                                            <div className="flex flex-col gap-1.5 mb-4 pb-4 border-b border-white/5">
-                                                <div className="flex items-center justify-between">
-                                                    <p className="text-[9px] font-black text-violet-500 uppercase tracking-widest">Active Session</p>
-                                                    <span className="text-[8px] bg-violet-600/20 text-violet-400 px-2 py-0.5 rounded-full border border-violet-500/20 uppercase font-black tracking-tighter">
-                                                        {adminData?.role}
-                                                    </span>
-                                                </div>
-                                                <p className="text-sm font-black text-white truncate">{adminData?.name}</p>
-                                                <p className="text-[10px] text-gray-500 truncate font-mono">{adminData?.email}</p>
+                                            <div className="pb-3 mb-3 border-b border-white/5">
+                                                <p className="text-[10px] font-black text-violet-500 uppercase tracking-widest mb-1">{adminData?.role}</p>
+                                                <p className="text-sm font-bold text-white truncate">{adminData?.name}</p>
                                             </div>
-
-                                            <div className="flex flex-col gap-1">
-                                                <ProfileLink to="/admin-dashboard" icon={<LayoutDashboard size={14}/>} label="Dashboard" onClick={closeAllMenus} />
-                                                {isSuperAdmin && (
-                                                    <ProfileLink to="/manage-admins" icon={<ShieldCheck size={14}/>} label="Master Control" onClick={closeAllMenus} />
-                                                )}
-                                                <button 
-                                                    onClick={handleLogout} 
-                                                    className="flex items-center gap-3 w-full px-4 py-3 text-[10px] font-black text-red-500 hover:bg-red-500/10 rounded-xl uppercase tracking-widest transition-all mt-1"
-                                                >
-                                                    <LogOut size={14} /> System Logout
+                                            <div className="space-y-1">
+                                                <AdminMenuLink to="/admin-dashboard" label="Dashboard" icon={<LayoutDashboard size={14}/>} onClick={closeAllMenus} />
+                                                {isSuperAdmin && <AdminMenuLink to="/manage-admins" label="Master Controls" icon={<ShieldCheck size={14}/>} onClick={closeAllMenus} />}
+                                                <button onClick={handleLogout} className="flex items-center gap-3 w-full px-3 py-2 text-[10px] font-black text-red-500 hover:bg-red-500/10 rounded-lg transition-all uppercase tracking-widest mt-2 border-t border-white/5 pt-4">
+                                                    <LogOut size={14} /> Exit System
                                                 </button>
                                             </div>
                                         </motion.div>
@@ -181,91 +167,66 @@ export default function Navbar() {
                         )}
                     </div>
 
-                    {/* Mobile Toggle */}
-                    <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden text-white p-2 hover:bg-white/5 rounded-full transition-colors">
-                        {isOpen ? <X size={22} /> : <Menu size={22} />}
+                    {/* Mobile Menu Button */}
+                    <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 text-white hover:bg-white/5 rounded-lg transition-colors">
+                        {isOpen ? <X size={24} /> : <Menu size={24} />}
                     </button>
                 </div>
+            </div>
 
-                {/* --- MOBILE OVERLAY (Solid) --- */}
-                <AnimatePresence>
-                    {isOpen && (
-                        <motion.div 
-                            initial={{ opacity: 0, scale: 0.95, y: -20 }} 
-                            animate={{ opacity: 1, scale: 1, y: 0 }} 
-                            exit={{ opacity: 0, scale: 0.95, y: -20 }} 
-                            className="absolute top-full mt-3 left-0 right-0 bg-[#0f0f0f] rounded-[2rem] p-6 lg:hidden border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.8)] z-40"
-                        >
-                            {isLoggedIn && (
-                                <div className="bg-white/5 p-5 rounded-2xl mb-8 border border-white/5">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 bg-violet-600 rounded-full flex items-center justify-center text-lg font-black">{adminData?.name?.charAt(0)}</div>
-                                        <div>
-                                            <p className="text-base font-black text-white">{adminData?.name}</p>
-                                            <p className="text-[10px] text-gray-500 font-mono tracking-tight">{adminData?.email}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            <div className="grid grid-cols-2 gap-4 mb-8">
+            {/* --- MOBILE FULL-WIDTH MENU --- */}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div 
+                        initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+                        className="lg:hidden w-full bg-[#0a0a0a] border-b border-white/10 shadow-2xl px-6 py-8"
+                    >
+                        <div className="flex flex-col gap-6">
+                            <div className="grid grid-cols-2 gap-3">
                                 {navLinks.map((link) => (
-                                    <Link key={link.name} to={link.path} className="py-4 bg-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest text-center text-gray-300 border border-white/5" onClick={closeAllMenus}>{link.name}</Link>
+                                    <Link key={link.name} to={link.path} className="py-4 bg-white/5 rounded-xl text-[10px] font-bold text-center uppercase tracking-[0.2em] text-gray-300 border border-white/5" onClick={closeAllMenus}>{link.name}</Link>
                                 ))}
                             </div>
-                            
+
                             <div className="space-y-3">
-                                <button onClick={() => setIsMobileRegistrationsOpen(!isMobileRegistrationsOpen)} className="w-full py-4 bg-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest text-gray-300 flex items-center justify-center gap-2 border border-white/5">
+                                <button onClick={() => setIsMobileRegistrationsOpen(!isMobileRegistrationsOpen)} className="w-full py-4 bg-white/5 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] text-gray-300 flex items-center justify-center gap-2 border border-white/5">
                                     Registrations <ChevronDown size={16} className={isMobileRegistrationsOpen ? 'rotate-180' : ''} />
                                 </button>
-                                
-                                <AnimatePresence>
-                                    {isMobileRegistrationsOpen && (
-                                        <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} className="grid grid-cols-2 gap-3 overflow-hidden">
-                                            <Link to="/stall-registration" className="py-3 bg-violet-600/10 text-violet-400 rounded-xl text-center text-[9px] font-black uppercase tracking-widest" onClick={closeAllMenus}>Auction</Link>
-                                            <Link to="/tshirt-registration" className="py-3 bg-violet-600/10 text-violet-400 rounded-xl text-center text-[9px] font-black uppercase tracking-widest" onClick={closeAllMenus}>Merch</Link>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-
-                                <Link to="/alumni-registration" className="block w-full bg-violet-600 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-center shadow-lg shadow-violet-900/20" onClick={closeAllMenus}>Alumni Portal</Link>
-
-                                {isLoggedIn && (
-                                    <div className="pt-4 grid grid-cols-2 gap-3">
-                                        <Link to="/admin-dashboard" className="py-3 border border-white/10 rounded-xl text-[9px] font-black uppercase tracking-widest text-center text-gray-400" onClick={closeAllMenus}>Dashboard</Link>
-                                        <button onClick={handleLogout} className="py-3 border border-red-500/30 rounded-xl text-[9px] font-black uppercase tracking-widest text-center text-red-500">Logout</button>
+                                {isMobileRegistrationsOpen && (
+                                    <div className="grid grid-cols-2 gap-3 px-2">
+                                        <Link to="/stall-registration" className="py-3 bg-violet-600/10 text-violet-400 rounded-lg text-center text-[9px] font-bold uppercase" onClick={closeAllMenus}>Auction</Link>
+                                        <Link to="/tshirt-registration" className="py-3 bg-violet-600/10 text-violet-400 rounded-lg text-center text-[9px] font-bold uppercase" onClick={closeAllMenus}>Merch</Link>
                                     </div>
                                 )}
+                                <Link to="/alumni-registration" className="block w-full bg-violet-600 py-4 rounded-xl text-[10px] font-black uppercase tracking-widest text-center" onClick={closeAllMenus}>Alumni Portal</Link>
                             </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </div>
+
+                            {isLoggedIn && (
+                                <div className="mt-4 pt-6 border-t border-white/5 flex flex-col gap-3">
+                                    <Link to="/admin-dashboard" className="text-center text-[10px] font-black uppercase text-gray-500 tracking-widest" onClick={closeAllMenus}>Admin Dashboard</Link>
+                                    <button onClick={handleLogout} className="text-center text-[10px] font-black uppercase text-red-500 tracking-widest">Logout Session</button>
+                                </div>
+                            )}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </nav>
     );
 }
 
-// --- SUB-COMPONENTS FOR CLEANER CODE ---
-
-function DropdownLink({ to, icon, label, onClick }) {
+// --- HELPER COMPONENTS ---
+function PortalLink({ to, label, icon, onClick }) {
     return (
-        <Link 
-            to={to} 
-            className="flex items-center gap-3 px-5 py-3 text-gray-400 hover:text-white hover:bg-violet-600/20 text-[10px] font-black uppercase tracking-widest transition-all" 
-            onClick={onClick}
-        >
-            <span className="text-violet-500">{icon}</span> {label}
+        <Link to={to} onClick={onClick} className="flex items-center gap-3 px-5 py-3 text-[10px] font-bold text-gray-400 hover:text-white hover:bg-violet-600 transition-all uppercase tracking-widest">
+            <span className="text-violet-400 group-hover:text-white">{icon}</span> {label}
         </Link>
     );
 }
 
-function ProfileLink({ to, icon, label, onClick }) {
+function AdminMenuLink({ to, label, icon, onClick }) {
     return (
-        <Link 
-            to={to} 
-            className="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all" 
-            onClick={onClick}
-        >
+        <Link to={to} onClick={onClick} className="flex items-center gap-3 px-3 py-2.5 text-[10px] font-bold text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all uppercase tracking-widest">
             <span className="text-violet-500">{icon}</span> {label}
         </Link>
     );

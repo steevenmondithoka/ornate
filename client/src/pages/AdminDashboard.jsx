@@ -520,7 +520,7 @@ export default function AdminDashboard() {
                 <AnimatePresence mode="wait">
 
                     {/* --- EVENTS TAB --- */}
-                  {activeTab === 'events' && (
+  {activeTab === 'events' && (
     <motion.div 
         key="events" 
         initial={{ opacity: 0, y: 10 }} 
@@ -530,7 +530,7 @@ export default function AdminDashboard() {
     >
         {/* Form Container */}
         <div className="lg:col-span-1">
-            {/* Mobile Toggle Button - Only shows on small screens */}
+            {/* Mobile Toggle Button */}
             <button 
                 onClick={() => setShowEventForm(!showEventForm)}
                 className="lg:hidden w-full mb-4 p-4 bg-violet-600 rounded-2xl font-bold flex items-center justify-between"
@@ -548,9 +548,47 @@ export default function AdminDashboard() {
                 <h2 className="text-xl font-bold italic mb-6 text-violet-500 flex items-center gap-2">
                     <Zap size={20} /> Create Event
                 </h2>
+                
                 <form onSubmit={handleEventSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 gap-4">
+                        
+                        {/* 1. IMAGE SELECTION */}
+                        <div className="relative group overflow-hidden rounded-2xl border-2 border-dashed border-white/10 bg-white/5 hover:border-violet-500/50 transition-all">
+                            {eventForm.imageUrl ? (
+                                <div className="relative h-32 w-full">
+                                    <img src={eventForm.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                                    <button 
+                                        type="button"
+                                        onClick={() => setEventForm({...eventForm, imageUrl: ''})}
+                                        className="absolute top-2 right-2 p-1 bg-red-500 rounded-full text-white"
+                                    >
+                                        <X size={14} />
+                                    </button>
+                                </div>
+                            ) : (
+                                <label className="flex flex-col items-center justify-center h-32 w-full cursor-pointer">
+                                    <ImageIcon className="text-gray-500 mb-1" size={24} />
+                                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Select Cover Image</span>
+                                    <input 
+                                        type="file" 
+                                        className="hidden" 
+                                        accept="image/*" 
+                                        onChange={(e) => {
+                                            const file = e.target.files[0];
+                                            if (file) {
+                                                const reader = new FileReader();
+                                                reader.onloadend = () => setEventForm({ ...eventForm, imageUrl: reader.result });
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }} 
+                                    />
+                                </label>
+                            )}
+                        </div>
+
+                        {/* 2. BASIC INFO */}
                         <input className="admin-input" placeholder="Event Name" value={eventForm.name} onChange={e => setEventForm({ ...eventForm, name: e.target.value })} required />
+                        <input className="admin-input text-xs" placeholder="Short Tagline (e.g. The Ultimate Code Battle)" value={eventForm.tagline} onChange={e => setEventForm({ ...eventForm, tagline: e.target.value })} />
                         
                         <div className="grid grid-cols-2 gap-2">
                             <select className="admin-input text-xs" value={eventForm.date} onChange={e => setEventForm({ ...eventForm, date: e.target.value })}>
@@ -573,21 +611,36 @@ export default function AdminDashboard() {
                             <input className="admin-input" placeholder="Venue" value={eventForm.venue} onChange={e => setEventForm({ ...eventForm, venue: e.target.value })} required />
                         </div>
 
-                        <textarea className="admin-input h-20 text-sm" placeholder="Description" value={eventForm.description} onChange={e => setEventForm({ ...eventForm, description: e.target.value })} />
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <input className="admin-input" placeholder="Fee (₹)" type="number" value={eventForm.fee} onChange={e => setEventForm({ ...eventForm, fee: parseFloat(e.target.value) || 0 })} />
+                        {/* 3. CONTENT & CRITERIA */}
+                        <textarea className="admin-input h-20 text-sm" placeholder="Full Description" value={eventForm.description} onChange={e => setEventForm({ ...eventForm, description: e.target.value })} />
+                        <textarea className="admin-input h-20 text-sm" placeholder="Judging Criteria" value={eventForm.judgingCriteria} onChange={e => setEventForm({ ...eventForm, judgingCriteria: e.target.value })} />
+                        <textarea className="admin-input h-20 text-sm" placeholder="Rules (comma-separated)" value={eventForm.rules.join(', ')} onChange={e => setEventForm({ ...eventForm, rules: e.target.value.split(',').map(s => s.trim()) })} />
+
+                        {/* 4. PRICING & TEAM */}
+                        <div className="grid grid-cols-2 gap-2">
+                            <div className="relative">
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs">₹</span>
+                                <input className="admin-input pl-6" placeholder="Fee" type="number" value={eventForm.fee} onChange={e => setEventForm({ ...eventForm, fee: parseFloat(e.target.value) || 0 })} />
+                            </div>
                             <input className="admin-input" placeholder="Team Size" value={eventForm.teamSize} onChange={e => setEventForm({ ...eventForm, teamSize: e.target.value })} />
                         </div>
 
-                        <textarea className="admin-input h-20 text-sm" placeholder="Rules (comma-separated)" value={eventForm.rules.join(', ')} onChange={e => setEventForm({ ...eventForm, rules: e.target.value.split(',').map(s => s.trim()) })} />
+                        {/* 5. CONTACT INFO */}
+                        <div className="grid grid-cols-2 gap-2">
+                            <input className="admin-input" placeholder="Contact Person" value={eventForm.contactPerson} onChange={e => setEventForm({ ...eventForm, contactPerson: e.target.value })} />
+                            <input className="admin-input" placeholder="Phone Number" value={eventForm.contactNumber} onChange={e => setEventForm({ ...eventForm, contactNumber: e.target.value })} />
+                        </div>
                         
+                        {/* 6. STATUS & DEADLINE */}
                         <div className="space-y-3 p-3 bg-white/5 rounded-xl border border-white/5">
                             <label className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest cursor-pointer">
                                 <input type="checkbox" className="w-4 h-4 accent-violet-600" checked={eventForm.registrationOpen} onChange={e => setEventForm({ ...eventForm, registrationOpen: e.target.checked })} />
                                 Registration Open
                             </label>
-                            <input className="admin-input !bg-black/40" type="date" value={eventForm.registrationDeadline ? eventForm.registrationDeadline.substring(0, 10) : ''} onChange={e => setEventForm({ ...eventForm, registrationDeadline: e.target.value })} />
+                            <div className="flex flex-col gap-1">
+                                <span className="text-[9px] text-gray-500 uppercase ml-1">Deadline</span>
+                                <input className="admin-input !bg-black/40" type="date" value={eventForm.registrationDeadline ? eventForm.registrationDeadline.substring(0, 10) : ''} onChange={e => setEventForm({ ...eventForm, registrationDeadline: e.target.value })} />
+                            </div>
                         </div>
                     </div>
 
@@ -604,19 +657,32 @@ export default function AdminDashboard() {
                 <h3 className="text-xs font-black uppercase tracking-[0.3em] text-gray-500">Manage Events ({events.length})</h3>
             </div>
             {events.map(ev => (
-                <div key={ev._id} className={`p-5 md:p-6 glass-morphism rounded-2xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group transition-all ${ev.registrationOpen ? 'border-white/5' : 'border-red-500/20 opacity-80'}`}>
-                    <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
+                <div key={ev._id} className={`p-5 glass-morphism rounded-2xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group transition-all ${ev.registrationOpen ? 'border-white/5' : 'border-red-500/20 opacity-80'}`}>
+                    
+                    {/* Thumbnail Preview in List */}
+                    <div className="hidden md:block w-24 h-20 rounded-xl overflow-hidden bg-white/5 border border-white/5 flex-shrink-0">
+                        {ev.imageUrl ? (
+                            <img src={ev.imageUrl} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center text-gray-600">
+                                <ImageIcon size={20}/>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
                             <span className="text-violet-500 text-[9px] font-bold uppercase tracking-widest bg-violet-500/10 px-2 py-0.5 rounded-full">{ev.dept}</span>
                             <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase ${ev.registrationOpen ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500'}`}>
                                 {ev.registrationOpen ? 'Live' : 'Closed'}
                             </span>
                         </div>
-                        <h4 className="text-base md:text-lg font-bold text-white group-hover:text-violet-400 transition-colors">{ev.name}</h4>
-                        <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1">
+                        <h4 className="text-base font-bold text-white truncate">{ev.name}</h4>
+                        <p className="text-[10px] text-gray-400 italic mb-2 line-clamp-1">{ev.tagline}</p>
+                        
+                        <div className="flex flex-wrap gap-x-4 gap-y-1">
                             <p className="text-[10px] text-gray-500 flex items-center gap-1"><Calendar size={12}/> {ev.date}</p>
-                            <p className="text-[10px] text-gray-500 flex items-center gap-1"><Clock size={12}/> {ev.time}</p>
-                            <p className="text-[10px] text-gray-500 flex items-center gap-1"><MapPin size={12}/> {ev.venue}</p>
+                            <p className="text-[10px] text-gray-500 flex items-center gap-1"><Phone size={12}/> {ev.contactNumber || 'No contact'}</p>
                         </div>
                     </div>
 
@@ -641,7 +707,6 @@ export default function AdminDashboard() {
         </div>
     </motion.div>
 )}
-
                     {/* --- REGISTRATIONS TAB --- */}
                     {/* --- REGISTRATIONS TAB (WITH SUB-TABS) --- */}
                     {/* --- REGISTRATIONS TAB (SEARCH + TABS + SMART EXPORT) --- */}

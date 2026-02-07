@@ -24,7 +24,7 @@ connectDB();
 // Middleware
 app.use(cors({
     origin: process.env.FRONTEND_URL, // Make sure this is "https://ornate-iota.vercel.app" in Render
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE","PATCH" ,"OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"], // <--- MUST ALLOW AUTHORIZATION
     credentials: true
 }));

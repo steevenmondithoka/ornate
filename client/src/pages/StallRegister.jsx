@@ -56,7 +56,7 @@ export default function StallRegister() {
                 {/* --- LEFT COLUMN: VISUAL/INFO --- */}
                 <div className="lg:w-[40%] relative min-h-[300px] lg:min-h-auto overflow-hidden bg-zinc-900">
                     <img 
-                        src="https://images.unsplash.com/photo-1531050171669-0101272b1416?auto=format&fit=crop&q=80&w=1000" 
+                        src="https://static.vecteezy.com/system/resources/thumbnails/038/525/278/small/ai-generated-competitive-bidding-in-a-crowded-auction-room-photo.jpeg" 
                         alt="Event Stall" 
                         className="absolute inset-0 w-full h-full object-cover opacity-50 grayscale hover:grayscale-0 transition-all duration-1000"
                     />

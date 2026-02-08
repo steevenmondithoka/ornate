@@ -3,7 +3,8 @@ import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import axios from 'axios';
 import {
     Trash2, Camera, Film, X,
-    Download, AlertCircle, ChevronRight, ChevronLeft, Maximize2
+    Download, AlertCircle, ChevronRight, ChevronLeft, Maximize2,
+    Sparkles
 } from 'lucide-react';
 import BackgroundDesign from '../components/BackgroundDesign';
 

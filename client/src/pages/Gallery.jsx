@@ -144,7 +144,7 @@ export default function Gallery() {
                             <Sparkles className="text-violet-500 animate-pulse" size={18} />
                             <p className="text-[10px] font-black uppercase tracking-[0.5em] text-violet-400">Memory Matrix</p>
                         </div>
-                        <h1 className="text-5xl md:text-8xl font-black italic tracking-tighter uppercase leading-none">
+                        <h1 className="text-3xl md:text-3xl font-black italic tracking-tighter uppercase leading-none">
                             Archives<span className="text-violet-600">.</span>
                         </h1>
                     </motion.div>

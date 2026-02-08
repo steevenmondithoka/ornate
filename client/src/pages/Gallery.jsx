@@ -271,7 +271,7 @@ export default function Gallery() {
                         className="fixed inset-0 z-[500] bg-black/95 backdrop-blur-3xl flex flex-col items-center justify-center p-6 md:p-12"
                     >
                         {/* Control Bar - Safe distance from Top Navbar */}
-                        <div className="absolute top-18 md:top-18 right-6 md:right-16 flex gap-4 z-[510]">
+                        <div className="absolute top-25 md:top-25 right-6 md:right-16 flex gap-4 z-[510]">
                             <button onClick={(e) => downloadImage(e, selectedImage.url)} className="p-4 bg-white/10 hover:bg-white hover:text-black rounded-full transition-all border border-white/10">
                                 <Download size={24} />
                             </button>

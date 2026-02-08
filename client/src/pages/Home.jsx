@@ -103,7 +103,7 @@ export default function Home() {
                                 </p>
                                 <h1 className="text-[15vw] lg:text-[8rem] font-black tracking-tighter leading-[0.8] uppercase italic text-glow">
                                     <span className="block text-white">ORNATE</span>
-                                    <span className="block text-violet-600">2K26</span>
+                                    <span className="block text-violet-800">2K26</span>
                                 </h1>
                             </motion.div>
 
@@ -115,7 +115,7 @@ export default function Home() {
                             >
                                 <div className="border-l-4 border-violet-600 pl-6 text-left">
                                     <p className="text-gray-400 text-base md:text-xl font-light italic leading-relaxed">
-                                        "A premium intersection of high-end technical innovation and avant-garde cultural expressions."
+                                        "A premium intersection of high-end technical innovation and cultural expressions."
                                     </p>
                                     <div className="mt-4 flex items-center gap-3 text-violet-400 font-black text-[10px] md:text-xs uppercase tracking-[0.3em]">
                                         <Calendar size={14} /> MARCH 28 — 30, 2026

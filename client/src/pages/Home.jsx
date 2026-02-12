@@ -353,7 +353,7 @@ export default function Home() {
                                     className="
                     relative
                     w-full
-                    h-full
+                    h-full 
                     object-contain
                     mix-blend-screen
                     opacity-90

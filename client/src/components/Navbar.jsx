@@ -25,11 +25,9 @@ const navLinks = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isRegistrationsOpen, setIsRegistrationsOpen] = useState(false);
-  const [isMobileRegistrationsOpen, setIsMobileRegistrationsOpen] =
-    useState(false);
+  const [isMobileRegistrationsOpen, setIsMobileRegistrationsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [adminData, setAdminData] = useState(null);
 
   const location = useLocation();
@@ -40,11 +38,9 @@ export default function Navbar() {
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
     const info = JSON.parse(localStorage.getItem("adminInfo"));
-
     setIsLoggedIn(!!token);
     setAdminData(info);
-    setIsSuperAdmin(info?.role === "superadmin");
-
+    
     setIsOpen(false);
     setIsRegistrationsOpen(false);
     setIsProfileOpen(false);
@@ -52,10 +48,7 @@ export default function Navbar() {
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (
-        registrationsRef.current &&
-        !registrationsRef.current.contains(event.target)
-      ) {
+      if (registrationsRef.current && !registrationsRef.current.contains(event.target)) {
         setIsRegistrationsOpen(false);
       }
       if (profileRef.current && !profileRef.current.contains(event.target)) {
@@ -70,196 +63,118 @@ export default function Navbar() {
     localStorage.removeItem("adminToken");
     localStorage.removeItem("adminInfo");
     setIsLoggedIn(false);
-    setAdminData(null);
     navigate("/");
-  };
-
-  const closeAllMenus = () => {
-    setIsOpen(false);
-    setIsRegistrationsOpen(false);
-    setIsProfileOpen(false);
   };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-[1000] w-full">
-      {/* TOP ACCENT LINE */}
-      <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-violet-500 to-transparent opacity-70" />
+      {/* Top Neon Accent */}
+      <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-violet-500 to-transparent opacity-50" />
 
-      <div className="bg-[#080808]/95 border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.7)] backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-3 flex items-center justify-between">
-          {/* Left: Logo */}
-          <Link
-            to="/"
-            className="flex items-center gap-4 group"
-            onClick={closeAllMenus}
-          >
+      <div className="bg-[#050505]/90 border-b border-white/5 shadow-2xl backdrop-blur-xl">
+        <div className="max-w-[1400px] mx-auto px-4 lg:px-8 py-3 flex items-center justify-between">
+          
+          {/* LEFT: LOGO & BRANDING */}
+          <Link to="/" className="flex items-center gap-3 shrink-0 group">
             <img
               src={logo}
               alt="Ornate Logo"
-              className="h-10 md:h-12 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+              className="h-9 md:h-11 w-auto object-contain transition-transform duration-500 group-hover:rotate-[-5deg]"
             />
-            <div className="hidden.sm:block">
-              <p className="text-xs md:text-sm font-black.leading-none tracking-tight italic uppercase bg-gradient-to-r from-violet-400 via-purple-400 to-violet-400 bg-clip-text text-transparent">
+            <div className="flex flex-col justify-center border-l border-white/10 pl-3">
+              <span className="text-sm md:text-base font-black tracking-tighter italic uppercase bg-gradient-to-r from-white via-violet-200 to-purple-400 bg-clip-text text-transparent leading-none">
                 ORNATE
-              </p>
-              <p className="text-[9px] md:text-[10px] font-semibold text-violet-300 tracking-[0.35em] uppercase">
+              </span>
+              <span className="text-[8px] md:text-[10px] font-bold text-violet-400/80 tracking-[0.4em] uppercase leading-none mt-1">
                 2k26
-              </p>
+              </span>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-2">
+          {/* CENTER/RIGHT: DESKTOP NAVIGATION */}
+          <div className="hidden lg:flex items-center gap-1 xl:gap-4">
             {navLinks.map((link) => {
               const active = location.pathname === link.path;
               return (
-                <motion.div
+                <Link
                   key={link.name}
-                  whileHover={{ scale: 1.04, y: -1 }}
-                  transition={{ type: "spring", stiffness: 320, damping: 20 }}
-                  className="group"
+                  to={link.path}
+                  className={`relative px-3 py-2 text-[11px] font-bold uppercase tracking-[0.15em] transition-all whitespace-nowrap ${
+                    active ? "text-white" : "text-gray-400 hover:text-violet-300"
+                  }`}
                 >
-                  <Link
-                    to={link.path}
-                    className={`px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] transition-all relative ${
-                      active
-                        ? "text-white"
-                        : "text-gray-200/80 group-hover:text-white"
-                    }`}
-                  >
-                    {link.name}
-                    <span
-                      className={`pointer-events-none absolute left-4 right-4 bottom-0 h-[2px] origin-center transition-all duration-300 ${
-                        active
-                          ? "scale-x-100 bg-gradient-to-r from-violet-600 to-purple-600 shadow-[0_0_10px_rgba(139,92,246,0.8)]"
-                          : "scale-x-0 bg-gradient-to-r from-violet-600 to-purple-600 group-hover:scale-x-100"
-                      }`}
+                  {link.name}
+                  {active && (
+                    <motion.div
+                      layoutId="navUnderline"
+                      className="absolute bottom-0 left-3 right-3 h-[2px] bg-violet-500 shadow-[0_0_10px_#8b5cf6]"
                     />
-                  </Link>
-                </motion.div>
+                  )}
+                </Link>
               );
             })}
 
-            {/* Portal dropdown */}
-            <motion.div
-              whileHover={{ scale: 1.04, y: -1 }}
-              transition={{ type: "spring", stiffness: 320, damping: 20 }}
-              className="relative ml-2"
-              ref={registrationsRef}
-            >
+            {/* Registrations Dropdown */}
+            <div className="relative" ref={registrationsRef}>
               <button
-                onClick={() =>
-                  setIsRegistrationsOpen((prev) => !prev)
-                }
-                className={`flex items-center gap-2 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors ${
-                  isRegistrationsOpen
-                    ? "text-white"
-                    : "text-gray-200/80 hover:text-white"
+                onClick={() => setIsRegistrationsOpen(!isRegistrationsOpen)}
+                className={`flex items-center gap-1 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.15em] transition-colors ${
+                  isRegistrationsOpen ? "text-white" : "text-gray-400 hover:text-violet-300"
                 }`}
               >
                 Registrations
-                <ChevronDown
-                  size={14}
-                  className={`transition-transform duration-300 ${
-                    isRegistrationsOpen ? "rotate-180" : ""
-                  }`}
-                />
+                <ChevronDown size={14} className={`transition-transform ${isRegistrationsOpen ? "rotate-180" : ""}`} />
               </button>
+              
               <AnimatePresence>
                 {isRegistrationsOpen && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full right-0 mt-2 w-56 bg-[#050510]/95 border border-white/10 rounded-xl shadow-2xl py-2 overflow-hidden backdrop-blur-xl"
+                    className="absolute top-full right-0 mt-3 w-52 bg-[#0a0a0a] border border-white/10 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] py-2 backdrop-blur-2xl"
                   >
-                    <PortalLink
-                      to="/stall-registration"
-                      label="Stall Auction"
-                      icon={<Sparkles size={13} />}
-                      onClick={closeAllMenus}
-                    />
-                    <PortalLink
-                      to="/tshirt-registration"
-                      label="Merch Drop"
-                      icon={<Sparkles size={13} />}
-                      onClick={closeAllMenus}
-                    />
+                    <PortalLink to="/stall-registration" label="Stall Auction" icon={<Sparkles size={14} />} />
+                    <PortalLink to="/tshirt-registration" label="Merch Drop" icon={<Sparkles size={14} />} />
                   </motion.div>
                 )}
               </AnimatePresence>
-            </motion.div>
+            </div>
 
-            {/* Alumni button with same gradient as leaveLetter */}
-            <motion.div
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 260, damping: 18 }}
+            {/* Alumni Button */}
+            <Link
+              to="/alumni-registration"
+              className="ml-2 flex items-center gap-2 bg-gradient-to-br from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-violet-900/20 transition-all hover:scale-105 active:scale-95"
             >
-              <Link
-                to="/alumni-registration"
-                className="ml-5 inline-flex items-center gap-3 bg-gradient-to-r from-violet-900 to-purple-500 text-white px-7 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-[0.18em] shadow-lg shadow-violet-500/30 hover:shadow-xl hover:shadow-violet-500/40 transition-shadow"
-              >
-                <GraduationCap size={15} />
-                Alumni
-              </Link>
-            </motion.div>
+              <GraduationCap size={14} />
+              Alumni
+            </Link>
 
-            {/* Admin profile */}
+            {/* Admin Console */}
             {isLoggedIn && (
-              <div
-                className="relative ml-6 pl-6 border-l.border-white/10"
-                ref={profileRef}
-              >
+              <div className="relative ml-4 pl-4 border-l border-white/10" ref={profileRef}>
                 <button
-                  onClick={() => setIsProfileOpen((prev) => !prev)}
-                  className="flex items-center gap-3 p-1 pr-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all group"
+                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  className="flex items-center gap-2 p-1 pr-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
                 >
-                  <div className="w-9 h-9 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-full flex items-center justify-center text-[11px] font-bold text-white">
+                  <div className="w-8 h-8 bg-violet-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-inner">
                     {adminData?.name?.charAt(0).toUpperCase()}
                   </div>
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-100">
-                    Console
-                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-gray-200">Console</span>
                 </button>
                 <AnimatePresence>
                   {isProfileOpen && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full right-0 mt-2 w-64 bg-[#050510]/95 border border-white/10 rounded-2xl shadow-2xl p-4 backdrop-blur-xl"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="absolute top-full right-0 mt-3 w-60 bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl p-4"
                     >
-                      <div className="pb-3 mb-3 border-b border-white/5">
-                        <p className="text-[10px] font-semibold text-violet-400 uppercase tracking-[0.2em] mb-1">
-                          {adminData?.role}
-                        </p>
-                        <p className="text-sm font-bold text-white truncate">
-                          {adminData?.name}
-                        </p>
-                      </div>
-                      <div className="space-y-1">
-                        <AdminMenuLink
-                          to="/admin-dashboard"
-                          label="Dashboard"
-                          icon={<LayoutDashboard size={14} />}
-                          onClick={closeAllMenus}
-                        />
-                        {isSuperAdmin && (
-                          <AdminMenuLink
-                            to="/manage-admins"
-                            label="Master Controls"
-                            icon={<ShieldCheck size={14} />}
-                            onClick={closeAllMenus}
-                          />
-                        )}
-                        <button
-                          onClick={handleLogout}
-                          className="flex items-center gap-3 w-full px-3 py-2 text-[10px] font-semibold text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-all uppercase tracking-[0.2em] mt-2 border-t border-white/5 pt-4"
-                        >
-                          <LogOut size={14} /> Log Out
-                        </button>
-                      </div>
+                      <p className="text-[9px] font-bold text-violet-400 uppercase tracking-widest mb-1">{adminData?.role}</p>
+                      <p className="text-xs font-bold text-white mb-4 truncate border-b border-white/5 pb-2">{adminData?.name}</p>
+                      <AdminMenuLink to="/admin-dashboard" label="Dashboard" icon={<LayoutDashboard size={14} />} />
+                      <button onClick={handleLogout} className="flex items-center gap-3 w-full px-3 py-2 text-[10px] font-bold text-red-400 hover:bg-red-500/10 rounded-lg mt-2 uppercase tracking-widest">
+                        <LogOut size={14} /> Logout
+                      </button>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -267,105 +182,42 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile menu button */}
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setIsOpen((prev) => !prev)}
-            className="lg:hidden p-2 text-white hover:bg-white/5 rounded-lg transition-colors"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </motion.button>
+          {/* MOBILE TOGGLE */}
+          <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 text-white">
+            {isOpen ? <X size={26} /> : <Menu size={26} />}
+          </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* MOBILE MENU */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="lg:hidden w-full bg-[#050510]/95 border-b border-white/10 shadow-2xl px-6 py-8 backdrop-blur-xl"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="lg:hidden bg-[#050505] border-b border-white/10 overflow-hidden"
           >
-            <div className="flex flex-col gap-6">
-              <div className="grid grid-cols-2 gap-3">
+            <div className="px-6 py-8 flex flex-col gap-4">
+              <div className="grid grid-cols-2 gap-2">
                 {navLinks.map((link) => (
-                  <Link
-                    key={link.name}
-                    to={link.path}
-                    onClick={closeAllMenus}
-                    className="py-4 bg-white/5 rounded-xl text-[11px] font-semibold text-center uppercase tracking-[0.18em] text-gray-100 border border-white/8"
-                  >
+                  <Link key={link.name} to={link.path} onClick={() => setIsOpen(false)} className="py-4 bg-white/5 border border-white/5 rounded-xl text-[10px] font-bold text-center uppercase tracking-widest text-gray-200">
                     {link.name}
                   </Link>
                 ))}
               </div>
-
-              <div className="space-y-3">
-                <button
-                  onClick={() =>
-                    setIsMobileRegistrationsOpen((prev) => !prev)
-                  }
-                  className="w-full py-4 bg-white/5 rounded-xl text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-100 flex items-center justify-center gap-2 border border-white/8"
-                >
-                  Registrations
-                  <ChevronDown
-                    size={16}
-                    className={
-                      isMobileRegistrationsOpen ? "rotate-180" : ""
-                    }
-                  />
-                </button>
-                {isMobileRegistrationsOpen && (
-                  <div className="grid grid-cols-2 gap-3 px-2">
-                    <Link
-                      to="/stall-registration"
-                      onClick={closeAllMenus}
-                      className="py-3 bg-violet-600/15 text-violet-300 rounded-lg text-center text-[10px] font-semibold uppercase tracking-[0.16em]"
-                    >
-                      Auction
-                    </Link>
-                    <Link
-                      to="/tshirt-registration"
-                      onClick={closeAllMenus}
-                      className="py-3 bg-violet-600/15 text-violet-300 rounded-lg text-center text-[10px] font-semibold uppercase tracking-[0.16em]"
-                    >
-                      Merch
-                    </Link>
-                  </div>
-                )}
-
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.96 }}
-                >
-                  <Link
-                    to="/alumni-registration"
-                    onClick={closeAllMenus}
-                    className="block w-full bg-gradient-to-r from-violet-600 to-purple-600 py-4 rounded-full text-[11px] font-bold uppercase tracking-[0.2em] text-center text-white shadow-md shadow-violet-500/40"
-                  >
-                    Alumni Portal
-                  </Link>
-                </motion.div>
-              </div>
-
-              {isLoggedIn && (
-                <div className="mt-4 pt-6 border-t border-white/5 flex flex-col gap-3">
-                  <Link
-                    to="/admin-dashboard"
-                    onClick={closeAllMenus}
-                    className="text-center text-[10px] font-semibold uppercase text-gray-300 tracking-[0.18em]"
-                  >
-                    Admin Dashboard
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="text-center text-[10px] font-semibold uppercase text-red-400 tracking-[0.2em]"
-                  >
-                    Logout Session
-                  </button>
+              <button onClick={() => setIsMobileRegistrationsOpen(!isMobileRegistrationsOpen)} className="w-full py-4 bg-white/5 rounded-xl text-[10px] font-bold uppercase tracking-widest text-gray-200 border border-white/5 flex justify-center items-center gap-2">
+                Registrations <ChevronDown size={14} className={isMobileRegistrationsOpen ? "rotate-180" : ""} />
+              </button>
+              {isMobileRegistrationsOpen && (
+                <div className="grid grid-cols-2 gap-2">
+                  <Link to="/stall-registration" onClick={() => setIsOpen(false)} className="py-3 bg-violet-600/10 text-violet-400 text-center rounded-lg text-[10px] font-bold uppercase tracking-widest">Auction</Link>
+                  <Link to="/tshirt-registration" onClick={() => setIsOpen(false)} className="py-3 bg-violet-600/10 text-violet-400 text-center rounded-lg text-[10px] font-bold uppercase tracking-widest">Merch</Link>
                 </div>
               )}
+              <Link to="/alumni-registration" onClick={() => setIsOpen(false)} className="w-full bg-violet-600 py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] text-center text-white">
+                Alumni Portal
+              </Link>
             </div>
           </motion.div>
         )}
@@ -374,30 +226,19 @@ export default function Navbar() {
   );
 }
 
-// Helpers
-
-function PortalLink({ to, label, icon, onClick }) {
+// Sub-components for cleaner code
+function PortalLink({ to, label, icon }) {
   return (
-    <Link
-      to={to}
-      onClick={onClick}
-      className="flex items-center gap-3 px-5 py-3 text-[11px] font-semibold text-gray-100 hover:text-white hover:bg-violet-600/25 transition-all uppercase tracking-[0.2em]"
-    >
-      <span className="text-violet-400">{icon}</span>
-      {label}
+    <Link to={to} className="flex items-center gap-3 px-4 py-3 text-[10px] font-bold text-gray-300 hover:text-white hover:bg-violet-600/20 transition-all uppercase tracking-widest">
+      <span className="text-violet-400">{icon}</span> {label}
     </Link>
   );
 }
 
-function AdminMenuLink({ to, label, icon, onClick }) {
+function AdminMenuLink({ to, label, icon }) {
   return (
-    <Link
-      to={to}
-      onClick={onClick}
-      className="flex items-center gap-3 px-3 py-2.5 text-[11px] font-semibold text-gray-200 hover:text-white hover:bg-white/5 rounded-lg transition-all uppercase tracking-[0.2em]"
-    >
-      <span className="text-violet-400">{icon}</span>
-      {label}
+    <Link to={to} className="flex items-center gap-3 px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-white/5 rounded-lg uppercase tracking-widest">
+      <span className="text-violet-400">{icon}</span> {label}
     </Link>
   );
 }

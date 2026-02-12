@@ -88,7 +88,7 @@ const CosmicBackground = () => {
     >
       <motion.div
         style={{ y: yBack }}
-        className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(139,92,246,0.22)_0%,_transparent_55%)]"
+        className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(139,92,246,0.22)_0%,transparent_55%)]"
       />
 
       <motion.div
@@ -181,7 +181,7 @@ const CosmicBackground = () => {
 };
 
 /* -------------------------------------------------------------------------- */
-/*  DEPARTMENT META                                                           */
+/*  DEPARTMENT META                                                            */
 /* -------------------------------------------------------------------------- */
 
 const deptMetadata = [
@@ -230,7 +230,7 @@ const deptMetadata = [
 ];
 
 /* -------------------------------------------------------------------------- */
-/*  HOME PAGE                                                                 */
+/*  HOME PAGE                                                                  */
 /* -------------------------------------------------------------------------- */
 
 export default function Home() {
@@ -280,7 +280,7 @@ export default function Home() {
       `}</style>
 
       {/* 1. Updates ticker */}
-      <div className="fixed top-[65px] left-0 w-full z-[100] bg-black/40 backdrop-blur-md border-b border-white/5 py-1">
+      <div className="fixed top-[65px] left-0 w-full z-[100] bg-black/60 backdrop-blur-md border-b border-white/5 py-1">
         <UpdatesTicker />
       </div>
 
@@ -315,7 +315,7 @@ export default function Home() {
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3, duration: 0.5 }}
+                  transition={{ delay: 0.3, duration: 0.1 }}
                   className="text-[20vw] sm:text-[18vw] font-black tracking-tighter leading-none uppercase text-white"
                 >
                   ORNATE
@@ -323,7 +323,7 @@ export default function Home() {
                 <motion.div
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5, duration: 0.5 }}
+                  transition={{ delay: 0.5, duration: 0.1 }}
                   className="text-[20vw] sm:text-[18vw] font-black tracking-tighter leading-none uppercase bg-gradient-to-r from-violet-400 via-purple-400 to-violet-400 bg-clip-text text-transparent"
                 >
                   2K26
@@ -331,28 +331,50 @@ export default function Home() {
               </h1>
             </motion.div>
 
-            {/* mobile image + countdown (stacked, no overlap) */}
+            {/* mobile image + countdown (stacked) */}
             <div className="w-full max-w-md mx-auto flex flex-col gap-5">
-              {/* image card */}
-             <div className="w-full max-h-[45vh] overflow-hidden">
-  <img
-    src={danceImage}
-    alt="Cosmic Performance"
-    className="w-full h-full object-contain"
-  />
-</div>
+              {/* image – mobile, stronger zoom + float */}
+              <motion.div
+                className="relative w-[420px] h-[420px] flex items-center justify-center"
+                animate={{
+                  y: [-12, 12, -12],
+                  scale: [0.95, 1.08, 0.95],
+                }}
+                transition={{
+                  duration: 12,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                <div className="absolute w-96 h-96 bg-purple-600/30 blur-3xl rounded-full" />
+                <img
+                  src={danceImage}
+                  alt="Cosmic Performance"
+                  className="
+                    relative
+                    w-full
+                    h-full
+                    object-contain
+                    mix-blend-screen
+                    opacity-90
+                    drop-shadow-[0_0_40px_rgba(168,85,247,0.6)]
+                  "
+                  style={{
+                    WebkitMaskImage:
+                      "radial-gradient(circle at center, white 60%, transparent 100%)",
+                    maskImage:
+                      "radial-gradient(circle at center, white 60%, transparent 100%)",
+                  }}
+                />
+              </motion.div>
 
-
-              {/* countdown card */}
-              <div className="w-full relative rounded-[2rem] overflow-hidden shadow-2xl border border-violet-500/25 bg-white/5 backdrop-blur-2xl pt-28 pb-6">
-                {/* floating label */}
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-violet-600 to-purple-600 px-5 py-2 rounded-full shadow-lg z-20">
-                  <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-white">
+              {/* countdown wrapper – mobile */}
+              <div className="w-full max-w-2xl mx-auto relative mt-12">
+                <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-violet-600 to-purple-600 px-6 py-2 rounded-full shadow-xl z-20">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.35em] text-white">
                     Event Countdown
                   </p>
                 </div>
-
-                {/* countdown content */}
                 <Countdown />
               </div>
             </div>
@@ -406,7 +428,7 @@ export default function Home() {
                 transition={{ delay: 0.7, duration: 0.5 }}
                 className="space-y-6"
               >
-                <div className="relative px-6 py-5 glass-card rounded-2xl max-w-xl">
+                <div className="relative px-6 py-5 glass-card rounded-2xl max-w-xl bg-black/40">
                   <div className="absolute -left-1 top-0 bottom-0 w-1 bg-gradient-to-b from-violet-500 to-purple-500 rounded-full" />
                   <p className="text-gray-300 text-lg font-light italic leading-relaxed">
                     "A premium intersection of high-end technical innovation and cultural expressions."
@@ -447,17 +469,43 @@ export default function Home() {
               className="flex justify-center"
             >
               <div className="w-full max-w-2xl flex flex-col gap-6 items-center">
-                {/* image */}
-                <div className="w-full max-h-[45vh] rounded-[2.5rem] overflow-hidden border border-violet-500/30 bg-black/40 p-4">
+                {/* image – desktop, stronger zoom + float */}
+                <motion.div
+                  className="relative w-full flex items-center justify-center"
+                  animate={{
+                    y: [-14, 14, -14],
+                    scale: [0.94, 1.1, 0.94],
+                  }}
+                  transition={{
+                    duration: 14,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  <div className="absolute w-[320px] h-[320px] bg-purple-600/30 blur-[100px] rounded-full pointer-events-none" />
                   <img
                     src={danceImage}
                     alt="Cosmic Performance"
-                    className="w-full h-full object-contain"
+                    className="
+                      relative
+                      w-[320px]
+                      h-[320px]
+                      object-contain
+                      mix-blend-lighten
+                      opacity-90
+                      pointer-events-none
+                    "
+                    style={{
+                      WebkitMaskImage:
+                        "radial-gradient(circle at center, rgba(255,255,255,1) 40%, rgba(255,255,255,0.4) 65%, transparent 85%)",
+                      maskImage:
+                        "radial-gradient(circle at center, rgba(255,255,255,1) 40%, rgba(255,255,255,0.4) 65%, transparent 85%)",
+                    }}
                   />
-                </div>
+                </motion.div>
 
-                {/* countdown */}
-                <div className="w-full relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-violet-500/25 bg-white/5 backdrop-blur-2xl pt-28 pb-8">
+                {/* countdown wrapper – desktop */}
+                <div className="w-full relative mt-10">
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-violet-600 to-purple-600 px-6 py-2 rounded-full shadow-lg z-20">
                     <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-white">
                       Event Countdown
@@ -471,8 +519,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. STATS BAR */}
-      <section className="py-20 px-6 border-y border-white/5 bg-white/[0.01] relative z-10">
+      {/* 3. STATS BAR – no dark background, cosmic visible */}
+      <section className="py-20 px-6 border-y border-white/10 bg-transparent relative z-10">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10">
           {[
             { label: "Elite Events", val: "50+", icon: <Award size={28} /> },
@@ -495,7 +543,7 @@ export default function Home() {
               <h4 className="text-3xl md:text-5xl font-bold tracking-tight text-white">
                 {stat.val}
               </h4>
-              <p className="text-[9px] md:text-[10px] uppercase text-gray-500 tracking-[0.4em] font-bold">
+              <p className="text-[9px] md:text-[10px] uppercase text-gray-400 tracking-[0.4em] font-bold">
                 {stat.label}
               </p>
             </motion.div>
@@ -503,7 +551,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. ARENAS GRID */}
+      {/* 4. ARENAS GRID – cards transparent so stars show */}
       <section className="py-32 px-6 max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0 }}
@@ -514,7 +562,7 @@ export default function Home() {
           <h2 className="text-5xl md:text-7xl font-bold tracking-tight uppercase text-white mb-4">
             Arenas<span className="text-violet-500">.</span>
           </h2>
-          <p className="text-gray-500 text-sm uppercase tracking-wider max-w-md">
+          <p className="text-gray-400 text-sm uppercase tracking-wider max-w-md">
             Choose your discipline and enter the domain of engineering mastery.
           </p>
         </motion.div>
@@ -528,23 +576,20 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.08, duration: 0.4 }}
                 whileHover={{ y: -8 }}
-                className="glass-card glass-card-hover p-10 rounded-3xl group relative overflow-hidden h-[400px] flex flex-col transition-all duration-300"
+                className="glass-card glass-card-hover p-10 rounded-3xl group relative overflow-hidden h-[400px] flex flex-col bg-transparent"
               >
                 <div
                   className={`absolute inset-0 bg-gradient-to-br ${dept.color} to-transparent opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
                 />
-
                 <div className="p-4 bg-violet-500/10 rounded-2xl text-violet-400 w-fit mb-8 border border-violet-500/20 relative z-10">
                   {dept.icon}
                 </div>
-
                 <h3 className="text-3xl font-bold mb-4 group-hover:text-violet-400 transition-colors uppercase relative z-10">
                   {dept.name}
                 </h3>
-                <p className="text-gray-400 text-sm leading-relaxed mb-8 line-clamp-3 relative z-10">
+                <p className="text-gray-300 text-sm leading-relaxed mb-8 line-clamp-3 relative z-10">
                   {dept.desc}
                 </p>
-
                 <div className="mt-auto flex items-center gap-3 text-violet-400 font-bold text-xs uppercase tracking-wider group-hover:gap-5 transition-all relative z-10">
                   EXPLORE <ArrowUpRight size={16} />
                 </div>
@@ -554,13 +599,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. EVENT ROWS */}
-      <section className="py-32 bg-white/[0.01] relative z-10">
+      {/* 5. EVENT ROWS – section and cards transparent */}
+      <section className="py-32 bg-transparent relative z-10">
         <motion.h2
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-xs font-bold tracking-[1em] uppercase text-center text-gray-600 mb-24"
+          className="text-xs font-bold tracking-[1em] uppercase text-center text-gray-400 mb-24"
         >
           Event Collections
         </motion.h2>
@@ -588,7 +633,7 @@ export default function Home() {
                   </div>
                   <Link
                     to={`/department/${dept.id}`}
-                    className="px-6 py-2 bg-white/5 hover:bg-violet-600 rounded-full text-[9px] font-bold text-gray-400 hover:text-white transition-all uppercase tracking-widest border border-white/10"
+                    className="px-6 py-2 bg-white/5 hover:bg-violet-600 rounded-full text-[9px] font-bold text-gray-300 hover:text-white transition-all uppercase tracking-widest border border-white/10"
                   >
                     View All
                   </Link>
@@ -603,7 +648,7 @@ export default function Home() {
                     >
                       <motion.div
                         whileHover={{ y: -5 }}
-                        className="glass-card glass-card-hover p-10 md:p-12 rounded-3xl flex flex-col group border-white/10 shadow-xl transition-all duration-300"
+                        className="glass-card glass-card-hover p-10 md:p-12 rounded-3xl flex flex-col group border-white/10 shadow-xl transition-all duration-300 bg-transparent"
                       >
                         <div className="flex justify-between items-center mb-8">
                           <div className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-[9px] font-bold text-white uppercase tracking-wider">
@@ -620,7 +665,7 @@ export default function Home() {
                           {ev.name}
                         </h4>
 
-                        <div className="mt-auto flex flex-wrap gap-4 text-gray-400 text-xs font-semibold uppercase tracking-wide">
+                        <div className="mt-auto flex flex-wrap gap-4 text-gray-300 text-xs font-semibold uppercase tracking-wide">
                           <span className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/5">
                             <Clock
                               size={14}
@@ -646,11 +691,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SPONSORS */}
-      <Sponsors />
+      {/* SPONSORS – no background override */}
+      <div className="relative z-10 bg-transparent">
+        <Sponsors />
+      </div>
 
-      {/* DIRECTOR */}
-      <section className="py-48 px-6 text-center relative z-10">
+      {/* DIRECTOR – no dark background, cosmic everywhere */}
+      <section className="py-48 px-6 text-center relative z-10 bg-transparent">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}

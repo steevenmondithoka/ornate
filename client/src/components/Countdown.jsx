@@ -63,7 +63,7 @@ export default function Countdown() {
       <FloatingParticles />
 
       {/* Content */}
-      <div className="relative z-10 px-6 py-10 md:px-12 md:py-16">
+<div className="relative z-10 px-6 py-8 md:px-10 md:py-12">
         <motion.p
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}

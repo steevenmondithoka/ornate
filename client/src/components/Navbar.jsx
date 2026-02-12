@@ -157,7 +157,7 @@ export default function Navbar() {
                     : "text-gray-200/80 hover:text-white"
                 }`}
               >
-                Portal
+                Registrations
                 <ChevronDown
                   size={14}
                   className={`transition-transform duration-300 ${
@@ -257,7 +257,7 @@ export default function Navbar() {
                           onClick={handleLogout}
                           className="flex items-center gap-3 w-full px-3 py-2 text-[10px] font-semibold text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-all uppercase tracking-[0.2em] mt-2 border-t border-white/5 pt-4"
                         >
-                          <LogOut size={14} /> Exit System
+                          <LogOut size={14} /> Log Out
                         </button>
                       </div>
                     </motion.div>
@@ -308,7 +308,7 @@ export default function Navbar() {
                   }
                   className="w-full py-4 bg-white/5 rounded-xl text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-100 flex items-center justify-center gap-2 border border-white/8"
                 >
-                  Portal
+                  Registrations
                   <ChevronDown
                     size={16}
                     className={

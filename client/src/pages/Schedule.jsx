@@ -67,7 +67,7 @@ export default function Schedule() {
                                 <UpdatesTicker />
                             </div>
             <div className="mb-20">
-                <p className="text-violet-500 font-mono tracking-[0.5em] text-[10px] uppercase mb-4">The Grand Itinerary</p>
+                <p className="text-white font-mono tracking-[0.5em] text-[10px] uppercase mb-4">The Grand Itinerary</p>
                 <h1 className="text-5xl md:text-6xl font-medium tracking-tighter italic text-reveal">TIMELINE<span className="text-violet-600">.</span></h1>
             </div>
            

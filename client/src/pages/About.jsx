@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 export default function About() {
     const mapLink = "https://www.google.com/maps/place/RGUKT+IIIT+ONGOLE/";
-    const bgGif = "https://i.pinimg.com/originals/36/e4/d0/36e4d0b856694fc471344b644a1dd6e4.gif";
+    const bgGif = "https://miro.medium.com/0*AU3rmB08Vntf33Is";
 
     // Animation presets for performance (GPU handled)
     const containerVariants = {
